@@ -1,4 +1,4 @@
-﻿namespace GymFitApp.Repository
+﻿namespace FitGymApp.Repository
 {
     public class Class1
     {

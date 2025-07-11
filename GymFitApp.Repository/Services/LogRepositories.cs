@@ -1,13 +1,13 @@
 using FitGymApp.Domain.Models;
-using GymFitApp.Repository.Services.Interfaces;
+using FitGymApp.Repository.Services.Interfaces;
 using System;
 
-namespace GymFitApp.Repository.Services
+namespace FitGymApp.Repository.Services
 {
     public class LogErrorRepository : ILogErrorRepository
     {
-        private readonly FitGymApp.Domain.Models.GymFitAppContext _context;
-        public LogErrorRepository(FitGymApp.Domain.Models.GymFitAppContext context) { _context = context; }
+        private readonly FitGymApp.Domain.Models.FitGymAppContext _context;
+        public LogErrorRepository(FitGymApp.Domain.Models.FitGymAppContext context) { _context = context; }
         public bool Add(LogError log)
         {
             _context.LogErrors.Add(log);
@@ -16,8 +16,8 @@ namespace GymFitApp.Repository.Services
     }
     public class LogLoginRepository : ILogLoginRepository
     {
-        private readonly FitGymApp.Domain.Models.GymFitAppContext _context;
-        public LogLoginRepository(FitGymApp.Domain.Models.GymFitAppContext context) { _context = context; }
+        private readonly FitGymApp.Domain.Models.FitGymAppContext _context;
+        public LogLoginRepository(FitGymApp.Domain.Models.FitGymAppContext context) { _context = context; }
         public bool Add(LogLogin log)
         {
             _context.LogLogins.Add(log);
@@ -26,8 +26,8 @@ namespace GymFitApp.Repository.Services
     }
     public class LogChangeRepository : ILogChangeRepository
     {
-        private readonly FitGymApp.Domain.Models.GymFitAppContext _context;
-        public LogChangeRepository(FitGymApp.Domain.Models.GymFitAppContext context) { _context = context; }
+        private readonly FitGymApp.Domain.Models.FitGymAppContext _context;
+        public LogChangeRepository(FitGymApp.Domain.Models.FitGymAppContext context) { _context = context; }
         public bool Add(LogChange log)
         {
             _context.LogChanges.Add(log);

@@ -5,107 +5,107 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="e13f97afc9a24afe83bb1e05c509a9b5" Name="Diagram1">
-        <EntityTypeShape EntityType="GymFitAppModel.AccessMethodType" Width="1.5" PointX="14.25" PointY="24.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Bill" Width="1.5" PointX="3" PointY="33.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Branch" Width="1.5" PointX="16.5" PointY="28" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Brand" Width="1.5" PointX="26.25" PointY="37.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.CategoryExercise" Width="1.5" PointX="24" PointY="28.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Daily" Width="1.5" PointX="14.25" PointY="29" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.DailyExercise" Width="1.5" PointX="28.5" PointY="30.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.DailyExerciseHistory" Width="1.5" PointX="24" PointY="32.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.DailyHistory" Width="1.5" PointX="21.75" PointY="32.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Diet" Width="1.5" PointX="11.25" PointY="26.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.EmployeeRegisterDaily" Width="1.5" PointX="6.75" PointY="22" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.EmployeeType" Width="1.5" PointX="4.5" PointY="17.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.EmployeeUser" Width="1.5" PointX="6.75" PointY="16.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Exercise" Width="1.5" PointX="26.25" PointY="32.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.FitUser" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Gym" Width="1.5" PointX="6.75" PointY="39.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.GymPlanSelected" Width="1.5" PointX="4.5" PointY="39.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.GymPlanSelectedModule" Width="1.5" PointX="3.75" PointY="24.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.GymPlanSelectedType" Width="1.5" PointX="2.25" PointY="40.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.JourneyEmployee" Width="1.5" PointX="9" PointY="17.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.LogChanges" Width="1.5" PointX="11.25" PointY="31.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.LogErrors" Width="1.5" PointX="16.5" PointY="33.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.LogLogin" Width="1.5" PointX="11.25" PointY="35.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.LogUninstall" Width="1.5" PointX="14.25" PointY="38.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Machine" Width="1.5" PointX="28.5" PointY="35.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.MachineCategory" Width="1.5" PointX="26.25" PointY="40.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Module" Width="1.5" PointX="6" PointY="34" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Notification" Width="1.5" PointX="11.25" PointY="42.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.NotificationOption" Width="1.5" PointX="16.5" PointY="37.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Permissions" Width="1.5" PointX="3" PointY="28.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.PhysicalAssessment" Width="1.5" PointX="11.25" PointY="47.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Plan" Width="1.5" PointX="6.75" PointY="44.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.PlanType" Width="1.5" PointX="4.5" PointY="45" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.RoutineAssigned" Width="1.5" PointX="11.25" PointY="55.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.RoutineExercise" Width="1.5" PointX="28.5" PointY="39.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.RoutineTemplate" Width="1.5" PointX="13.5" PointY="43" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.Schedule" Width="1.5" PointX="18.75" PointY="32.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.SubModule" Width="1.5" PointX="14.25" PointY="34.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.UninstallOptions" Width="1.5" PointX="12" PointY="38.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.User" Width="1.5" PointX="9" PointY="29.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="GymFitAppModel.UserType" Width="1.5" PointX="0.75" PointY="34.25" IsExpanded="true" />
-        <AssociationConnector Association="GymFitAppModel.FK_BranchAccessMethod" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BillGym" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BillUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BillUser1" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BillUserType" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BranchDaily" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BranchDailyHistory" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BranchSchedule" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BranchSubModule" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymBranch" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_BrandMachine" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_CategoryExerciseExercise" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_DailyDailyExercise" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_RoutineExerciseDaily" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserDaily" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_ExerciseDailyExercise" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_DailyHistoryDailyExerciseHistory" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_ExerciseDailyExerciseHistory" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_RoutineExerciseDailyHistory" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserDailyHistory" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_DietUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserDiet" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_EmployeeRegisterDailyUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_EmployeeTypeEmployeeUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_EmployeeUserJourneyEmployee" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserEmployeeUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_ExerciseRoutineExercise" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserFitUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymGymPlanSelected" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymPlan" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymRoutine" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserGym" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymPlanSelectedGymPlanSelectedModule" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymPlanSelectedTypeGymPlanSelected" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_GymPlanSelectedModuleModule" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserLogChanges" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_SubModuleLogErrors" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserLogErrors" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserLogLogin" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UnnistallOptionsLogUnnistall" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserUnnistallLog" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_MachineCategoryMachine" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_ModuleSubModule" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserTypeModule" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_NotificationOptionNotification" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserNotification" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserNotificationOption" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserPermissions" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserTypePermissions" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserPhysicalAssessment" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_PlanTypePlan" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserPlan" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_RoutineAssignedRoutine" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserRoutineAssigned" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_RoutineRoutineExercise" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_RoutineUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_ScheduleUser" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.FK_UserUserType" ManuallyRouted="false" />
-        <AssociationConnector Association="GymFitAppModel.MachineExercise" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FitGymAppModel.AccessMethodType" Width="1.5" PointX="14.25" PointY="24.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Bill" Width="1.5" PointX="3" PointY="33.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Branch" Width="1.5" PointX="16.5" PointY="28" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Brand" Width="1.5" PointX="26.25" PointY="37.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.CategoryExercise" Width="1.5" PointX="24" PointY="28.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Daily" Width="1.5" PointX="14.25" PointY="29" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.DailyExercise" Width="1.5" PointX="28.5" PointY="30.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.DailyExerciseHistory" Width="1.5" PointX="24" PointY="32.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.DailyHistory" Width="1.5" PointX="21.75" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Diet" Width="1.5" PointX="11.25" PointY="26.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.EmployeeRegisterDaily" Width="1.5" PointX="6.75" PointY="22" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.EmployeeType" Width="1.5" PointX="4.5" PointY="17.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.EmployeeUser" Width="1.5" PointX="6.75" PointY="16.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Exercise" Width="1.5" PointX="26.25" PointY="32.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.FitUser" Width="1.5" PointX="6.75" PointY="29.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Gym" Width="1.5" PointX="6.75" PointY="39.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.GymPlanSelected" Width="1.5" PointX="4.5" PointY="39.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.GymPlanSelectedModule" Width="1.5" PointX="3.75" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.GymPlanSelectedType" Width="1.5" PointX="2.25" PointY="40.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.JourneyEmployee" Width="1.5" PointX="9" PointY="17.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.LogChanges" Width="1.5" PointX="11.25" PointY="31.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.LogErrors" Width="1.5" PointX="16.5" PointY="33.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.LogLogin" Width="1.5" PointX="11.25" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.LogUninstall" Width="1.5" PointX="14.25" PointY="38.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Machine" Width="1.5" PointX="28.5" PointY="35.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.MachineCategory" Width="1.5" PointX="26.25" PointY="40.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Module" Width="1.5" PointX="6" PointY="34" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Notification" Width="1.5" PointX="11.25" PointY="42.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.NotificationOption" Width="1.5" PointX="16.5" PointY="37.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Permissions" Width="1.5" PointX="3" PointY="28.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.PhysicalAssessment" Width="1.5" PointX="11.25" PointY="47.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Plan" Width="1.5" PointX="6.75" PointY="44.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.PlanType" Width="1.5" PointX="4.5" PointY="45" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.RoutineAssigned" Width="1.5" PointX="11.25" PointY="55.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.RoutineExercise" Width="1.5" PointX="28.5" PointY="39.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.RoutineTemplate" Width="1.5" PointX="13.5" PointY="43" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.Schedule" Width="1.5" PointX="18.75" PointY="32.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.SubModule" Width="1.5" PointX="14.25" PointY="34.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.UninstallOptions" Width="1.5" PointX="12" PointY="38.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.User" Width="1.5" PointX="9" PointY="29.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FitGymAppModel.UserType" Width="1.5" PointX="0.75" PointY="34.25" IsExpanded="true" />
+        <AssociationConnector Association="FitGymAppModel.FK_BranchAccessMethod" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BillGym" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BillUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BillUser1" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BillUserType" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BranchDaily" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BranchDailyHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BranchSchedule" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BranchSubModule" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymBranch" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_BrandMachine" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_CategoryExerciseExercise" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_DailyDailyExercise" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_RoutineExerciseDaily" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserDaily" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_ExerciseDailyExercise" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_DailyHistoryDailyExerciseHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_ExerciseDailyExerciseHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_RoutineExerciseDailyHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserDailyHistory" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_DietUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserDiet" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_EmployeeRegisterDailyUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_EmployeeTypeEmployeeUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_EmployeeUserJourneyEmployee" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserEmployeeUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_ExerciseRoutineExercise" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserFitUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymGymPlanSelected" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymPlan" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymRoutine" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserGym" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymPlanSelectedGymPlanSelectedModule" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymPlanSelectedTypeGymPlanSelected" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_GymPlanSelectedModuleModule" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserLogChanges" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_SubModuleLogErrors" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserLogErrors" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserLogLogin" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UnnistallOptionsLogUnnistall" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserUnnistallLog" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_MachineCategoryMachine" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_ModuleSubModule" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserTypeModule" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_NotificationOptionNotification" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserNotification" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserNotificationOption" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserPermissions" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserTypePermissions" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserPhysicalAssessment" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_PlanTypePlan" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserPlan" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_RoutineAssignedRoutine" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserRoutineAssigned" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_RoutineRoutineExercise" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_RoutineUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_ScheduleUser" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.FK_UserUserType" ManuallyRouted="false" />
+        <AssociationConnector Association="FitGymAppModel.MachineExercise" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

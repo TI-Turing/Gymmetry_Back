@@ -1,7 +1,7 @@
 using FitGymApp.Domain.DTO.Auth.Request;
 using FitGymApp.Domain.DTO.Auth.Response;
 
-namespace GymFitApp.Repository.Services.Interfaces
+namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IAuthRepository
     {

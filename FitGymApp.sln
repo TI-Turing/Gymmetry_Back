@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitGymApp.Application", "Fi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitGymApp", "FitGymApp\FitGymApp.csproj", "{0E9CF600-54A6-41DB-A7BA-DC7CF1A97725}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymFitApp.Repository", "GymFitApp.Repository\GymFitApp.Repository.csproj", "{86D40C93-D029-4FEF-B38F-35E631EE877B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitGymApp.Repository", "GymFitApp.Repository\FitGymApp.Repository.csproj", "{86D40C93-D029-4FEF-B38F-35E631EE877B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FitGymApp.Tests", "FitGymApp.Tests\FitGymApp.Tests.csproj", "{737C8846-C3AD-2379-15FC-1DE21F4ADF84}"
 EndProject

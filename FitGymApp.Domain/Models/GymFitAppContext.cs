@@ -4,13 +4,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Domain.Models;
 
-public partial class GymFitAppContext : DbContext
+public partial class FitGymAppContext : DbContext
 {
-    public GymFitAppContext()
+    public FitGymAppContext()
     {
     }
 
-    public GymFitAppContext(DbContextOptions<GymFitAppContext> options)
+    public FitGymAppContext(DbContextOptions<FitGymAppContext> options)
         : base(options)
     {
     }
@@ -99,7 +99,7 @@ public partial class GymFitAppContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=GymFitApp;Integrated Security=True;TrustServerCertificate=True;Encrypt=True;");
+        => optionsBuilder.UseSqlServer("Server=.;Database=FitGymApp;Integrated Security=True;TrustServerCertificate=True;Encrypt=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

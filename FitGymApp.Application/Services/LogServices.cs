@@ -1,7 +1,7 @@
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO.User.Response;
 using FitGymApp.Domain.Models;
-using GymFitApp.Repository.Services.Interfaces;
+using FitGymApp.Repository.Services.Interfaces;
 using System;
 using System.Text.Json;
 

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using FitGymApp.Domain.Models;
-using GymFitApp.Repository.Services.Interfaces;
+using FitGymApp.Repository.Services.Interfaces;
 
-namespace GymFitApp.Repository.Services
+namespace FitGymApp.Repository.Services
 {
     public class UserRepository : IUserRepository
     {
-        private readonly GymFitAppContext _context;
+        private readonly FitGymAppContext _context;
 
-        public UserRepository(GymFitAppContext context)
+        public UserRepository(FitGymAppContext context)
         {
             _context = context;
         }

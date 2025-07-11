@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FitGymApp.Domain.Models;
 
-namespace GymFitApp.Repository.Services.Interfaces
+namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IUserRepository
     {

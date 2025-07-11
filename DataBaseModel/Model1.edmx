@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="GymFitAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="FitGymAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="AccessMethodType">
           <Key>
             <PropertyRef Name="Id" />
@@ -1384,7 +1384,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="GymFitAppModelStoreContainer">
+        <EntityContainer Name="FitGymAppModelStoreContainer">
           <EntitySet Name="AccessMethodType" EntityType="Self.AccessMethodType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
@@ -1676,7 +1676,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="GymFitAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="FitGymAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="AccessMethodType">
           <Key>
             <PropertyRef Name="Id" />
@@ -3148,7 +3148,7 @@
           <End Role="Exercise" Type="Self.Exercise" Multiplicity="*" />
           <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="GymFitAppEntities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="FitGymAppEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="AccessMethodType" EntityType="Self.AccessMethodType" />
           <EntitySet Name="Bill" EntityType="Self.Bill" />
           <EntitySet Name="Branch" EntityType="Self.Branch" />
@@ -3436,9 +3436,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="GymFitAppModelStoreContainer" CdmEntityContainer="GymFitAppEntities2">
+        <EntityContainerMapping StorageEntityContainer="FitGymAppModelStoreContainer" CdmEntityContainer="FitGymAppEntities2">
           <EntitySetMapping Name="AccessMethodType">
-            <EntityTypeMapping TypeName="GymFitAppModel.AccessMethodType">
+            <EntityTypeMapping TypeName="FitGymAppModel.AccessMethodType">
               <MappingFragment StoreEntitySet="AccessMethodType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3451,7 +3451,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Bill">
-            <EntityTypeMapping TypeName="GymFitAppModel.Bill">
+            <EntityTypeMapping TypeName="FitGymAppModel.Bill">
               <MappingFragment StoreEntitySet="Bill">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Ammount" ColumnName="Ammount" />
@@ -3468,7 +3468,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Branch">
-            <EntityTypeMapping TypeName="GymFitAppModel.Branch">
+            <EntityTypeMapping TypeName="FitGymAppModel.Branch">
               <MappingFragment StoreEntitySet="Branch">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Address" ColumnName="Address" />
@@ -3481,7 +3481,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Brand">
-            <EntityTypeMapping TypeName="GymFitAppModel.Brand">
+            <EntityTypeMapping TypeName="FitGymAppModel.Brand">
               <MappingFragment StoreEntitySet="Brand">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3494,7 +3494,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="CategoryExercise">
-            <EntityTypeMapping TypeName="GymFitAppModel.CategoryExercise">
+            <EntityTypeMapping TypeName="FitGymAppModel.CategoryExercise">
               <MappingFragment StoreEntitySet="CategoryExercise">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3507,7 +3507,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Daily">
-            <EntityTypeMapping TypeName="GymFitAppModel.Daily">
+            <EntityTypeMapping TypeName="FitGymAppModel.Daily">
               <MappingFragment StoreEntitySet="Daily">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -3523,7 +3523,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DailyExercise">
-            <EntityTypeMapping TypeName="GymFitAppModel.DailyExercise">
+            <EntityTypeMapping TypeName="FitGymAppModel.DailyExercise">
               <MappingFragment StoreEntitySet="DailyExercise">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Set" ColumnName="Set" />
@@ -3539,7 +3539,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DailyExerciseHistory">
-            <EntityTypeMapping TypeName="GymFitAppModel.DailyExerciseHistory">
+            <EntityTypeMapping TypeName="FitGymAppModel.DailyExerciseHistory">
               <MappingFragment StoreEntitySet="DailyExerciseHistory">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Set" ColumnName="Set" />
@@ -3554,7 +3554,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="DailyHistory">
-            <EntityTypeMapping TypeName="GymFitAppModel.DailyHistory">
+            <EntityTypeMapping TypeName="FitGymAppModel.DailyHistory">
               <MappingFragment StoreEntitySet="DailyHistory">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -3571,7 +3571,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Diet">
-            <EntityTypeMapping TypeName="GymFitAppModel.Diet">
+            <EntityTypeMapping TypeName="FitGymAppModel.Diet">
               <MappingFragment StoreEntitySet="Diet">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="BreakFast" ColumnName="BreakFast" />
@@ -3593,7 +3593,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EmployeeRegisterDaily">
-            <EntityTypeMapping TypeName="GymFitAppModel.EmployeeRegisterDaily">
+            <EntityTypeMapping TypeName="FitGymAppModel.EmployeeRegisterDaily">
               <MappingFragment StoreEntitySet="EmployeeRegisterDaily">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -3607,7 +3607,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EmployeeType">
-            <EntityTypeMapping TypeName="GymFitAppModel.EmployeeType">
+            <EntityTypeMapping TypeName="FitGymAppModel.EmployeeType">
               <MappingFragment StoreEntitySet="EmployeeType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3620,7 +3620,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EmployeeUser">
-            <EntityTypeMapping TypeName="GymFitAppModel.EmployeeUser">
+            <EntityTypeMapping TypeName="FitGymAppModel.EmployeeUser">
               <MappingFragment StoreEntitySet="EmployeeUser">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="ARL" ColumnName="ARL" />
@@ -3641,7 +3641,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Exercise">
-            <EntityTypeMapping TypeName="GymFitAppModel.Exercise">
+            <EntityTypeMapping TypeName="FitGymAppModel.Exercise">
               <MappingFragment StoreEntitySet="Exercise">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3656,7 +3656,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FitUser">
-            <EntityTypeMapping TypeName="GymFitAppModel.FitUser">
+            <EntityTypeMapping TypeName="FitGymAppModel.FitUser">
               <MappingFragment StoreEntitySet="FitUser">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Goal" ColumnName="Goal" />
@@ -3670,7 +3670,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Gym">
-            <EntityTypeMapping TypeName="GymFitAppModel.Gym">
+            <EntityTypeMapping TypeName="FitGymAppModel.Gym">
               <MappingFragment StoreEntitySet="Gym">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3687,7 +3687,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GymPlanSelected">
-            <EntityTypeMapping TypeName="GymFitAppModel.GymPlanSelected">
+            <EntityTypeMapping TypeName="FitGymAppModel.GymPlanSelected">
               <MappingFragment StoreEntitySet="GymPlanSelected">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -3702,7 +3702,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GymPlanSelectedModule">
-            <EntityTypeMapping TypeName="GymFitAppModel.GymPlanSelectedModule">
+            <EntityTypeMapping TypeName="FitGymAppModel.GymPlanSelectedModule">
               <MappingFragment StoreEntitySet="GymPlanSelectedModule">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
@@ -3715,7 +3715,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="GymPlanSelectedType">
-            <EntityTypeMapping TypeName="GymFitAppModel.GymPlanSelectedType">
+            <EntityTypeMapping TypeName="FitGymAppModel.GymPlanSelectedType">
               <MappingFragment StoreEntitySet="GymPlanSelectedType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3728,7 +3728,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="JourneyEmployee">
-            <EntityTypeMapping TypeName="GymFitAppModel.JourneyEmployee">
+            <EntityTypeMapping TypeName="FitGymAppModel.JourneyEmployee">
               <MappingFragment StoreEntitySet="JourneyEmployee">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3744,7 +3744,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LogChanges">
-            <EntityTypeMapping TypeName="GymFitAppModel.LogChanges">
+            <EntityTypeMapping TypeName="FitGymAppModel.LogChanges">
               <MappingFragment StoreEntitySet="LogChanges">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Table" ColumnName="Table" />
@@ -3759,7 +3759,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LogErrors">
-            <EntityTypeMapping TypeName="GymFitAppModel.LogErrors">
+            <EntityTypeMapping TypeName="FitGymAppModel.LogErrors">
               <MappingFragment StoreEntitySet="LogErrors">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Error" ColumnName="Error" />
@@ -3774,7 +3774,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LogLogin">
-            <EntityTypeMapping TypeName="GymFitAppModel.LogLogin">
+            <EntityTypeMapping TypeName="FitGymAppModel.LogLogin">
               <MappingFragment StoreEntitySet="LogLogin">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
@@ -3787,7 +3787,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LogUninstall">
-            <EntityTypeMapping TypeName="GymFitAppModel.LogUninstall">
+            <EntityTypeMapping TypeName="FitGymAppModel.LogUninstall">
               <MappingFragment StoreEntitySet="LogUninstall">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
@@ -3802,7 +3802,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Machine">
-            <EntityTypeMapping TypeName="GymFitAppModel.Machine">
+            <EntityTypeMapping TypeName="FitGymAppModel.Machine">
               <MappingFragment StoreEntitySet="Machine">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3819,7 +3819,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="MachineCategory">
-            <EntityTypeMapping TypeName="GymFitAppModel.MachineCategory">
+            <EntityTypeMapping TypeName="FitGymAppModel.MachineCategory">
               <MappingFragment StoreEntitySet="MachineCategory">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3832,7 +3832,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Module">
-            <EntityTypeMapping TypeName="GymFitAppModel.Module">
+            <EntityTypeMapping TypeName="FitGymAppModel.Module">
               <MappingFragment StoreEntitySet="Module">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3848,7 +3848,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Notification">
-            <EntityTypeMapping TypeName="GymFitAppModel.Notification">
+            <EntityTypeMapping TypeName="FitGymAppModel.Notification">
               <MappingFragment StoreEntitySet="Notification">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -3871,7 +3871,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="NotificationOption">
-            <EntityTypeMapping TypeName="GymFitAppModel.NotificationOption">
+            <EntityTypeMapping TypeName="FitGymAppModel.NotificationOption">
               <MappingFragment StoreEntitySet="NotificationOption">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Mail" ColumnName="Mail" />
@@ -3890,7 +3890,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Permissions">
-            <EntityTypeMapping TypeName="GymFitAppModel.Permissions">
+            <EntityTypeMapping TypeName="FitGymAppModel.Permissions">
               <MappingFragment StoreEntitySet="Permissions">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="See" ColumnName="See" />
@@ -3909,7 +3909,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PhysicalAssessment">
-            <EntityTypeMapping TypeName="GymFitAppModel.PhysicalAssessment">
+            <EntityTypeMapping TypeName="FitGymAppModel.PhysicalAssessment">
               <MappingFragment StoreEntitySet="PhysicalAssessment">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Height" ColumnName="Height" />
@@ -3944,7 +3944,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Plan">
-            <EntityTypeMapping TypeName="GymFitAppModel.Plan">
+            <EntityTypeMapping TypeName="FitGymAppModel.Plan">
               <MappingFragment StoreEntitySet="Plan">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -3960,7 +3960,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="PlanType">
-            <EntityTypeMapping TypeName="GymFitAppModel.PlanType">
+            <EntityTypeMapping TypeName="FitGymAppModel.PlanType">
               <MappingFragment StoreEntitySet="PlanType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3973,7 +3973,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoutineAssigned">
-            <EntityTypeMapping TypeName="GymFitAppModel.RoutineAssigned">
+            <EntityTypeMapping TypeName="FitGymAppModel.RoutineAssigned">
               <MappingFragment StoreEntitySet="RoutineAssigned">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Comments" ColumnName="Comments" />
@@ -3987,7 +3987,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoutineExercise">
-            <EntityTypeMapping TypeName="GymFitAppModel.RoutineExercise">
+            <EntityTypeMapping TypeName="FitGymAppModel.RoutineExercise">
               <MappingFragment StoreEntitySet="RoutineExercise">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
@@ -4003,7 +4003,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="RoutineTemplate">
-            <EntityTypeMapping TypeName="GymFitAppModel.RoutineTemplate">
+            <EntityTypeMapping TypeName="FitGymAppModel.RoutineTemplate">
               <MappingFragment StoreEntitySet="RoutineTemplate">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4020,7 +4020,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Schedule">
-            <EntityTypeMapping TypeName="GymFitAppModel.Schedule">
+            <EntityTypeMapping TypeName="FitGymAppModel.Schedule">
               <MappingFragment StoreEntitySet="Schedule">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
@@ -4036,7 +4036,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="SubModule">
-            <EntityTypeMapping TypeName="GymFitAppModel.SubModule">
+            <EntityTypeMapping TypeName="FitGymAppModel.SubModule">
               <MappingFragment StoreEntitySet="SubModule">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4051,7 +4051,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UninstallOptions">
-            <EntityTypeMapping TypeName="GymFitAppModel.UninstallOptions">
+            <EntityTypeMapping TypeName="FitGymAppModel.UninstallOptions">
               <MappingFragment StoreEntitySet="UninstallOptions">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4064,7 +4064,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="User">
-            <EntityTypeMapping TypeName="GymFitAppModel.User">
+            <EntityTypeMapping TypeName="FitGymAppModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
@@ -4105,7 +4105,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UserType">
-            <EntityTypeMapping TypeName="GymFitAppModel.UserType">
+            <EntityTypeMapping TypeName="FitGymAppModel.UserType">
               <MappingFragment StoreEntitySet="UserType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -4117,7 +4117,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="MachineExercise" TypeName="GymFitAppModel.MachineExercise" StoreEntitySet="MachineExercise">
+          <AssociationSetMapping Name="MachineExercise" TypeName="FitGymAppModel.MachineExercise" StoreEntitySet="MachineExercise">
             <EndProperty Name="Exercise">
               <ScalarProperty Name="Id" ColumnName="MachineExercise_Machine_Id" />
             </EndProperty>

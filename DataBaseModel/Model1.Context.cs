@@ -13,10 +13,10 @@ namespace DataBaseModel
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class GymFitAppEntities2 : DbContext
+    public partial class FitGymAppEntities2 : DbContext
     {
-        public GymFitAppEntities2()
-            : base("name=GymFitAppEntities2")
+        public FitGymAppEntities2()
+            : base("name=FitGymAppEntities2")
         {
         }
     

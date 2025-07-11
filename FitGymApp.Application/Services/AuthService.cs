@@ -1,7 +1,7 @@
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO.Auth.Request;
 using FitGymApp.Domain.DTO.Auth.Response;
-using GymFitApp.Repository.Services.Interfaces;
+using FitGymApp.Repository.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using System;
 using System.Collections.Generic;

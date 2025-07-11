@@ -5,7 +5,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.User.Request;
 using FitGymApp.Domain.DTO.User.Response;
 using System.Linq;
-using GymFitApp.Repository.Services.Interfaces;
+using FitGymApp.Repository.Services.Interfaces;
 
 namespace FitGymApp.Application.Services
 {

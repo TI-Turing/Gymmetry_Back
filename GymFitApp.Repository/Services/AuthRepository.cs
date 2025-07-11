@@ -2,14 +2,14 @@ using System.Linq;
 using FitGymApp.Domain.DTO.Auth.Request;
 using FitGymApp.Domain.DTO.Auth.Response;
 using FitGymApp.Domain.Models;
-using GymFitApp.Repository.Services.Interfaces;
+using FitGymApp.Repository.Services.Interfaces;
 
-namespace GymFitApp.Repository.Services
+namespace FitGymApp.Repository.Services
 {
     public class AuthRepository : IAuthRepository
     {
-        private readonly GymFitAppContext _context;
-        public AuthRepository(GymFitAppContext context)
+        private readonly FitGymAppContext _context;
+        public AuthRepository(FitGymAppContext context)
         {
             _context = context;
         }
