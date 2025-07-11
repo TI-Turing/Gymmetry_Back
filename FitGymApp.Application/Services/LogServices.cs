@@ -1,5 +1,5 @@
 using FitGymApp.Application.Services.Interfaces;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
 using System;

@@ -1,5 +1,5 @@
 using FitGymApp.Application.Services.Interfaces;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using BCrypt.Net;
 
 namespace FitGymApp.Application.Services

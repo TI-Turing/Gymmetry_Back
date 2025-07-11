@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using FitGymApp.Domain.Models;
 using System;
 using System.Collections.Generic;

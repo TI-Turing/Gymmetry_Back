@@ -3,7 +3,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Domain.DTO.Auth.Request;
 using FitGymApp.Domain.DTO.Auth.Response;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;

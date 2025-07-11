@@ -1,5 +1,5 @@
 using FitGymApp.Domain.DTO.User.Request;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using FitGymApp.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;

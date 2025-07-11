@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using FitGymApp.Domain.DTO.User.Request;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using System;
