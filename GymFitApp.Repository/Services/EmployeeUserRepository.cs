@@ -1,0 +1,84 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using FitGymApp.Domain.Models;
+using FitGymApp.Repository.Services.Interfaces;
+
+namespace FitGymApp.Repository.Services
+{
+    public class EmployeeUserRepository : IEmployeeUserRepository
+    {
+        private readonly FitGymAppContext _context;
+        public EmployeeUserRepository(FitGymAppContext context)
+        {
+            _context = context;
+        }
+
+        public EmployeeUser CreateEmployeeUser(EmployeeUser entity)
+        {
+            entity.Id = Guid.NewGuid();
+            entity.CreatedAt = DateTime.UtcNow;
+            entity.IsActive = true;
+            _context.EmployeeUsers.Add(entity);
+            _context.SaveChanges();
+            return entity;
+        }
+
+        public EmployeeUser GetEmployeeUserById(Guid id)
+        {
+            return _context.EmployeeUsers.FirstOrDefault(e => e.Id == id && e.IsActive);
+        }
+
+        public IEnumerable<EmployeeUser> GetAllEmployeeUsers()
+        {
+            return _context.EmployeeUsers.Where(e => e.IsActive).ToList();
+        }
+
+        public bool UpdateEmployeeUser(EmployeeUser entity)
+        {
+            var existing = _context.EmployeeUsers.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            if (existing != null)
+            {
+                _context.Entry(existing).CurrentValues.SetValues(entity);
+                existing.UpdatedAt = DateTime.UtcNow;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public bool DeleteEmployeeUser(Guid id)
+        {
+            var entity = _context.EmployeeUsers.FirstOrDefault(e => e.Id == id && e.IsActive);
+            if (entity != null)
+            {
+                entity.IsActive = false;
+                entity.DeletedAt = DateTime.UtcNow;
+                _context.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public IEnumerable<EmployeeUser> FindEmployeeUsersByFields(Dictionary<string, object> filters)
+        {
+            var parameter = Expression.Parameter(typeof(EmployeeUser), "e");
+            Expression predicate = Expression.Equal(
+                Expression.Property(parameter, nameof(EmployeeUser.IsActive)),
+                Expression.Constant(true)
+            );
+            foreach (var filter in filters)
+            {
+                var property = typeof(EmployeeUser).GetProperty(filter.Key);
+                if (property == null) continue;
+                var left = Expression.Property(parameter, property);
+                var right = Expression.Constant(Convert.ChangeType(filter.Value, property.PropertyType));
+                var equals = Expression.Equal(left, right);
+                predicate = Expression.AndAlso(predicate, equals);
+            }
+            var lambda = Expression.Lambda<Func<EmployeeUser, bool>>(predicate, parameter);
+            return _context.EmployeeUsers.Where(lambda).ToList();
+        }
+    }
+}

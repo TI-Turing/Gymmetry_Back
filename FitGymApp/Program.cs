@@ -22,7 +22,7 @@ builder.Services
 var configuration = builder.Configuration;
 var connectionString = configuration.GetConnectionString("DefaultConnection")
     ?? configuration["ConnectionStrings:DefaultConnection"]
-    ?? configuration["ConnectionStrings:GymFitApp"];
+    ?? configuration["ConnectionStrings:FitGymApp"];
 
 // Registrar DbContext
 builder.Services.AddDbContext<FitGymAppContext>(options =>
