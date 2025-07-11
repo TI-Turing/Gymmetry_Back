@@ -53,6 +53,8 @@ public partial class FitGymAppContext : DbContext
 
     public virtual DbSet<GymPlanSelectedType> GymPlanSelectedTypes { get; set; }
 
+    public virtual DbSet<GymType> GymTypes { get; set; }
+
     public virtual DbSet<JourneyEmployee> JourneyEmployees { get; set; }
 
     public virtual DbSet<LogChange> LogChanges { get; set; }

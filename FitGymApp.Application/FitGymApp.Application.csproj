@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FitGymApp.Domain\FitGymApp.Domain.csproj" />
-    <ProjectReference Include="..\FitGymApp.Repository\FitGymApp.Repository.csproj" />
+    <ProjectReference Include="..\GymFitApp.Repository\FitGymApp.Repository.csproj" />
   </ItemGroup>
 
 </Project>

@@ -19,6 +19,16 @@ public partial class Branch
 
     public Guid AccessMethodId { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+
+    public DateTime? UpdatedAt { get; set; }
+
+    public DateTime? DeletedAt { get; set; }
+
+    public string? Ip { get; set; }
+
+    public bool IsActive { get; set; }
+
     public virtual AccessMethodType AccessMethod { get; set; } = null!;
 
     public virtual Daily BranchDailyBranch { get; set; } = null!;
