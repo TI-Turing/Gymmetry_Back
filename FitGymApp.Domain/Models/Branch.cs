@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace FitGymApp.Domain.Models;
+
+public partial class Branch
+{
+    public Guid Id { get; set; }
+
+    public string Address { get; set; } = null!;
+
+    public Guid CityId { get; set; }
+
+    public Guid RegionId { get; set; }
+
+    public Guid GymId { get; set; }
+
+    public Guid BranchDailyBranchId { get; set; }
+
+    public Guid AccessMethodId { get; set; }
+
+    public virtual AccessMethodType AccessMethod { get; set; } = null!;
+
+    public virtual Daily BranchDailyBranch { get; set; } = null!;
+
+    public virtual ICollection<DailyHistory> DailyHistories { get; set; } = new List<DailyHistory>();
+
+    public virtual Gym Gym { get; set; } = null!;
+
+    public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
+
+    public virtual ICollection<SubModule> SubModules { get; set; } = new List<SubModule>();
+}
