@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FitGymApp.Domain.DTO.User.Response
+namespace FitGymApp.Domain.DTO
 {
     public class ApiResponse<T>
     {

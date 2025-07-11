@@ -1,4 +1,4 @@
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using System;
 
 namespace FitGymApp.Application.Services.Interfaces

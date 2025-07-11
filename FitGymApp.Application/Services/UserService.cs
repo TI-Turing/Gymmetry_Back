@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.User.Request;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 using System.Linq;
 using FitGymApp.Repository.Services.Interfaces;
 

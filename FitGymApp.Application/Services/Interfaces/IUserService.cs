@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.User.Request;
-using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Application.Services.Interfaces
 {

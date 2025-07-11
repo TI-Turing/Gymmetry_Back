@@ -1,4 +1,4 @@
-namespace FitGymApp.Domain.DTO.User.Response
+namespace FitGymApp.Domain.DTO
 {
     public class ApplicationResponse<T>
     {
