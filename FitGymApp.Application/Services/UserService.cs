@@ -128,7 +128,9 @@ namespace FitGymApp.Application.Services
                     EmergencyPhone = request.EmergencyPhone,
                     PhysicalExceptions = request.PhysicalExceptions,
                     IsActive = request.IsActive,
-                    UserTypeId = request.UserTypeId
+                    UserTypeId = request.UserTypeId,
+                    Email = userBefore?.Email ?? string.Empty,
+                    Password = userBefore?.Password ?? string.Empty
                 };
                 var updated = _userRepository.UpdateUser(user);
                 if (updated)

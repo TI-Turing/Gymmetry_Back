@@ -1,20 +1,22 @@
+using FitGymApp.Application.Services;
+using FitGymApp.Application.Services.Interfaces;
+using FitGymApp.Domain.DTO;
+using FitGymApp.Domain.DTO.User.Request;
+using FitGymApp.Domain.DTO.User.Response;
+using FitGymApp.Domain.Models;
+using FitGymApp.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using FitGymApp.Domain.DTO.User.Request;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using FitGymApp.Domain.DTO;
-using FitGymApp.Application.Services.Interfaces;
-using FitGymApp.Domain.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Linq;
-using FitGymApp.Utils;
 
 namespace FitGymApp.Functions.UserFunctions;
 
@@ -29,56 +31,22 @@ public class AddUserFunction
         _userService = userService;
     }
 
-    [Function("AddUserFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "user/add")] HttpRequest req)
+    [Function("User_AddUserFunction")]
+    public async Task<ApiResponse<AddResponse>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "user/add")] HttpRequest req)
     {
-        if (!JwtValidator.ValidateJwt(req, out var error))
-        {
-            return new ApiResponse<Guid>
-            {
-                Success = false,
-                Message = error!,
-                Data = default,
-                StatusCode = StatusCodes.Status401Unauthorized
-            };
-        }
-
         _logger.LogInformation("C# HTTP trigger function processed a request.");
         try
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<AddRequest>(requestBody);
 
-            if (objRequest == null)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "El cuerpo de la solicitud no coincide con la estructura esperada.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var validationContext = new ValidationContext(objRequest, null, null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(objRequest, validationContext, validationResults, true);
-
-            if (!isValid)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = string.Join("; ", validationResults.Select(v => v.ErrorMessage)),
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
+            var validationResult = ModelValidator.ValidateModel<AddRequest, AddResponse>(objRequest, StatusCodes.Status400BadRequest);
+            if (validationResult is not null) return validationResult;
 
             var result = _userService.CreateUser(objRequest);
             if (!result.Success)
             {
-                return new ApiResponse<Guid>
+                return new ApiResponse<AddResponse>
                 {
                     Success = false,
                     Message = result.Message,
@@ -86,18 +54,24 @@ public class AddUserFunction
                     StatusCode = StatusCodes.Status400BadRequest
                 };
             }
-            return new ApiResponse<Guid>
+            var token = JwtTokenGenerator.GenerateToken(result.Data.Id, string.Empty, result.Data.Email);
+            AddResponse addResponse = new AddResponse
+            {
+                Id = result.Data.Id,
+                Token = token
+            };
+            return new ApiResponse<AddResponse>
             {
                 Success = true,
                 Message = result.Message,
-                Data = result.Data != null ? result.Data.Id : default,
+                Data = result.Data != null ? addResponse : default,
                 StatusCode = StatusCodes.Status200OK
             };
         }
         catch (Exception ex)
         {
             _logger.LogError(ex, "An error occurred while processing the request.");
-            return new ApiResponse<Guid>
+            return new ApiResponse<AddResponse>
             {
                 Success = false,
                 Message = "Ocurrió un error al procesar la solicitud.",

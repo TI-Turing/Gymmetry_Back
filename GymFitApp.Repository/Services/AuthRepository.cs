@@ -17,7 +17,7 @@ namespace FitGymApp.Repository.Services
         public LoginResponse? Login(LoginRequest request)
         {
             var user = _context.Users.FirstOrDefault(u =>
-                u.IsActive &&
+                (u.IsActive ?? false) &&
                 (u.UserName == request.UserNameOrEmail || u.Email == request.UserNameOrEmail)
                 && u.Password == request.Password
             );
@@ -25,7 +25,7 @@ namespace FitGymApp.Repository.Services
             return new LoginResponse
             {
                 UserId = user.Id,
-                UserName = user.UserName,
+                UserName = user.UserName ?? string.Empty,
                 Email = user.Email
             };
         }

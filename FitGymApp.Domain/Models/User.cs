@@ -11,31 +11,31 @@ public partial class User
 
     public string Password { get; set; } = null!;
 
-    public Guid IdEps { get; set; }
+    public Guid? IdEps { get; set; }
 
-    public string Name { get; set; } = null!;
+    public string? Name { get; set; }
 
-    public string LastName { get; set; } = null!;
+    public string? LastName { get; set; }
 
-    public string UserName { get; set; } = null!;
+    public string? UserName { get; set; }
 
-    public Guid IdGender { get; set; }
+    public Guid? IdGender { get; set; }
 
-    public DateTime BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
 
     public string? ProfileImageUrl { get; set; }
 
-    public Guid DocumentTypeId { get; set; }
+    public Guid? DocumentTypeId { get; set; }
 
     public string? DocumentType { get; set; }
 
     public string? Phone { get; set; }
 
-    public Guid CountryId { get; set; }
+    public Guid? CountryId { get; set; }
 
     public string? Address { get; set; }
 
-    public Guid CityId { get; set; }
+    public Guid? CityId { get; set; }
 
     public Guid? RegionId { get; set; }
 
@@ -47,7 +47,7 @@ public partial class User
 
     public string? PhysicalExceptions { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
@@ -55,11 +55,11 @@ public partial class User
 
     public string? Ip { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
-    public Guid GymId { get; set; }
+    public Guid? GymId { get; set; }
 
-    public Guid UserTypeId { get; set; }
+    public Guid? UserTypeId { get; set; }
 
     public Guid? PlanId { get; set; }
 
@@ -87,7 +87,7 @@ public partial class User
 
     public virtual EmployeeRegisterDaily? EmployeeRegisterDailyUserUser { get; set; }
 
-    public virtual Gym Gym { get; set; } = null!;
+    public virtual Gym? Gym { get; set; }
 
     public virtual ICollection<LogChange> LogChanges { get; set; } = new List<LogChange>();
 
@@ -121,5 +121,5 @@ public partial class User
 
     public virtual Gym? UserGymUser { get; set; }
 
-    public virtual UserType UserType { get; set; } = null!;
+    public virtual UserType? UserType { get; set; }
 }

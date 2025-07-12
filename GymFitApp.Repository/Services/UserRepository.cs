@@ -28,17 +28,17 @@ namespace FitGymApp.Repository.Services
 
         public User GetUserById(Guid id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == id && u.IsActive);
+            return _context.Users.FirstOrDefault(u => u.Id == id && (u.IsActive ?? false));
         }
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Users.Where(u => u.IsActive).ToList();
+            return _context.Users.Where(u => u.IsActive ?? false).ToList();
         }
 
         public bool UpdateUser(User user)
         {
-            var existingUser = _context.Users.FirstOrDefault(u => u.Id == user.Id && u.IsActive);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Id == user.Id && (u.IsActive ?? false));
             if (existingUser != null)
             {
                 _context.Entry(existingUser).CurrentValues.SetValues(user);
@@ -51,7 +51,7 @@ namespace FitGymApp.Repository.Services
 
         public bool DeleteUser(Guid id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id && u.IsActive);
+            var user = _context.Users.FirstOrDefault(u => u.Id == id && (u.IsActive ?? false));
             if (user != null)
             {
                 user.IsActive = false;
@@ -67,7 +67,7 @@ namespace FitGymApp.Repository.Services
             var parameter = Expression.Parameter(typeof(User), "u");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(User.IsActive)),
-                Expression.Constant(true)
+                Expression.Constant(true, typeof(bool?))
             );
 
             foreach (var filter in filters)
@@ -75,7 +75,7 @@ namespace FitGymApp.Repository.Services
                 var property = typeof(User).GetProperty(filter.Key);
                 if (property == null) continue;
                 var left = Expression.Property(parameter, property);
-                var right = Expression.Constant(Convert.ChangeType(filter.Value, property.PropertyType));
+                var right = Expression.Constant(Convert.ChangeType(filter.Value, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType));
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }

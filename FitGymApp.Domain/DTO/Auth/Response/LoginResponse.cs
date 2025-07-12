@@ -5,6 +5,6 @@ namespace FitGymApp.Domain.DTO.Auth.Response
         public Guid UserId { get; set; }
         public string UserName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
-        public string? Token { get; set; } // Si luego implementas JWT
+        public string? Token { get; set; }
     }
 }

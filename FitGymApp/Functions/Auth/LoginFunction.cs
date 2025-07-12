@@ -1,13 +1,15 @@
+using Azure;
+using FitGymApp.Application.Services;
+using FitGymApp.Application.Services.Interfaces;
+using FitGymApp.Domain.DTO;
+using FitGymApp.Domain.DTO.Auth.Request;
+using FitGymApp.Domain.DTO.Auth.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using FitGymApp.Domain.DTO.Auth.Request;
-using FitGymApp.Domain.DTO.Auth.Response;
-using FitGymApp.Domain.DTO;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
-using FitGymApp.Application.Services.Interfaces;
 
 namespace FitGymApp.Functions.Auth
 {
@@ -41,6 +43,7 @@ namespace FitGymApp.Functions.Auth
                     };
                 }
                 var result = _authService.Login(loginRequest);
+                
                 if (result == null)
                 {
                     return new ApiResponse<LoginResponse>

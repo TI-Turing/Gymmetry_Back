@@ -69,5 +69,26 @@ namespace FitGymApp.Application.Services
                 return null;
             }
         }
+
+        public RefreshTokenResponse? RefreshToken(RefreshTokenRequest request)
+        {
+            // Aquí deberías validar el refresh token y generar un nuevo JWT si es válido
+            // Por simplicidad, solo se regenera el token si el refresh token es igual a "valid-refresh-token"
+            if (request.RefreshToken == "valid-refresh-token")
+            {
+                // Aquí deberías obtener el usuario asociado al refresh token
+                // Para ejemplo, se usan datos dummy
+                var userId = Guid.NewGuid();
+                var userName = "usuario";
+                var email = "usuario@email.com";
+                var newToken = JwtTokenGenerator.GenerateToken(userId, userName, email);
+                return new RefreshTokenResponse
+                {
+                    Token = newToken,
+                    RefreshToken = request.RefreshToken // En un caso real, deberías emitir un nuevo refresh token
+                };
+            }
+            return null;
+        }
     }
 }

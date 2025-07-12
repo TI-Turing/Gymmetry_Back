@@ -28,7 +28,7 @@ public class UpdateUserFunction
         _userService = userService;
     }
 
-    [Function("UpdateUserFunction")]
+    [Function("User_UpdateUserFunction")]
     public async Task<ApiResponse<Guid>> UpdateAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "user/update")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -48,31 +48,16 @@ public class UpdateUserFunction
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<UpdateRequest>(requestBody);
 
-            if (objRequest == null)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "El cuerpo de la solicitud no coincide con la estructura esperada.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
+            var validationResult = ModelValidator.ValidateModel<UpdateRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
+            if (validationResult is not null) return validationResult;
 
-            var validationContext = new ValidationContext(objRequest, null, null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(objRequest, validationContext, validationResults, true);
-
-            if (!isValid)
+            if (objRequest is null) return new ApiResponse<Guid>
             {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = string.Join("; ", validationResults.Select(v => v.ErrorMessage)),
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
+                Success = false,
+                Message = "Invalid request data.",
+                Data = default,
+                StatusCode = StatusCodes.Status400BadRequest
+            };
 
             var result = _userService.UpdateUser(objRequest);
             if (!result.Success)
