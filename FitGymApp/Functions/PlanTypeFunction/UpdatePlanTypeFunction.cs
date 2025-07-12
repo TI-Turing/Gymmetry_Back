@@ -27,7 +27,7 @@ public class UpdatePlanTypeFunction
         _service = service;
     }
 
-    [Function("UpdatePlanTypeFunction")]
+    [Function("PlanType_UpdatePlanTypeFunction")]
     public async Task<ApiResponse<Guid>> UpdateAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "plantype/update")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -73,7 +73,7 @@ public class UpdatePlanTypeFunction
                 };
             }
 
-            var result = _service.UpdatePlanType(objRequest);
+            var result = await _service.UpdatePlanTypeAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

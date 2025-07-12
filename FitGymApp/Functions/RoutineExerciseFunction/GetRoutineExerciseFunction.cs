@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.RoutineExerciseFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindRoutineExercisesByFields(filters);
+                var result = await _service.FindRoutineExercisesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<RoutineExercise>>
                 {
                     Success = result.Success,

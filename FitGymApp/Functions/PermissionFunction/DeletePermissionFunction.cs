@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.PermissionFunction
             _service = service;
         }
 
-        [Function("DeletePermissionFunction")]
+        [Function("Permission_DeletePermissionFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "permission/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.PermissionFunction
             _logger.LogInformation($"Procesando solicitud de borrado para Permission {id}");
             try
             {
-                var result = _service.DeletePermission(id);
+                var result = await _service.DeletePermissionAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>
