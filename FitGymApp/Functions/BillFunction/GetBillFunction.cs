@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using FitGymApp.Utils;
 using System.Text.Json;
+using System.IO;
 
 namespace FitGymApp.Functions.BillFunction
 {
@@ -23,7 +24,7 @@ namespace FitGymApp.Functions.BillFunction
             _service = service;
         }
 
-        [Function("GetBillByIdFunction")]
+        [Function("Bill_GetBillByIdFunction")]
         public async Task<ApiResponse<Bill>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "bill/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -39,7 +40,7 @@ namespace FitGymApp.Functions.BillFunction
             _logger.LogInformation($"Consultando Bill por Id: {id}");
             try
             {
-                var result = _service.GetBillById(id);
+                var result = await _service.GetBillByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Bill>
@@ -71,7 +72,7 @@ namespace FitGymApp.Functions.BillFunction
             }
         }
 
-        [Function("GetAllBillsFunction")]
+        [Function("Bill_GetAllBillsFunction")]
         public async Task<ApiResponse<IEnumerable<Bill>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "bills")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -87,7 +88,7 @@ namespace FitGymApp.Functions.BillFunction
             _logger.LogInformation("Consultando todos los Bills activos.");
             try
             {
-                var result = _service.GetAllBills();
+                var result = await _service.GetAllBillsAsync();
                 return new ApiResponse<IEnumerable<Bill>>
                 {
                     Success = result.Success,
@@ -109,7 +110,7 @@ namespace FitGymApp.Functions.BillFunction
             }
         }
 
-        [Function("FindBillsByFieldsFunction")]
+        [Function("Bill_FindBillsByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<Bill>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "bills/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -137,7 +138,7 @@ namespace FitGymApp.Functions.BillFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindBillsByFields(filters);
+                var result = await _service.FindBillsByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<Bill>>
                 {
                     Success = result.Success,

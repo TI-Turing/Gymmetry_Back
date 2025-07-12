@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
-using System.Linq;
 using FitGymApp.Utils;
 
 namespace FitGymApp.Functions.GymPlanSelectedModuleFunction
@@ -25,7 +24,7 @@ namespace FitGymApp.Functions.GymPlanSelectedModuleFunction
             _service = service;
         }
 
-        [Function("GetGymPlanSelectedModuleByIdFunction")]
+        [Function("GymPlanSelectedModule_GetGymPlanSelectedModuleByIdFunction")]
         public async Task<ApiResponse<GymPlanSelectedModule>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselectedmodule/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +40,7 @@ namespace FitGymApp.Functions.GymPlanSelectedModuleFunction
             _logger.LogInformation($"Consultando GymPlanSelectedModule por Id: {id}");
             try
             {
-                var result = _service.GetGymPlanSelectedModuleById(id);
+                var result = await _service.GetGymPlanSelectedModuleByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<GymPlanSelectedModule>
@@ -73,7 +72,7 @@ namespace FitGymApp.Functions.GymPlanSelectedModuleFunction
             }
         }
 
-        [Function("GetAllGymPlanSelectedModulesFunction")]
+        [Function("GymPlanSelectedModule_GetAllGymPlanSelectedModulesFunction")]
         public async Task<ApiResponse<IEnumerable<GymPlanSelectedModule>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselectedmodules")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +88,7 @@ namespace FitGymApp.Functions.GymPlanSelectedModuleFunction
             _logger.LogInformation("Consultando todos los GymPlanSelectedModules activos.");
             try
             {
-                var result = _service.GetAllGymPlanSelectedModules();
+                var result = await _service.GetAllGymPlanSelectedModulesAsync();
                 return new ApiResponse<IEnumerable<GymPlanSelectedModule>>
                 {
                     Success = result.Success,
@@ -111,7 +110,7 @@ namespace FitGymApp.Functions.GymPlanSelectedModuleFunction
             }
         }
 
-        [Function("FindGymPlanSelectedModulesByFieldsFunction")]
+        [Function("GymPlanSelectedModule_FindGymPlanSelectedModulesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<GymPlanSelectedModule>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselectedmodules/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +138,7 @@ namespace FitGymApp.Functions.GymPlanSelectedModuleFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindGymPlanSelectedModulesByFields(filters);
+                var result = await _service.FindGymPlanSelectedModulesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<GymPlanSelectedModule>>
                 {
                     Success = result.Success,

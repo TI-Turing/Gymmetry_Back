@@ -27,7 +27,7 @@ public class AddNotificationOptionFunction
         _service = service;
     }
 
-    [Function("AddNotificationOptionFunction")]
+    [Function("NotificationOption_AddNotificationOptionFunction")]
     public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "notificationoption/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -73,7 +73,7 @@ public class AddNotificationOptionFunction
                 };
             }
 
-            var result = _service.CreateNotificationOption(objRequest);
+            var result = await _service.CreateNotificationOptionAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>
@@ -84,6 +84,7 @@ public class AddNotificationOptionFunction
                     StatusCode = StatusCodes.Status400BadRequest
                 };
             }
+
             return new ApiResponse<Guid>
             {
                 Success = true,

@@ -3,15 +3,12 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Domain.DTO.GymPlanSelected.Request;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Linq;
 using FitGymApp.Utils;
 
 namespace FitGymApp.Functions.GymPlanSelectedFunction;
@@ -27,7 +24,7 @@ public class AddGymPlanSelectedFunction
         _service = service;
     }
 
-    [Function("AddGymPlanSelectedFunction")]
+    [Function("GymPlanSelected_AddGymPlanSelectedFunction")]
     public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselected/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -46,34 +43,10 @@ public class AddGymPlanSelectedFunction
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<AddGymPlanSelectedRequest>(requestBody);
+            var validationResult = ModelValidator.ValidateModel<AddGymPlanSelectedRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
+            if (validationResult is not null) return validationResult;
 
-            if (objRequest == null)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "El cuerpo de la solicitud no coincide con la estructura esperada.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var validationContext = new ValidationContext(objRequest, null, null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(objRequest, validationContext, validationResults, true);
-
-            if (!isValid)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = string.Join("; ", validationResults.Select(v => v.ErrorMessage)),
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var result = _service.CreateGymPlanSelected(objRequest);
+            var result = await _service.CreateGymPlanSelectedAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

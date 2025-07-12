@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
-using FitGymApp.Domain.Models;
 using System;
 using System.Threading.Tasks;
 using FitGymApp.Utils;
@@ -21,7 +20,7 @@ namespace FitGymApp.Functions.JourneyEmployeeFunction
             _service = service;
         }
 
-        [Function("DeleteJourneyEmployeeFunction")]
+        [Function("JourneyEmployee_DeleteJourneyEmployeeFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "journeyemployee/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -36,9 +35,10 @@ namespace FitGymApp.Functions.JourneyEmployeeFunction
             }
 
             _logger.LogInformation($"Procesando solicitud de borrado para JourneyEmployee {id}");
+
             try
             {
-                var result = _service.DeleteJourneyEmployee(id);
+                var result = await _service.DeleteJourneyEmployeeAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>
@@ -49,6 +49,7 @@ namespace FitGymApp.Functions.JourneyEmployeeFunction
                         StatusCode = StatusCodes.Status404NotFound
                     };
                 }
+
                 return new ApiResponse<Guid>
                 {
                     Success = true,

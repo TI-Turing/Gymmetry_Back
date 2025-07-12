@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.LogUninstallFunction
             _service = service;
         }
 
-        [Function("GetLogUninstallByIdFunction")]
+        [Function("LogUninstall_GetLogUninstallByIdFunction")]
         public async Task<ApiResponse<LogUninstall>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "loguninstall/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.LogUninstallFunction
             _logger.LogInformation($"Consultando LogUninstall por Id: {id}");
             try
             {
-                var result = _service.GetLogUninstallById(id);
+                var result = await _service.GetLogUninstallByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<LogUninstall>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.LogUninstallFunction
             }
         }
 
-        [Function("GetAllLogUninstallsFunction")]
+        [Function("LogUninstall_GetAllLogUninstallsFunction")]
         public async Task<ApiResponse<IEnumerable<LogUninstall>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "loguninstalls")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.LogUninstallFunction
             _logger.LogInformation("Consultando todos los LogUninstall activos.");
             try
             {
-                var result = _service.GetAllLogUninstalls();
+                var result = await _service.GetAllLogUninstallsAsync();
                 return new ApiResponse<IEnumerable<LogUninstall>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.LogUninstallFunction
             }
         }
 
-        [Function("FindLogUninstallsByFieldsFunction")]
+        [Function("LogUninstall_FindLogUninstallsByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<LogUninstall>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "loguninstalls/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.LogUninstallFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindLogUninstallsByFields(filters);
+                var result = await _service.FindLogUninstallsByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<LogUninstall>>
                 {
                     Success = result.Success,

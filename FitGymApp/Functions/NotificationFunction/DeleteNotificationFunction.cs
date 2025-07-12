@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.NotificationFunction
             _logger.LogInformation($"Procesando solicitud de borrado para Notification {id}");
             try
             {
-                var result = _service.DeleteNotification(id);
+                var result = await _service.DeleteNotificationAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

@@ -3,7 +3,6 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
-using FitGymApp.Domain.Models;
 using System;
 using System.Threading.Tasks;
 using FitGymApp.Utils;
@@ -21,7 +20,7 @@ namespace FitGymApp.Functions.MachineFunction
             _service = service;
         }
 
-        [Function("DeleteMachineFunction")]
+        [Function("Machine_DeleteMachineFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "machine/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +37,7 @@ namespace FitGymApp.Functions.MachineFunction
             _logger.LogInformation($"Procesando solicitud de borrado para Machine {id}");
             try
             {
-                var result = _service.DeleteMachine(id);
+                var result = await _service.DeleteMachineAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

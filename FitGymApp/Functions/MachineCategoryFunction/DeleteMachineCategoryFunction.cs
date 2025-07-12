@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
             _service = service;
         }
 
-        [Function("DeleteMachineCategoryFunction")]
+        [Function("MachineCategory_DeleteMachineCategoryFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "machinecategory/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
             _logger.LogInformation($"Procesando solicitud de borrado para MachineCategory {id}");
             try
             {
-                var result = _service.DeleteMachineCategory(id);
+                var result = await _service.DeleteMachineCategoryAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

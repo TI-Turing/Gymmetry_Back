@@ -72,7 +72,7 @@ public class UpdateNotificationOptionFunction
                 };
             }
 
-            var result = _service.UpdateNotificationOption(objRequest);
+            var result = await _service.UpdateNotificationOptionAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

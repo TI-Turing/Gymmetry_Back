@@ -73,7 +73,7 @@ public class AddNotificationFunction
                 };
             }
 
-            var result = _service.CreateNotification(objRequest);
+            var result = await _service.CreateNotificationAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

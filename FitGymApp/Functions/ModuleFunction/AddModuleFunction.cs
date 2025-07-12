@@ -27,7 +27,7 @@ public class AddModuleFunction
         _service = service;
     }
 
-    [Function("AddModuleFunction")]
+    [Function("Module_AddModuleFunction")]
     public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "module/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -73,7 +73,7 @@ public class AddModuleFunction
                 };
             }
 
-            var result = _service.CreateModule(objRequest);
+            var result = await _service.CreateModuleAsync(objRequest); // Cambio aquí a llamada async
             if (!result.Success)
             {
                 return new ApiResponse<Guid>
@@ -84,11 +84,12 @@ public class AddModuleFunction
                     StatusCode = StatusCodes.Status400BadRequest
                 };
             }
+
             return new ApiResponse<Guid>
             {
                 Success = true,
                 Message = result.Message,
-                Data = result.Data != null ? result.Data.Id : default,
+                Data = result.Data?.Id ?? default,
                 StatusCode = StatusCodes.Status200OK
             };
         }

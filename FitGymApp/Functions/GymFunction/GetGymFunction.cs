@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.GymFunction
             _service = service;
         }
 
-        [Function("GetGymByIdFunction")]
+        [Function("Gym_GetGymByIdFunction")]
         public async Task<ApiResponse<Gym>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gym/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.GymFunction
             _logger.LogInformation($"Consultando Gym por Id: {id}");
             try
             {
-                var result = _service.GetGymById(id);
+                var result = await _service.GetGymByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Gym>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.GymFunction
             }
         }
 
-        [Function("GetAllGymsFunction")]
+        [Function("Gym_GetAllGymsFunction")]
         public async Task<ApiResponse<IEnumerable<Gym>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gyms")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.GymFunction
             _logger.LogInformation("Consultando todos los Gyms activos.");
             try
             {
-                var result = _service.GetAllGyms();
+                var result = await _service.GetAllGymsAsync();
                 return new ApiResponse<IEnumerable<Gym>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.GymFunction
             }
         }
 
-        [Function("FindGymsByFieldsFunction")]
+        [Function("Gym_FindGymsByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<Gym>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gyms/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.GymFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindGymsByFields(filters);
+                var result = await _service.FindGymsByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<Gym>>
                 {
                     Success = result.Success,

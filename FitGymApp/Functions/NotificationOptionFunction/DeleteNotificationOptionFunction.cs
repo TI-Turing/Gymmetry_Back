@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.NotificationOptionFunction
             _service = service;
         }
 
-        [Function("DeleteNotificationOptionFunction")]
+        [Function("NotificationOption_DeleteNotificationOptionFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "notificationoption/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.NotificationOptionFunction
             _logger.LogInformation($"Procesando solicitud de borrado para NotificationOption {id}");
             try
             {
-                var result = _service.DeleteNotificationOption(id);
+                var result = await _service.DeleteNotificationOptionAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

@@ -8,66 +8,66 @@ using System;
 using System.Threading.Tasks;
 using FitGymApp.Utils;
 
-namespace FitGymApp.Functions.ModuleFunction
-{
-    public class DeleteModuleFunction
-    {
-        private readonly ILogger<DeleteModuleFunction> _logger;
-        private readonly IModuleService _service;
+namespace FitGymApp.Functions.ModuleFunction;
 
-        public DeleteModuleFunction(ILogger<DeleteModuleFunction> logger, IModuleService service)
+public class DeleteModuleFunction
+{
+    private readonly ILogger<DeleteModuleFunction> _logger;
+    private readonly IModuleService _service;
+
+    public DeleteModuleFunction(ILogger<DeleteModuleFunction> logger, IModuleService service)
+    {
+        _logger = logger;
+        _service = service;
+    }
+
+    [Function("Module_DeleteModuleFunction")]
+    public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "module/{id:guid}")] HttpRequest req, Guid id)
+    {
+        if (!JwtValidator.ValidateJwt(req, out var error))
         {
-            _logger = logger;
-            _service = service;
+            return new ApiResponse<Guid>
+            {
+                Success = false,
+                Message = error!,
+                Data = default,
+                StatusCode = StatusCodes.Status401Unauthorized
+            };
         }
 
-        [Function("DeleteModuleFunction")]
-        public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "module/{id:guid}")] HttpRequest req, Guid id)
+        _logger.LogInformation($"Procesando solicitud de borrado para Module {id}");
+        try
         {
-            if (!JwtValidator.ValidateJwt(req, out var error))
+            var result = await _service.DeleteModuleAsync(id);
+            if (!result.Success)
             {
                 return new ApiResponse<Guid>
                 {
                     Success = false,
-                    Message = error!,
+                    Message = result.Message,
                     Data = default,
-                    StatusCode = StatusCodes.Status401Unauthorized
+                    StatusCode = StatusCodes.Status404NotFound
                 };
             }
 
-            _logger.LogInformation($"Procesando solicitud de borrado para Module {id}");
-            try
+            return new ApiResponse<Guid>
             {
-                var result = _service.DeleteModule(id);
-                if (!result.Success)
-                {
-                    return new ApiResponse<Guid>
-                    {
-                        Success = false,
-                        Message = result.Message,
-                        Data = default,
-                        StatusCode = StatusCodes.Status404NotFound
-                    };
-                }
-                return new ApiResponse<Guid>
-                {
-                    Success = true,
-                    Message = result.Message,
-                    Data = id,
-                    StatusCode = StatusCodes.Status200OK
-                };
-            }
-            catch (Exception ex)
+                Success = true,
+                Message = result.Message,
+                Data = id,
+                StatusCode = StatusCodes.Status200OK
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error al eliminar Module.");
+            return new ApiResponse<Guid>
             {
-                _logger.LogError(ex, "Error al eliminar Module.");
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "Ocurrió un error al procesar la solicitud.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
+                Success = false,
+                Message = "Ocurrió un error al procesar la solicitud.",
+                Data = default,
+                StatusCode = StatusCodes.Status400BadRequest
+            };
         }
     }
 }

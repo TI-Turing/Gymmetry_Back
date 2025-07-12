@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.GymPlanSelectedTypeFunction
             _service = service;
         }
 
-        [Function("GetGymPlanSelectedTypeByIdFunction")]
+        [Function("GymPlanSelectedType_GetByIdFunction")]
         public async Task<ApiResponse<GymPlanSelectedType>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselectedtype/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.GymPlanSelectedTypeFunction
             _logger.LogInformation($"Consultando GymPlanSelectedType por Id: {id}");
             try
             {
-                var result = _service.GetGymPlanSelectedTypeById(id);
+                var result = await _service.GetGymPlanSelectedTypeByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<GymPlanSelectedType>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.GymPlanSelectedTypeFunction
             }
         }
 
-        [Function("GetAllGymPlanSelectedTypesFunction")]
+        [Function("GymPlanSelectedType_GetAllFunction")]
         public async Task<ApiResponse<IEnumerable<GymPlanSelectedType>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselectedtypes")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.GymPlanSelectedTypeFunction
             _logger.LogInformation("Consultando todos los GymPlanSelectedTypes activos.");
             try
             {
-                var result = _service.GetAllGymPlanSelectedTypes();
+                var result = await _service.GetAllGymPlanSelectedTypesAsync();
                 return new ApiResponse<IEnumerable<GymPlanSelectedType>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.GymPlanSelectedTypeFunction
             }
         }
 
-        [Function("FindGymPlanSelectedTypesByFieldsFunction")]
+        [Function("GymPlanSelectedType_FindByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<GymPlanSelectedType>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselectedtypes/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.GymPlanSelectedTypeFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindGymPlanSelectedTypesByFields(filters);
+                var result = await _service.FindGymPlanSelectedTypesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<GymPlanSelectedType>>
                 {
                     Success = result.Success,

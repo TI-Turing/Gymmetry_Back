@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
             _service = service;
         }
 
-        [Function("GetMachineCategoryByIdFunction")]
+        [Function("MachineCategory_GetMachineCategoryByIdFunction")]
         public async Task<ApiResponse<MachineCategory>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "machinecategory/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
             _logger.LogInformation($"Consultando MachineCategory por Id: {id}");
             try
             {
-                var result = _service.GetMachineCategoryById(id);
+                var result = await _service.GetMachineCategoryByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<MachineCategory>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
             }
         }
 
-        [Function("GetAllMachineCategoriesFunction")]
+        [Function("MachineCategory_GetAllMachineCategoriesFunction")]
         public async Task<ApiResponse<IEnumerable<MachineCategory>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "machinecategories")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
             _logger.LogInformation("Consultando todos los MachineCategories activos.");
             try
             {
-                var result = _service.GetAllMachineCategories();
+                var result = await _service.GetAllMachineCategoriesAsync();
                 return new ApiResponse<IEnumerable<MachineCategory>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
             }
         }
 
-        [Function("FindMachineCategoriesByFieldsFunction")]
+        [Function("MachineCategory_FindMachineCategoriesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<MachineCategory>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "machinecategories/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.MachineCategoryFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindMachineCategoriesByFields(filters);
+                var result = await _service.FindMachineCategoriesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<MachineCategory>>
                 {
                     Success = result.Success,

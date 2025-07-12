@@ -27,7 +27,7 @@ public class UpdateModuleFunction
         _service = service;
     }
 
-    [Function("UpdateModuleFunction")]
+    [Function("Module_UpdateModuleFunction")]
     public async Task<ApiResponse<Guid>> UpdateAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "module/update")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -73,7 +73,7 @@ public class UpdateModuleFunction
                 };
             }
 
-            var result = _service.UpdateModule(objRequest);
+            var result = await _service.UpdateModuleAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>
@@ -84,6 +84,7 @@ public class UpdateModuleFunction
                     StatusCode = StatusCodes.Status404NotFound
                 };
             }
+
             return new ApiResponse<Guid>
             {
                 Success = true,
