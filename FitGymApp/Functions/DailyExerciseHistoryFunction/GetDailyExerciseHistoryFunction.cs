@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.DailyExerciseHistoryFunction
             _service = service;
         }
 
-        [Function("GetDailyExerciseHistoryByIdFunction")]
+        [Function("DailyExerciseHistory_GetDailyExerciseHistoryByIdFunction")]
         public async Task<ApiResponse<DailyExerciseHistory>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailyexercisehistory/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.DailyExerciseHistoryFunction
             _logger.LogInformation($"Consultando DailyExerciseHistory por Id: {id}");
             try
             {
-                var result = _service.GetDailyExerciseHistoryById(id);
+                var result = await _service.GetDailyExerciseHistoryByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<DailyExerciseHistory>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.DailyExerciseHistoryFunction
             }
         }
 
-        [Function("GetAllDailyExerciseHistoriesFunction")]
+        [Function("DailyExerciseHistory_GetAllDailyExerciseHistoriesFunction")]
         public async Task<ApiResponse<IEnumerable<DailyExerciseHistory>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailyexercisehistories")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.DailyExerciseHistoryFunction
             _logger.LogInformation("Consultando todos los DailyExerciseHistories activos.");
             try
             {
-                var result = _service.GetAllDailyExerciseHistories();
+                var result = await _service.GetAllDailyExerciseHistoriesAsync();
                 return new ApiResponse<IEnumerable<DailyExerciseHistory>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.DailyExerciseHistoryFunction
             }
         }
 
-        [Function("FindDailyExerciseHistoriesByFieldsFunction")]
+        [Function("DailyExerciseHistory_FindDailyExerciseHistoriesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<DailyExerciseHistory>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailyexercisehistories/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -128,7 +128,7 @@ namespace FitGymApp.Functions.DailyExerciseHistoryFunction
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
                     return new ApiResponse<IEnumerable<DailyExerciseHistory>>
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.DailyExerciseHistoryFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindDailyExerciseHistoriesByFields(filters);
+                var result = await _service.FindDailyExerciseHistoriesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<DailyExerciseHistory>>
                 {
                     Success = result.Success,

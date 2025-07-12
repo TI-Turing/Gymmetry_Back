@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
             _service = service;
         }
 
-        [Function("GetEmployeeRegisterDailyByIdFunction")]
+        [Function("EmployeeRegisterDaily_GetEmployeeRegisterDailyByIdFunction")]
         public async Task<ApiResponse<EmployeeRegisterDaily>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "employeeregisterdaily/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
             _logger.LogInformation($"Consultando EmployeeRegisterDaily por Id: {id}");
             try
             {
-                var result = _service.GetEmployeeRegisterDailyById(id);
+                var result = await _service.GetEmployeeRegisterDailyByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<EmployeeRegisterDaily>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
             }
         }
 
-        [Function("GetAllEmployeeRegisterDailiesFunction")]
+        [Function("EmployeeRegisterDaily_GetAllEmployeeRegisterDailiesFunction")]
         public async Task<ApiResponse<IEnumerable<EmployeeRegisterDaily>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "employeeregisterdailies")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
             _logger.LogInformation("Consultando todos los EmployeeRegisterDailies activos.");
             try
             {
-                var result = _service.GetAllEmployeeRegisterDailies();
+                var result = await _service.GetAllEmployeeRegisterDailiesAsync();
                 return new ApiResponse<IEnumerable<EmployeeRegisterDaily>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
             }
         }
 
-        [Function("FindEmployeeRegisterDailiesByFieldsFunction")]
+        [Function("EmployeeRegisterDaily_FindEmployeeRegisterDailiesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<EmployeeRegisterDaily>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "employeeregisterdailies/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindEmployeeRegisterDailiesByFields(filters);
+                var result = await _service.FindEmployeeRegisterDailiesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<EmployeeRegisterDaily>>
                 {
                     Success = result.Success,

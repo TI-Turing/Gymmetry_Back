@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.CategoryExercise.Request;
@@ -25,12 +25,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<CategoryExercise> CreateCategoryExercise(AddCategoryExerciseRequest request)
+        public async Task<ApplicationResponse<CategoryExercise>> CreateCategoryExerciseAsync(AddCategoryExerciseRequest request)
         {
             try
             {
                 var entity = _mapper.Map<CategoryExercise>(request);
-                var created = _categoryExerciseRepository.CreateCategoryExercise(entity);
+                var created = await _categoryExerciseRepository.CreateCategoryExerciseAsync(entity);
                 return new ApplicationResponse<CategoryExercise>
                 {
                     Success = true,
@@ -40,7 +40,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<CategoryExercise>
                 {
                     Success = false,
@@ -50,9 +50,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<CategoryExercise> GetCategoryExerciseById(Guid id)
+        public async Task<ApplicationResponse<CategoryExercise>> GetCategoryExerciseByIdAsync(Guid id)
         {
-            var entity = _categoryExerciseRepository.GetCategoryExerciseById(id);
+            var entity = await _categoryExerciseRepository.GetCategoryExerciseByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<CategoryExercise>
@@ -69,9 +69,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<CategoryExercise>> GetAllCategoryExercises()
+        public async Task<ApplicationResponse<IEnumerable<CategoryExercise>>> GetAllCategoryExercisesAsync()
         {
-            var entities = _categoryExerciseRepository.GetAllCategoryExercises();
+            var entities = await _categoryExerciseRepository.GetAllCategoryExercisesAsync();
             return new ApplicationResponse<IEnumerable<CategoryExercise>>
             {
                 Success = true,
@@ -79,16 +79,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateCategoryExercise(UpdateCategoryExerciseRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateCategoryExerciseAsync(UpdateCategoryExerciseRequest request)
         {
             try
             {
-                var before = _categoryExerciseRepository.GetCategoryExerciseById(request.Id);
+                var before = await _categoryExerciseRepository.GetCategoryExerciseByIdAsync(request.Id);
                 var entity = _mapper.Map<CategoryExercise>(request);
-                var updated = _categoryExerciseRepository.UpdateCategoryExercise(entity);
+                var updated = await _categoryExerciseRepository.UpdateCategoryExerciseAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("CategoryExercise", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("CategoryExercise", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +109,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +120,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteCategoryExercise(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteCategoryExerciseAsync(Guid id)
         {
             try
             {
-                var deleted = _categoryExerciseRepository.DeleteCategoryExercise(id);
+                var deleted = await _categoryExerciseRepository.DeleteCategoryExerciseAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +147,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +158,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<CategoryExercise>> FindCategoryExercisesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<CategoryExercise>>> FindCategoryExercisesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _categoryExerciseRepository.FindCategoryExercisesByFields(filters);
+            var entities = await _categoryExerciseRepository.FindCategoryExercisesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<CategoryExercise>>
             {
                 Success = true,

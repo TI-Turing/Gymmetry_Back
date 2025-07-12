@@ -1,5 +1,7 @@
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using System;
 
 namespace FitGymApp.Repository.Services
@@ -8,30 +10,30 @@ namespace FitGymApp.Repository.Services
     {
         private readonly FitGymApp.Domain.Models.FitGymAppContext _context;
         public LogErrorRepository(FitGymApp.Domain.Models.FitGymAppContext context) { _context = context; }
-        public bool Add(LogError log)
+        public async Task<bool> AddAsync(LogError log)
         {
             _context.LogErrors.Add(log);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
     public class LogLoginRepository : ILogLoginRepository
     {
         private readonly FitGymApp.Domain.Models.FitGymAppContext _context;
         public LogLoginRepository(FitGymApp.Domain.Models.FitGymAppContext context) { _context = context; }
-        public bool Add(LogLogin log)
+        public async Task<bool> AddAsync(LogLogin log)
         {
             _context.LogLogins.Add(log);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
     public class LogChangeRepository : ILogChangeRepository
     {
         private readonly FitGymApp.Domain.Models.FitGymAppContext _context;
         public LogChangeRepository(FitGymApp.Domain.Models.FitGymAppContext context) { _context = context; }
-        public bool Add(LogChange log)
+        public async Task<bool> AddAsync(LogChange log)
         {
             _context.LogChanges.Add(log);
-            return _context.SaveChanges() > 0;
+            return await _context.SaveChangesAsync() > 0;
         }
     }
 }

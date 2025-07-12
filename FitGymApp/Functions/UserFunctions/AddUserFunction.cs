@@ -43,7 +43,7 @@ public class AddUserFunction
             var validationResult = ModelValidator.ValidateModel<AddRequest, AddResponse>(objRequest, StatusCodes.Status400BadRequest);
             if (validationResult is not null) return validationResult;
 
-            var result = _userService.CreateUser(objRequest);
+            var result = await _userService.CreateUserAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<AddResponse>
@@ -54,7 +54,7 @@ public class AddUserFunction
                     StatusCode = StatusCodes.Status400BadRequest
                 };
             }
-            var token = JwtTokenGenerator.GenerateToken(result.Data.Id, string.Empty, result.Data.Email);
+            var token = await JwtTokenGenerator.GenerateTokenAsync(result.Data.Id, string.Empty, result.Data.Email);
             AddResponse addResponse = new AddResponse
             {
                 Id = result.Data.Id,

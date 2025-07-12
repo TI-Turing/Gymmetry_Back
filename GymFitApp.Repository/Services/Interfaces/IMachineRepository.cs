@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IMachineRepository
     {
-        Machine CreateMachine(Machine machine);
-        Machine GetMachineById(Guid id);
-        IEnumerable<Machine> GetAllMachines();
-        bool UpdateMachine(Machine machine);
-        bool DeleteMachine(Guid id);
-        IEnumerable<Machine> FindMachinesByFields(Dictionary<string, object> filters);
+        Task<Machine> CreateMachineAsync(Machine machine);
+        Task<Machine?> GetMachineByIdAsync(Guid id);
+        Task<IEnumerable<Machine>> GetAllMachinesAsync();
+        Task<bool> UpdateMachineAsync(Machine machine);
+        Task<bool> DeleteMachineAsync(Guid id);
+        Task<IEnumerable<Machine>> FindMachinesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

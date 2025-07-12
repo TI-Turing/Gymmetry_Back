@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface ISubModuleRepository
     {
-        SubModule CreateSubModule(SubModule entity);
-        SubModule GetSubModuleById(Guid id);
-        IEnumerable<SubModule> GetAllSubModules();
-        bool UpdateSubModule(SubModule entity);
-        bool DeleteSubModule(Guid id);
-        IEnumerable<SubModule> FindSubModulesByFields(Dictionary<string, object> filters);
+        Task<SubModule> CreateSubModuleAsync(SubModule entity);
+        Task<SubModule?> GetSubModuleByIdAsync(Guid id);
+        Task<IEnumerable<SubModule>> GetAllSubModulesAsync();
+        Task<bool> UpdateSubModuleAsync(SubModule entity);
+        Task<bool> DeleteSubModuleAsync(Guid id);
+        Task<IEnumerable<SubModule>> FindSubModulesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public SubModule CreateSubModule(SubModule entity)
+        public async Task<SubModule> CreateSubModuleAsync(SubModule entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.SubModules.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public SubModule GetSubModuleById(Guid id)
+        public async Task<SubModule?> GetSubModuleByIdAsync(Guid id)
         {
-            return _context.SubModules.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.SubModules.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<SubModule> GetAllSubModules()
+        public async Task<IEnumerable<SubModule>> GetAllSubModulesAsync()
         {
-            return _context.SubModules.Where(e => e.IsActive).ToList();
+            return await _context.SubModules.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateSubModule(SubModule entity)
+        public async Task<bool> UpdateSubModuleAsync(SubModule entity)
         {
-            var existing = _context.SubModules.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.SubModules.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteSubModule(Guid id)
+        public async Task<bool> DeleteSubModuleAsync(Guid id)
         {
-            var entity = _context.SubModules.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.SubModules.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<SubModule> FindSubModulesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<SubModule>> FindSubModulesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(SubModule), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<SubModule, bool>>(predicate, parameter);
-            return _context.SubModules.Where(lambda).ToList();
+            return await _context.SubModules.Where(lambda).ToListAsync();
         }
     }
 }

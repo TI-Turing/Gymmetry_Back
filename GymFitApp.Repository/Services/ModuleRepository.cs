@@ -1,73 +1,76 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
     public class ModuleRepository : IModuleRepository
     {
         private readonly FitGymAppContext _context;
+
         public ModuleRepository(FitGymAppContext context)
         {
             _context = context;
         }
 
-        public Module CreateModule(Module entity)
+        public async Task<Module> CreateModuleAsync(Module entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            _context.Modules.Add(entity);
-            _context.SaveChanges();
+            await _context.Modules.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public Module GetModuleById(Guid id)
+        public async Task<Module?> GetModuleByIdAsync(Guid id)
         {
-            return _context.Modules.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.Modules.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<Module> GetAllModules()
+        public async Task<IEnumerable<Module>> GetAllModulesAsync()
         {
-            return _context.Modules.Where(e => e.IsActive).ToList();
+            return await _context.Modules.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateModule(Module entity)
+        public async Task<bool> UpdateModuleAsync(Module entity)
         {
-            var existing = _context.Modules.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.Modules.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteModule(Guid id)
+        public async Task<bool> DeleteModuleAsync(Guid id)
         {
-            var entity = _context.Modules.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.Modules.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Module> FindModulesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Module>> FindModulesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Module), "e");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(Module.IsActive)),
                 Expression.Constant(true)
             );
+
             foreach (var filter in filters)
             {
                 var property = typeof(Module).GetProperty(filter.Key);
@@ -77,8 +80,9 @@ namespace FitGymApp.Repository.Services
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }
+
             var lambda = Expression.Lambda<Func<Module, bool>>(predicate, parameter);
-            return _context.Modules.Where(lambda).ToList();
+            return await _context.Modules.Where(lambda).ToListAsync();
         }
     }
 }

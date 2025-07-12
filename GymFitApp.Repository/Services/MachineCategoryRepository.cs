@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public MachineCategory CreateMachineCategory(MachineCategory entity)
+        public async Task<MachineCategory> CreateMachineCategoryAsync(MachineCategory entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.MachineCategories.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public MachineCategory GetMachineCategoryById(Guid id)
+        public async Task<MachineCategory?> GetMachineCategoryByIdAsync(Guid id)
         {
-            return _context.MachineCategories.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.MachineCategories.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<MachineCategory> GetAllMachineCategories()
+        public async Task<IEnumerable<MachineCategory>> GetAllMachineCategoriesAsync()
         {
-            return _context.MachineCategories.Where(e => e.IsActive).ToList();
+            return await _context.MachineCategories.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateMachineCategory(MachineCategory entity)
+        public async Task<bool> UpdateMachineCategoryAsync(MachineCategory entity)
         {
-            var existing = _context.MachineCategories.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.MachineCategories.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteMachineCategory(Guid id)
+        public async Task<bool> DeleteMachineCategoryAsync(Guid id)
         {
-            var entity = _context.MachineCategories.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.MachineCategories.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<MachineCategory> FindMachineCategoriesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<MachineCategory>> FindMachineCategoriesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(MachineCategory), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<MachineCategory, bool>>(predicate, parameter);
-            return _context.MachineCategories.Where(lambda).ToList();
+            return await _context.MachineCategories.Where(lambda).ToListAsync();
         }
     }
 }

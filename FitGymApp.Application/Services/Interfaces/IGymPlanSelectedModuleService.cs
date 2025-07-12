@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.GymPlanSelectedModule.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IGymPlanSelectedModuleService
     {
-        ApplicationResponse<GymPlanSelectedModule> CreateGymPlanSelectedModule(AddGymPlanSelectedModuleRequest request);
-        ApplicationResponse<GymPlanSelectedModule> GetGymPlanSelectedModuleById(Guid id);
-        ApplicationResponse<IEnumerable<GymPlanSelectedModule>> GetAllGymPlanSelectedModules();
-        ApplicationResponse<bool> UpdateGymPlanSelectedModule(UpdateGymPlanSelectedModuleRequest request);
-        ApplicationResponse<bool> DeleteGymPlanSelectedModule(Guid id);
-        ApplicationResponse<IEnumerable<GymPlanSelectedModule>> FindGymPlanSelectedModulesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<GymPlanSelectedModule>> CreateGymPlanSelectedModuleAsync(AddGymPlanSelectedModuleRequest request);
+        Task<ApplicationResponse<GymPlanSelectedModule>> GetGymPlanSelectedModuleByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<GymPlanSelectedModule>>> GetAllGymPlanSelectedModulesAsync();
+        Task<ApplicationResponse<bool>> UpdateGymPlanSelectedModuleAsync(UpdateGymPlanSelectedModuleRequest request);
+        Task<ApplicationResponse<bool>> DeleteGymPlanSelectedModuleAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<GymPlanSelectedModule>>> FindGymPlanSelectedModulesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

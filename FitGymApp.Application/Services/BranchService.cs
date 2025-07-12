@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Branch.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<Branch> CreateBranch(AddBranchRequest request)
+        public async Task<ApplicationResponse<Branch>> CreateBranchAsync(AddBranchRequest request)
         {
             try
             {
                 var branch = _mapper.Map<Branch>(request);
-                var created = _branchRepository.CreateBranch(branch);
+                var created = await _branchRepository.CreateBranchAsync(branch);
                 return new ApplicationResponse<Branch>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Branch>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Branch> GetBranchById(Guid id)
+        public async Task<ApplicationResponse<Branch>> GetBranchByIdAsync(Guid id)
         {
-            var branch = _branchRepository.GetBranchById(id);
+            var branch = await _branchRepository.GetBranchByIdAsync(id);
             if (branch == null)
             {
                 return new ApplicationResponse<Branch>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Branch>> GetAllBranches()
+        public async Task<ApplicationResponse<IEnumerable<Branch>>> GetAllBranchesAsync()
         {
-            var branches = _branchRepository.GetAllBranches();
+            var branches = await _branchRepository.GetAllBranchesAsync();
             return new ApplicationResponse<IEnumerable<Branch>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateBranch(UpdateBranchRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateBranchAsync(UpdateBranchRequest request)
         {
             try
             {
-                var branchBefore = _branchRepository.GetBranchById(request.Id);
+                var branchBefore = await _branchRepository.GetBranchByIdAsync(request.Id);
                 var branch = _mapper.Map<Branch>(request);
-                var updated = _branchRepository.UpdateBranch(branch);
+                var updated = await _branchRepository.UpdateBranchAsync(branch);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Branch", branchBefore, branch.Id);
+                    await _logChangeService.LogChangeAsync("Branch", branchBefore, branch.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteBranch(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteBranchAsync(Guid id)
         {
             try
             {
-                var deleted = _branchRepository.DeleteBranch(id);
+                var deleted = await _branchRepository.DeleteBranchAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Branch>> FindBranchesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Branch>>> FindBranchesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var branches = _branchRepository.FindBranchesByFields(filters);
+            var branches = await _branchRepository.FindBranchesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Branch>>
             {
                 Success = true,

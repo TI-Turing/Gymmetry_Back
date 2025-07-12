@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.BrandFunction
             _brandService = brandService;
         }
 
-        [Function("DeleteBrandFunction")]
+        [Function("Brand_DeleteBrandFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "brand/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.BrandFunction
             _logger.LogInformation($"Procesando solicitud de borrado para marca {id}");
             try
             {
-                var result = _brandService.DeleteBrand(id);
+                var result = await _brandService.DeleteBrandAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public PhysicalAssessment CreatePhysicalAssessment(PhysicalAssessment assessment)
+        public async Task<PhysicalAssessment> CreatePhysicalAssessmentAsync(PhysicalAssessment assessment)
         {
             assessment.Id = Guid.NewGuid();
             assessment.CreatedAt = DateTime.UtcNow;
             assessment.IsActive = true;
             _context.PhysicalAssessments.Add(assessment);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return assessment;
         }
 
-        public PhysicalAssessment GetPhysicalAssessmentById(Guid id)
+        public async Task<PhysicalAssessment?> GetPhysicalAssessmentByIdAsync(Guid id)
         {
-            return _context.PhysicalAssessments.FirstOrDefault(a => a.Id == id && a.IsActive);
+            return await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
         }
 
-        public IEnumerable<PhysicalAssessment> GetAllPhysicalAssessments()
+        public async Task<IEnumerable<PhysicalAssessment>> GetAllPhysicalAssessmentsAsync()
         {
-            return _context.PhysicalAssessments.Where(a => a.IsActive).ToList();
+            return await _context.PhysicalAssessments.Where(a => a.IsActive).ToListAsync();
         }
 
-        public bool UpdatePhysicalAssessment(PhysicalAssessment assessment)
+        public async Task<bool> UpdatePhysicalAssessmentAsync(PhysicalAssessment assessment)
         {
-            var existing = _context.PhysicalAssessments.FirstOrDefault(a => a.Id == assessment.Id && a.IsActive);
+            var existing = await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == assessment.Id && a.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(assessment);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeletePhysicalAssessment(Guid id)
+        public async Task<bool> DeletePhysicalAssessmentAsync(Guid id)
         {
-            var entity = _context.PhysicalAssessments.FirstOrDefault(a => a.Id == id && a.IsActive);
+            var entity = await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<PhysicalAssessment> FindPhysicalAssessmentsByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<PhysicalAssessment>> FindPhysicalAssessmentsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(PhysicalAssessment), "a");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<PhysicalAssessment, bool>>(predicate, parameter);
-            return _context.PhysicalAssessments.Where(lambda).ToList();
+            return await _context.PhysicalAssessments.Where(lambda).ToListAsync();
         }
     }
 }

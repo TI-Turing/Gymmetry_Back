@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.PhysicalAssessment.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IPhysicalAssessmentService
     {
-        ApplicationResponse<PhysicalAssessment> CreatePhysicalAssessment(AddPhysicalAssessmentRequest request);
-        ApplicationResponse<PhysicalAssessment> GetPhysicalAssessmentById(Guid id);
-        ApplicationResponse<IEnumerable<PhysicalAssessment>> GetAllPhysicalAssessments();
-        ApplicationResponse<bool> UpdatePhysicalAssessment(UpdatePhysicalAssessmentRequest request);
-        ApplicationResponse<bool> DeletePhysicalAssessment(Guid id);
-        ApplicationResponse<IEnumerable<PhysicalAssessment>> FindPhysicalAssessmentsByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<PhysicalAssessment>> CreatePhysicalAssessmentAsync(AddPhysicalAssessmentRequest request);
+        Task<ApplicationResponse<PhysicalAssessment>> GetPhysicalAssessmentByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<PhysicalAssessment>>> GetAllPhysicalAssessmentsAsync();
+        Task<ApplicationResponse<bool>> UpdatePhysicalAssessmentAsync(UpdatePhysicalAssessmentRequest request);
+        Task<ApplicationResponse<bool>> DeletePhysicalAssessmentAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<PhysicalAssessment>>> FindPhysicalAssessmentsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

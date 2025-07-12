@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Notification.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface INotificationService
     {
-        ApplicationResponse<Notification> CreateNotification(AddNotificationRequest request);
-        ApplicationResponse<Notification> GetNotificationById(Guid id);
-        ApplicationResponse<IEnumerable<Notification>> GetAllNotifications();
-        ApplicationResponse<bool> UpdateNotification(UpdateNotificationRequest request);
-        ApplicationResponse<bool> DeleteNotification(Guid id);
-        ApplicationResponse<IEnumerable<Notification>> FindNotificationsByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Notification>> CreateNotificationAsync(AddNotificationRequest request);
+        Task<ApplicationResponse<Notification>> GetNotificationByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Notification>>> GetAllNotificationsAsync();
+        Task<ApplicationResponse<bool>> UpdateNotificationAsync(UpdateNotificationRequest request);
+        Task<ApplicationResponse<bool>> DeleteNotificationAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Notification>>> FindNotificationsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

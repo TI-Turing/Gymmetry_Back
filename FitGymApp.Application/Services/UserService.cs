@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.User.Request;
 using FitGymApp.Domain.DTO;
-using System.Linq;
 using FitGymApp.Repository.Services.Interfaces;
 
 namespace FitGymApp.Application.Services
@@ -24,9 +25,9 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<User> CreateUser(AddRequest request)
+        public async Task<ApplicationResponse<User>> CreateUserAsync(AddRequest request)
         {
-            var existingUsers = _userRepository.FindUsersByFields(new Dictionary<string, object> { { "Email", request.Email } });
+            var existingUsers = await _userRepository.FindUsersByFieldsAsync(new Dictionary<string, object> { { "Email", request.Email } });
             if (existingUsers != null && existingUsers.Any())
             {
                 return new ApplicationResponse<User>
@@ -36,7 +37,7 @@ namespace FitGymApp.Application.Services
                     ErrorCode = "EmailExists"
                 };
             }
-            var hashResult = _passwordService.HashPassword(request.Password);
+            var hashResult = await _passwordService.HashPasswordAsync(request.Password);
             if (!hashResult.Success)
             {
                 return new ApplicationResponse<User>
@@ -53,7 +54,7 @@ namespace FitGymApp.Application.Services
                     Email = request.Email,
                     Password = hashResult.Data,
                 };
-                var created = _userRepository.CreateUser(user);
+                var created = await _userRepository.CreateUserAsync(user);
                 return new ApplicationResponse<User>
                 {
                     Success = true,
@@ -63,7 +64,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<User>
                 {
                     Success = false,
@@ -73,9 +74,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<User> GetUserById(Guid id)
+        public async Task<ApplicationResponse<User>> GetUserByIdAsync(Guid id)
         {
-            var user = _userRepository.GetUserById(id);
+            var user = await _userRepository.GetUserByIdAsync(id);
             if (user == null)
             {
                 return new ApplicationResponse<User>
@@ -92,9 +93,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<User>> GetAllUsers()
+        public async Task<ApplicationResponse<IEnumerable<User>>> GetAllUsersAsync()
         {
-            var users = _userRepository.GetAllUsers();
+            var users = await _userRepository.GetAllUsersAsync();
             return new ApplicationResponse<IEnumerable<User>>
             {
                 Success = true,
@@ -102,11 +103,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateUser(UpdateRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateUserAsync(UpdateRequest request)
         {
             try
             {
-                var userBefore = _userRepository.GetUserById(request.Id);
+                var userBefore = await _userRepository.GetUserByIdAsync(request.Id);
                 var user = new User
                 {
                     Id = request.Id,
@@ -132,10 +133,10 @@ namespace FitGymApp.Application.Services
                     Email = userBefore?.Email ?? string.Empty,
                     Password = userBefore?.Password ?? string.Empty
                 };
-                var updated = _userRepository.UpdateUser(user);
+                var updated = await _userRepository.UpdateUserAsync(user);
                 if (updated)
                 {
-                    _logChangeService.LogChange("User", userBefore, user.Id);
+                    await _logChangeService.LogChangeAsync("User", userBefore, user.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -156,7 +157,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -167,11 +168,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteUser(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteUserAsync(Guid id)
         {
             try
             {
-                var deleted = _userRepository.DeleteUser(id);
+                var deleted = await _userRepository.DeleteUserAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -194,7 +195,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -205,9 +206,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<User>> FindUsersByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<User>>> FindUsersByFieldsAsync(Dictionary<string, object> filters)
         {
-            var users = _userRepository.FindUsersByFields(filters);
+            var users = await _userRepository.FindUsersByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<User>>
             {
                 Success = true,

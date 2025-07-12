@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Machine.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<Machine> CreateMachine(AddMachineRequest request)
+        public async Task<ApplicationResponse<Machine>> CreateMachineAsync(AddMachineRequest request)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace FitGymApp.Application.Services
                     MachineCategoryId = request.MachineCategoryId,
                     Ip = request.Ip
                 };
-                var created = _machineRepository.CreateMachine(entity);
+                var created = await _machineRepository.CreateMachineAsync(entity);
                 return new ApplicationResponse<Machine>
                 {
                     Success = true,
@@ -42,7 +43,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Machine>
                 {
                     Success = false,
@@ -52,9 +53,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Machine> GetMachineById(Guid id)
+        public async Task<ApplicationResponse<Machine>> GetMachineByIdAsync(Guid id)
         {
-            var entity = _machineRepository.GetMachineById(id);
+            var entity = await _machineRepository.GetMachineByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<Machine>
@@ -71,9 +72,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Machine>> GetAllMachines()
+        public async Task<ApplicationResponse<IEnumerable<Machine>>> GetAllMachinesAsync()
         {
-            var entities = _machineRepository.GetAllMachines();
+            var entities = await _machineRepository.GetAllMachinesAsync();
             return new ApplicationResponse<IEnumerable<Machine>>
             {
                 Success = true,
@@ -81,11 +82,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateMachine(UpdateMachineRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateMachineAsync(UpdateMachineRequest request)
         {
             try
             {
-                var before = _machineRepository.GetMachineById(request.Id);
+                var before = await _machineRepository.GetMachineByIdAsync(request.Id);
                 var entity = new Machine
                 {
                     Id = request.Id,
@@ -94,10 +95,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _machineRepository.UpdateMachine(entity);
+                var updated = await _machineRepository.UpdateMachineAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Machine", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("Machine", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -118,7 +119,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -129,11 +130,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteMachine(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteMachineAsync(Guid id)
         {
             try
             {
-                var deleted = _machineRepository.DeleteMachine(id);
+                var deleted = await _machineRepository.DeleteMachineAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -156,7 +157,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -167,9 +168,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Machine>> FindMachinesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Machine>>> FindMachinesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _machineRepository.FindMachinesByFields(filters);
+            var entities = await _machineRepository.FindMachinesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Machine>>
             {
                 Success = true,

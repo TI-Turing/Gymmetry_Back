@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.JourneyEmployee.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IJourneyEmployeeService
     {
-        ApplicationResponse<JourneyEmployee> CreateJourneyEmployee(AddJourneyEmployeeRequest request);
-        ApplicationResponse<JourneyEmployee> GetJourneyEmployeeById(Guid id);
-        ApplicationResponse<IEnumerable<JourneyEmployee>> GetAllJourneyEmployees();
-        ApplicationResponse<bool> UpdateJourneyEmployee(UpdateJourneyEmployeeRequest request);
-        ApplicationResponse<bool> DeleteJourneyEmployee(Guid id);
-        ApplicationResponse<IEnumerable<JourneyEmployee>> FindJourneyEmployeesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<JourneyEmployee>> CreateJourneyEmployeeAsync(AddJourneyEmployeeRequest request);
+        Task<ApplicationResponse<JourneyEmployee>> GetJourneyEmployeeByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<JourneyEmployee>>> GetAllJourneyEmployeesAsync();
+        Task<ApplicationResponse<bool>> UpdateJourneyEmployeeAsync(UpdateJourneyEmployeeRequest request);
+        Task<ApplicationResponse<bool>> DeleteJourneyEmployeeAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<JourneyEmployee>>> FindJourneyEmployeesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Notification.Request;
@@ -25,12 +25,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<Notification> CreateNotification(AddNotificationRequest request)
+        public async Task<ApplicationResponse<Notification>> CreateNotificationAsync(AddNotificationRequest request)
         {
             try
             {
                 var entity = _mapper.Map<Notification>(request);
-                var created = _notificationRepository.CreateNotification(entity);
+                var created = await _notificationRepository.CreateNotificationAsync(entity);
                 return new ApplicationResponse<Notification>
                 {
                     Success = true,
@@ -40,7 +40,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Notification>
                 {
                     Success = false,
@@ -50,9 +50,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Notification> GetNotificationById(Guid id)
+        public async Task<ApplicationResponse<Notification>> GetNotificationByIdAsync(Guid id)
         {
-            var entity = _notificationRepository.GetNotificationById(id);
+            var entity = await _notificationRepository.GetNotificationByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<Notification>
@@ -69,9 +69,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Notification>> GetAllNotifications()
+        public async Task<ApplicationResponse<IEnumerable<Notification>>> GetAllNotificationsAsync()
         {
-            var entities = _notificationRepository.GetAllNotifications();
+            var entities = await _notificationRepository.GetAllNotificationsAsync();
             return new ApplicationResponse<IEnumerable<Notification>>
             {
                 Success = true,
@@ -79,16 +79,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateNotification(UpdateNotificationRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateNotificationAsync(UpdateNotificationRequest request)
         {
             try
             {
-                var before = _notificationRepository.GetNotificationById(request.Id);
+                var before = await _notificationRepository.GetNotificationByIdAsync(request.Id);
                 var entity = _mapper.Map<Notification>(request);
-                var updated = _notificationRepository.UpdateNotification(entity);
+                var updated = await _notificationRepository.UpdateNotificationAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Notification", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("Notification", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +109,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +120,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteNotification(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteNotificationAsync(Guid id)
         {
             try
             {
-                var deleted = _notificationRepository.DeleteNotification(id);
+                var deleted = await _notificationRepository.DeleteNotificationAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +147,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +158,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Notification>> FindNotificationsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Notification>>> FindNotificationsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _notificationRepository.FindNotificationsByFields(filters);
+            var entities = await _notificationRepository.FindNotificationsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Notification>>
             {
                 Success = true,

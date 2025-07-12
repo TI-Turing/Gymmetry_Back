@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public DailyHistory CreateDailyHistory(DailyHistory entity)
+        public async Task<DailyHistory> CreateDailyHistoryAsync(DailyHistory entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.DailyHistories.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public DailyHistory GetDailyHistoryById(Guid id)
+        public async Task<DailyHistory?> GetDailyHistoryByIdAsync(Guid id)
         {
-            return _context.DailyHistories.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.DailyHistories.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<DailyHistory> GetAllDailyHistories()
+        public async Task<IEnumerable<DailyHistory>> GetAllDailyHistoriesAsync()
         {
-            return _context.DailyHistories.Where(e => e.IsActive).ToList();
+            return await _context.DailyHistories.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateDailyHistory(DailyHistory entity)
+        public async Task<bool> UpdateDailyHistoryAsync(DailyHistory entity)
         {
-            var existing = _context.DailyHistories.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.DailyHistories.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteDailyHistory(Guid id)
+        public async Task<bool> DeleteDailyHistoryAsync(Guid id)
         {
-            var entity = _context.DailyHistories.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.DailyHistories.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<DailyHistory> FindDailyHistoriesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<DailyHistory>> FindDailyHistoriesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(DailyHistory), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<DailyHistory, bool>>(predicate, parameter);
-            return _context.DailyHistories.Where(lambda).ToList();
+            return await _context.DailyHistories.Where(lambda).ToListAsync();
         }
     }
 }

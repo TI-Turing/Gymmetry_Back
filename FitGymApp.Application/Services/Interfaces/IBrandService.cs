@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Brand.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IBrandService
     {
-        ApplicationResponse<Brand> CreateBrand(AddBrandRequest request);
-        ApplicationResponse<Brand> GetBrandById(Guid id);
-        ApplicationResponse<IEnumerable<Brand>> GetAllBrands();
-        ApplicationResponse<bool> UpdateBrand(UpdateBrandRequest request);
-        ApplicationResponse<bool> DeleteBrand(Guid id);
-        ApplicationResponse<IEnumerable<Brand>> FindBrandsByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Brand>> CreateBrandAsync(AddBrandRequest request);
+        Task<ApplicationResponse<Brand>> GetBrandByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Brand>>> GetAllBrandsAsync();
+        Task<ApplicationResponse<bool>> UpdateBrandAsync(UpdateBrandRequest request);
+        Task<ApplicationResponse<bool>> DeleteBrandAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Brand>>> FindBrandsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

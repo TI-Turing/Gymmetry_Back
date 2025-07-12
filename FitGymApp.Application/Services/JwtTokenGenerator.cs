@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using System.Threading.Tasks;
 
 namespace FitGymApp.Application.Services
 {
@@ -18,7 +19,6 @@ namespace FitGymApp.Application.Services
         {
             if (_initialized) return;
 
-            // Detect environment
             var azureEnv = Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID");
             string? secretKey = null;
             string? issuer = null;
@@ -26,7 +26,6 @@ namespace FitGymApp.Application.Services
 
             if (azureEnv == null)
             {
-                // Local: read from local.settings.json via environment
                 var config = new ConfigurationBuilder()
                     .SetBasePath(AppContext.BaseDirectory)
                     .AddJsonFile("local.settings.json", optional: true, reloadOnChange: true)
@@ -37,7 +36,6 @@ namespace FitGymApp.Application.Services
             }
             else
             {
-                // Azure: read from environment variables (KeyVault integration can be added here)
                 secretKey = Environment.GetEnvironmentVariable("Jwt__SecretKey") ?? Environment.GetEnvironmentVariable("Jwt:SecretKey") ?? Environment.GetEnvironmentVariable("Values__JwtSecretKey") ?? Environment.GetEnvironmentVariable("Values:JwtSecretKey");
                 issuer = Environment.GetEnvironmentVariable("Jwt__Issuer") ?? Environment.GetEnvironmentVariable("Jwt:Issuer") ?? Environment.GetEnvironmentVariable("Values__JwtIssuer") ?? Environment.GetEnvironmentVariable("Values:JwtIssuer");
                 audience = Environment.GetEnvironmentVariable("Jwt__Audience") ?? Environment.GetEnvironmentVariable("Jwt:Audience") ?? Environment.GetEnvironmentVariable("Values__JwtAudience") ?? Environment.GetEnvironmentVariable("Values:JwtAudience");
@@ -49,7 +47,7 @@ namespace FitGymApp.Application.Services
             _initialized = true;
         }
 
-        public static string GenerateToken(Guid userId, string userName, string email, int expireMinutes = 60)
+        public static Task<string> GenerateTokenAsync(Guid userId, string userName, string email, int expireMinutes = 60)
         {
             Initialize();
             var claims = new[]
@@ -67,10 +65,11 @@ namespace FitGymApp.Application.Services
                 expires: DateTime.UtcNow.AddMinutes(expireMinutes),
                 signingCredentials: creds
             );
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            var tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            return Task.FromResult(tokenString);
         }
 
-        public static ClaimsPrincipal? ValidateToken(string token)
+        public static Task<ClaimsPrincipal?> ValidateTokenAsync(string token)
         {
             Initialize();
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -87,11 +86,11 @@ namespace FitGymApp.Application.Services
                     IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuerSigningKey = true
                 }, out _);
-                return principal;
+                return Task.FromResult<ClaimsPrincipal?>(principal);
             }
             catch
             {
-                return null;
+                return Task.FromResult<ClaimsPrincipal?>(null);
             }
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.GymType.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<GymType> CreateGymType(AddGymTypeRequest request)
+        public async Task<ApplicationResponse<GymType>> CreateGymTypeAsync(AddGymTypeRequest request)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace FitGymApp.Application.Services
                     Name = request.Name,
                     Ip = request.Ip
                 };
-                var created = _gymTypeRepository.CreateGymType(entity);
+                var created = await _gymTypeRepository.CreateGymTypeAsync(entity);
                 return new ApplicationResponse<GymType>
                 {
                     Success = true,
@@ -41,7 +42,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<GymType>
                 {
                     Success = false,
@@ -51,9 +52,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<GymType> GetGymTypeById(Guid id)
+        public async Task<ApplicationResponse<GymType>> GetGymTypeByIdAsync(Guid id)
         {
-            var entity = _gymTypeRepository.GetGymTypeById(id);
+            var entity = await _gymTypeRepository.GetGymTypeByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<GymType>
@@ -70,9 +71,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<GymType>> GetAllGymTypes()
+        public async Task<ApplicationResponse<IEnumerable<GymType>>> GetAllGymTypesAsync()
         {
-            var entities = _gymTypeRepository.GetAllGymTypes();
+            var entities = await _gymTypeRepository.GetAllGymTypesAsync();
             return new ApplicationResponse<IEnumerable<GymType>>
             {
                 Success = true,
@@ -80,11 +81,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateGymType(UpdateGymTypeRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateGymTypeAsync(UpdateGymTypeRequest request)
         {
             try
             {
-                var before = _gymTypeRepository.GetGymTypeById(request.Id);
+                var before = await _gymTypeRepository.GetGymTypeByIdAsync(request.Id);
                 var entity = new GymType
                 {
                     Id = request.Id,
@@ -92,10 +93,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _gymTypeRepository.UpdateGymType(entity);
+                var updated = await _gymTypeRepository.UpdateGymTypeAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("GymType", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("GymType", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +117,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +128,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteGymType(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteGymTypeAsync(Guid id)
         {
             try
             {
-                var deleted = _gymTypeRepository.DeleteGymType(id);
+                var deleted = await _gymTypeRepository.DeleteGymTypeAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +155,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +166,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<GymType>> FindGymTypesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<GymType>>> FindGymTypesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _gymTypeRepository.FindGymTypesByFields(filters);
+            var entities = await _gymTypeRepository.FindGymTypesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<GymType>>
             {
                 Success = true,

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public GymPlanSelected CreateGymPlanSelected(GymPlanSelected entity)
+        public async Task<GymPlanSelected> CreateGymPlanSelectedAsync(GymPlanSelected entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.GymPlanSelecteds.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public GymPlanSelected GetGymPlanSelectedById(Guid id)
+        public async Task<GymPlanSelected?> GetGymPlanSelectedByIdAsync(Guid id)
         {
-            return _context.GymPlanSelecteds.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.GymPlanSelecteds.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<GymPlanSelected> GetAllGymPlanSelecteds()
+        public async Task<IEnumerable<GymPlanSelected>> GetAllGymPlanSelectedsAsync()
         {
-            return _context.GymPlanSelecteds.Where(e => e.IsActive).ToList();
+            return await _context.GymPlanSelecteds.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateGymPlanSelected(GymPlanSelected entity)
+        public async Task<bool> UpdateGymPlanSelectedAsync(GymPlanSelected entity)
         {
-            var existing = _context.GymPlanSelecteds.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.GymPlanSelecteds.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteGymPlanSelected(Guid id)
+        public async Task<bool> DeleteGymPlanSelectedAsync(Guid id)
         {
-            var entity = _context.GymPlanSelecteds.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.GymPlanSelecteds.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<GymPlanSelected> FindGymPlanSelectedsByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<GymPlanSelected>> FindGymPlanSelectedsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(GymPlanSelected), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<GymPlanSelected, bool>>(predicate, parameter);
-            return _context.GymPlanSelecteds.Where(lambda).ToList();
+            return await _context.GymPlanSelecteds.Where(lambda).ToListAsync();
         }
     }
 }

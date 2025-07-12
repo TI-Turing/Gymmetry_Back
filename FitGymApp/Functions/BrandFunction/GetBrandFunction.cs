@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.BrandFunction
             _brandService = brandService;
         }
 
-        [Function("GetBrandByIdFunction")]
+        [Function("Brand_GetBrandByIdFunction")]
         public async Task<ApiResponse<Brand>> GetBrandByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "brand/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.BrandFunction
             _logger.LogInformation($"Consultando marca por Id: {id}");
             try
             {
-                var result = _brandService.GetBrandById(id);
+                var result = await _brandService.GetBrandByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Brand>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.BrandFunction
             }
         }
 
-        [Function("GetAllBrandsFunction")]
+        [Function("Brand_GetAllBrandsFunction")]
         public async Task<ApiResponse<IEnumerable<Brand>>> GetAllBrandsAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "brands")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.BrandFunction
             _logger.LogInformation("Consultando todas las marcas activas.");
             try
             {
-                var result = _brandService.GetAllBrands();
+                var result = await _brandService.GetAllBrandsAsync();
                 return new ApiResponse<IEnumerable<Brand>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.BrandFunction
             }
         }
 
-        [Function("FindBrandsByFieldsFunction")]
+        [Function("Brand_FindBrandsByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<Brand>>> FindBrandsByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "brands/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -128,7 +128,7 @@ namespace FitGymApp.Functions.BrandFunction
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
                     return new ApiResponse<IEnumerable<Brand>>
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.BrandFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _brandService.FindBrandsByFields(filters);
+                var result = await _brandService.FindBrandsByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<Brand>>
                 {
                     Success = result.Success,

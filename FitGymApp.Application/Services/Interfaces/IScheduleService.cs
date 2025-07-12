@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Schedule.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IScheduleService
     {
-        ApplicationResponse<Schedule> CreateSchedule(AddScheduleRequest request);
-        ApplicationResponse<Schedule> GetScheduleById(Guid id);
-        ApplicationResponse<IEnumerable<Schedule>> GetAllSchedules();
-        ApplicationResponse<bool> UpdateSchedule(UpdateScheduleRequest request);
-        ApplicationResponse<bool> DeleteSchedule(Guid id);
-        ApplicationResponse<IEnumerable<Schedule>> FindSchedulesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Schedule>> CreateScheduleAsync(AddScheduleRequest request);
+        Task<ApplicationResponse<Schedule>> GetScheduleByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Schedule>>> GetAllSchedulesAsync();
+        Task<ApplicationResponse<bool>> UpdateScheduleAsync(UpdateScheduleRequest request);
+        Task<ApplicationResponse<bool>> DeleteScheduleAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Schedule>>> FindSchedulesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

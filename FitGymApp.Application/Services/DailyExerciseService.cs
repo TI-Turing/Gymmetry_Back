@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.DailyExercise.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<DailyExercise> CreateDailyExercise(AddDailyExerciseRequest request)
+        public async Task<ApplicationResponse<DailyExercise>> CreateDailyExerciseAsync(AddDailyExerciseRequest request)
         {
             try
             {
                 var entity = _mapper.Map<DailyExercise>(request);
-                var created = _dailyExerciseRepository.CreateDailyExercise(entity);
+                var created = await _dailyExerciseRepository.CreateDailyExerciseAsync(entity);
                 return new ApplicationResponse<DailyExercise>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<DailyExercise>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<DailyExercise> GetDailyExerciseById(Guid id)
+        public async Task<ApplicationResponse<DailyExercise>> GetDailyExerciseByIdAsync(Guid id)
         {
-            var entity = _dailyExerciseRepository.GetDailyExerciseById(id);
+            var entity = await _dailyExerciseRepository.GetDailyExerciseByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<DailyExercise>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<DailyExercise>> GetAllDailyExercises()
+        public async Task<ApplicationResponse<IEnumerable<DailyExercise>>> GetAllDailyExercisesAsync()
         {
-            var entities = _dailyExerciseRepository.GetAllDailyExercises();
+            var entities = await _dailyExerciseRepository.GetAllDailyExercisesAsync();
             return new ApplicationResponse<IEnumerable<DailyExercise>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateDailyExercise(UpdateDailyExerciseRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateDailyExerciseAsync(UpdateDailyExerciseRequest request)
         {
             try
             {
-                var before = _dailyExerciseRepository.GetDailyExerciseById(request.Id);
+                var before = await _dailyExerciseRepository.GetDailyExerciseByIdAsync(request.Id);
                 var entity = _mapper.Map<DailyExercise>(request);
-                var updated = _dailyExerciseRepository.UpdateDailyExercise(entity);
+                var updated = await _dailyExerciseRepository.UpdateDailyExerciseAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("DailyExercise", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("DailyExercise", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteDailyExercise(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteDailyExerciseAsync(Guid id)
         {
             try
             {
-                var deleted = _dailyExerciseRepository.DeleteDailyExercise(id);
+                var deleted = await _dailyExerciseRepository.DeleteDailyExerciseAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<DailyExercise>> FindDailyExercisesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<DailyExercise>>> FindDailyExercisesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _dailyExerciseRepository.FindDailyExercisesByFields(filters);
+            var entities = await _dailyExerciseRepository.FindDailyExercisesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<DailyExercise>>
             {
                 Success = true,

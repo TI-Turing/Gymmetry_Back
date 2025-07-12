@@ -6,11 +6,11 @@ namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IPermissionRepository
     {
-        Permission CreatePermission(Permission entity);
-        Permission GetPermissionById(Guid id);
-        IEnumerable<Permission> GetAllPermissions();
-        bool UpdatePermission(Permission entity);
-        bool DeletePermission(Guid id);
-        IEnumerable<Permission> FindPermissionsByFields(Dictionary<string, object> filters);
+        Task<Permission> CreatePermissionAsync(Permission entity);
+        Task<Permission> GetPermissionByIdAsync(Guid id);
+        Task<IEnumerable<Permission>> GetAllPermissionsAsync();
+        Task<bool> UpdatePermissionAsync(Permission entity);
+        Task<bool> DeletePermissionAsync(Guid id);
+        Task<IEnumerable<Permission>> FindPermissionsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

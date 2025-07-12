@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.DailyExerciseFunction
             _service = service;
         }
 
-        [Function("DeleteDailyExerciseFunction")]
+        [Function("DailyExercise_DeleteDailyExerciseFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "dailyexercise/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.DailyExerciseFunction
             _logger.LogInformation($"Procesando solicitud de borrado para DailyExercise {id}");
             try
             {
-                var result = _service.DeleteDailyExercise(id);
+                var result = await _service.DeleteDailyExerciseAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

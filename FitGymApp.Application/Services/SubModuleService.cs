@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.SubModule.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<SubModule> CreateSubModule(AddSubModuleRequest request)
+        public async Task<ApplicationResponse<SubModule>> CreateSubModuleAsync(AddSubModuleRequest request)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace FitGymApp.Application.Services
                     BranchId = request.BranchId,
                     Ip = request.Ip
                 };
-                var created = _subModuleRepository.CreateSubModule(entity);
+                var created = await _subModuleRepository.CreateSubModuleAsync(entity);
                 return new ApplicationResponse<SubModule>
                 {
                     Success = true,
@@ -41,7 +42,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<SubModule>
                 {
                     Success = false,
@@ -51,9 +52,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<SubModule> GetSubModuleById(Guid id)
+        public async Task<ApplicationResponse<SubModule>> GetSubModuleByIdAsync(Guid id)
         {
-            var entity = _subModuleRepository.GetSubModuleById(id);
+            var entity = await _subModuleRepository.GetSubModuleByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<SubModule>
@@ -70,9 +71,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<SubModule>> GetAllSubModules()
+        public async Task<ApplicationResponse<IEnumerable<SubModule>>> GetAllSubModulesAsync()
         {
-            var entities = _subModuleRepository.GetAllSubModules();
+            var entities = await _subModuleRepository.GetAllSubModulesAsync();
             return new ApplicationResponse<IEnumerable<SubModule>>
             {
                 Success = true,
@@ -80,11 +81,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateSubModule(UpdateSubModuleRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateSubModuleAsync(UpdateSubModuleRequest request)
         {
             try
             {
-                var before = _subModuleRepository.GetSubModuleById(request.Id);
+                var before = await _subModuleRepository.GetSubModuleByIdAsync(request.Id);
                 var entity = new SubModule
                 {
                     Id = request.Id,
@@ -92,10 +93,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _subModuleRepository.UpdateSubModule(entity);
+                var updated = await _subModuleRepository.UpdateSubModuleAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("SubModule", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("SubModule", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +117,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +128,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteSubModule(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteSubModuleAsync(Guid id)
         {
             try
             {
-                var deleted = _subModuleRepository.DeleteSubModule(id);
+                var deleted = await _subModuleRepository.DeleteSubModuleAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +155,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +166,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<SubModule>> FindSubModulesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<SubModule>>> FindSubModulesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _subModuleRepository.FindSubModulesByFields(filters);
+            var entities = await _subModuleRepository.FindSubModulesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<SubModule>>
             {
                 Success = true,

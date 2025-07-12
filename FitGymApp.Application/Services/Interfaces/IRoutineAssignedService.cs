@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.RoutineAssigned.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IRoutineAssignedService
     {
-        ApplicationResponse<RoutineAssigned> CreateRoutineAssigned(AddRoutineAssignedRequest request);
-        ApplicationResponse<RoutineAssigned> GetRoutineAssignedById(Guid id);
-        ApplicationResponse<IEnumerable<RoutineAssigned>> GetAllRoutineAssigneds();
-        ApplicationResponse<bool> UpdateRoutineAssigned(UpdateRoutineAssignedRequest request);
-        ApplicationResponse<bool> DeleteRoutineAssigned(Guid id);
-        ApplicationResponse<IEnumerable<RoutineAssigned>> FindRoutineAssignedsByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<RoutineAssigned>> CreateRoutineAssignedAsync(AddRoutineAssignedRequest request);
+        Task<ApplicationResponse<RoutineAssigned>> GetRoutineAssignedByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<RoutineAssigned>>> GetAllRoutineAssignedsAsync();
+        Task<ApplicationResponse<bool>> UpdateRoutineAssignedAsync(UpdateRoutineAssignedRequest request);
+        Task<ApplicationResponse<bool>> DeleteRoutineAssignedAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<RoutineAssigned>>> FindRoutineAssignedsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

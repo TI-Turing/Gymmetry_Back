@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IGymRepository
     {
-        Gym CreateGym(Gym entity);
-        Gym GetGymById(Guid id);
-        IEnumerable<Gym> GetAllGyms();
-        bool UpdateGym(Gym entity);
-        bool DeleteGym(Guid id);
-        IEnumerable<Gym> FindGymsByFields(Dictionary<string, object> filters);
+        Task<Gym> CreateGymAsync(Gym entity);
+        Task<Gym?> GetGymByIdAsync(Guid id);
+        Task<IEnumerable<Gym>> GetAllGymsAsync();
+        Task<bool> UpdateGymAsync(Gym entity);
+        Task<bool> DeleteGymAsync(Guid id);
+        Task<IEnumerable<Gym>> FindGymsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

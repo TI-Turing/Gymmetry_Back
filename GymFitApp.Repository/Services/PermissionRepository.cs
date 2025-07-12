@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,27 +16,27 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Permission CreatePermission(Permission entity)
+        public async Task<Permission> CreatePermissionAsync(Permission entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            _context.Permissions.Add(entity);
+            await _context.Permissions.AddAsync(entity);
             _context.SaveChanges();
             return entity;
         }
 
-        public Permission GetPermissionById(Guid id)
+        public async Task<Permission> GetPermissionByIdAsync(Guid id)
         {
-            return _context.Permissions.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.Permissions.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<Permission> GetAllPermissions()
+        public async Task<IEnumerable<Permission>> GetAllPermissionsAsync()
         {
-            return _context.Permissions.Where(e => e.IsActive).ToList();
+            return await _context.Permissions.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdatePermission(Permission entity)
+        public async Task<bool> UpdatePermissionAsync(Permission entity)
         {
             var existing = _context.Permissions.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
@@ -48,7 +49,7 @@ namespace FitGymApp.Repository.Services
             return false;
         }
 
-        public bool DeletePermission(Guid id)
+        public async Task<bool> DeletePermissionAsync(Guid id)
         {
             var entity = _context.Permissions.FirstOrDefault(e => e.Id == id && e.IsActive);
             if (entity != null)
@@ -61,7 +62,7 @@ namespace FitGymApp.Repository.Services
             return false;
         }
 
-        public IEnumerable<Permission> FindPermissionsByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Permission>> FindPermissionsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Permission), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +79,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<Permission, bool>>(predicate, parameter);
-            return _context.Permissions.Where(lambda).ToList();
+            return await _context.Permissions.Where(lambda).ToListAsync();
         }
     }
 }

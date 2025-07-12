@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.DailyFunction
             _service = service;
         }
 
-        [Function("GetDailyByIdFunction")]
+        [Function("Daily_GetDailyByIdFunction")]
         public async Task<ApiResponse<Daily>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "daily/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.DailyFunction
             _logger.LogInformation($"Consultando Daily por Id: {id}");
             try
             {
-                var result = _service.GetDailyById(id);
+                var result = await _service.GetDailyByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Daily>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.DailyFunction
             }
         }
 
-        [Function("GetAllDailiesFunction")]
+        [Function("Daily_GetAllDailiesFunction")]
         public async Task<ApiResponse<IEnumerable<Daily>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailies")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.DailyFunction
             _logger.LogInformation("Consultando todos los Dailies activos.");
             try
             {
-                var result = _service.GetAllDailies();
+                var result = await _service.GetAllDailiesAsync();
                 return new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.DailyFunction
             }
         }
 
-        [Function("FindDailiesByFieldsFunction")]
+        [Function("Daily_FindDailiesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<Daily>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailies/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.DailyFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindDailiesByFields(filters);
+                var result = await _service.FindDailiesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = result.Success,

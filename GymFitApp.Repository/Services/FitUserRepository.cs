@@ -1,73 +1,81 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
     public class FitUserRepository : IFitUserRepository
     {
         private readonly FitGymAppContext _context;
+
         public FitUserRepository(FitGymAppContext context)
         {
             _context = context;
         }
 
-        public FitUser CreateFitUser(FitUser entity)
+        public async Task<FitUser> CreateFitUserAsync(FitUser entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            _context.FitUsers.Add(entity);
-            _context.SaveChanges();
+            await _context.FitUsers.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public FitUser GetFitUserById(Guid id)
+        public async Task<FitUser?> GetFitUserByIdAsync(Guid id)
         {
-            return _context.FitUsers.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.FitUsers
+                .FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<FitUser> GetAllFitUsers()
+        public async Task<IEnumerable<FitUser>> GetAllFitUsersAsync()
         {
-            return _context.FitUsers.Where(e => e.IsActive).ToList();
+            return await _context.FitUsers
+                .Where(e => e.IsActive)
+                .ToListAsync();
         }
 
-        public bool UpdateFitUser(FitUser entity)
+        public async Task<bool> UpdateFitUserAsync(FitUser entity)
         {
-            var existing = _context.FitUsers.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.FitUsers
+                .FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteFitUser(Guid id)
+        public async Task<bool> DeleteFitUserAsync(Guid id)
         {
-            var entity = _context.FitUsers.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.FitUsers
+                .FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<FitUser> FindFitUsersByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<FitUser>> FindFitUsersByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(FitUser), "e");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(FitUser.IsActive)),
                 Expression.Constant(true)
             );
+
             foreach (var filter in filters)
             {
                 var property = typeof(FitUser).GetProperty(filter.Key);
@@ -77,8 +85,9 @@ namespace FitGymApp.Repository.Services
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }
+
             var lambda = Expression.Lambda<Func<FitUser, bool>>(predicate, parameter);
-            return _context.FitUsers.Where(lambda).ToList();
+            return await _context.FitUsers.Where(lambda).ToListAsync();
         }
     }
 }

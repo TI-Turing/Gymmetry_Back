@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.PlanType.Request;
@@ -22,7 +22,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<PlanType> CreatePlanType(AddPlanTypeRequest request)
+        public async Task<ApplicationResponse<PlanType>> CreatePlanTypeAsync(AddPlanTypeRequest request)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace FitGymApp.Application.Services
                     Name = request.Name,
                     Ip = request.Ip
                 };
-                var created = _planTypeRepository.CreatePlanType(entity);
+                var created = await _planTypeRepository.CreatePlanTypeAsync(entity);
                 return new ApplicationResponse<PlanType>
                 {
                     Success = true,
@@ -41,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<PlanType>
                 {
                     Success = false,
@@ -51,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<PlanType> GetPlanTypeById(Guid id)
+        public async Task<ApplicationResponse<PlanType>> GetPlanTypeByIdAsync(Guid id)
         {
-            var entity = _planTypeRepository.GetPlanTypeById(id);
+            var entity = await _planTypeRepository.GetPlanTypeByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<PlanType>
@@ -70,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<PlanType>> GetAllPlanTypes()
+        public async Task<ApplicationResponse<IEnumerable<PlanType>>> GetAllPlanTypesAsync()
         {
-            var entities = _planTypeRepository.GetAllPlanTypes();
+            var entities = await _planTypeRepository.GetAllPlanTypesAsync();
             return new ApplicationResponse<IEnumerable<PlanType>>
             {
                 Success = true,
@@ -80,11 +80,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdatePlanType(UpdatePlanTypeRequest request)
+        public async Task<ApplicationResponse<bool>> UpdatePlanTypeAsync(UpdatePlanTypeRequest request)
         {
             try
             {
-                var before = _planTypeRepository.GetPlanTypeById(request.Id);
+                var before = await _planTypeRepository.GetPlanTypeByIdAsync(request.Id);
                 var entity = new PlanType
                 {
                     Id = request.Id,
@@ -92,10 +92,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _planTypeRepository.UpdatePlanType(entity);
+                var updated = await _planTypeRepository.UpdatePlanTypeAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("PlanType", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("PlanType", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +116,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +127,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeletePlanType(Guid id)
+        public async Task<ApplicationResponse<bool>> DeletePlanTypeAsync(Guid id)
         {
             try
             {
-                var deleted = _planTypeRepository.DeletePlanType(id);
+                var deleted = await _planTypeRepository.DeletePlanTypeAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +154,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +165,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<PlanType>> FindPlanTypesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<PlanType>>> FindPlanTypesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _planTypeRepository.FindPlanTypesByFields(filters);
+            var entities = await _planTypeRepository.FindPlanTypesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<PlanType>>
             {
                 Success = true,

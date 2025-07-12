@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IDailyExerciseRepository
     {
-        DailyExercise CreateDailyExercise(DailyExercise entity);
-        DailyExercise GetDailyExerciseById(Guid id);
-        IEnumerable<DailyExercise> GetAllDailyExercises();
-        bool UpdateDailyExercise(DailyExercise entity);
-        bool DeleteDailyExercise(Guid id);
-        IEnumerable<DailyExercise> FindDailyExercisesByFields(Dictionary<string, object> filters);
+        Task<DailyExercise> CreateDailyExerciseAsync(DailyExercise entity);
+        Task<DailyExercise?> GetDailyExerciseByIdAsync(Guid id);
+        Task<IEnumerable<DailyExercise>> GetAllDailyExercisesAsync();
+        Task<bool> UpdateDailyExerciseAsync(DailyExercise entity);
+        Task<bool> DeleteDailyExerciseAsync(Guid id);
+        Task<IEnumerable<DailyExercise>> FindDailyExercisesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

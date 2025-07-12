@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,59 +16,65 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Daily CreateDaily(Daily entity)
+        public async Task<Daily> CreateDailyAsync(Daily entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            _context.Dailies.Add(entity);
-            _context.SaveChanges();
+            await _context.Dailies.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public Daily GetDailyById(Guid id)
+        public async Task<Daily?> GetDailyByIdAsync(Guid id)
         {
-            return _context.Dailies.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.Dailies
+                .FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<Daily> GetAllDailies()
+        public async Task<IEnumerable<Daily>> GetAllDailiesAsync()
         {
-            return _context.Dailies.Where(e => e.IsActive).ToList();
+            return await _context.Dailies
+                .Where(e => e.IsActive)
+                .ToListAsync();
         }
 
-        public bool UpdateDaily(Daily entity)
+        public async Task<bool> UpdateDailyAsync(Daily entity)
         {
-            var existing = _context.Dailies.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.Dailies
+                .FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteDaily(Guid id)
+        public async Task<bool> DeleteDailyAsync(Guid id)
         {
-            var entity = _context.Dailies.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.Dailies
+                .FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Daily> FindDailiesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Daily>> FindDailiesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Daily), "e");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(Daily.IsActive)),
                 Expression.Constant(true)
             );
+
             foreach (var filter in filters)
             {
                 var property = typeof(Daily).GetProperty(filter.Key);
@@ -77,8 +84,9 @@ namespace FitGymApp.Repository.Services
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }
+
             var lambda = Expression.Lambda<Func<Daily, bool>>(predicate, parameter);
-            return _context.Dailies.Where(lambda).ToList();
+            return await _context.Dailies.Where(lambda).ToListAsync();
         }
     }
 }

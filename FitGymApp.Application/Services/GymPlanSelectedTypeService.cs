@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.GymPlanSelectedType.Request;
@@ -15,14 +15,17 @@ namespace FitGymApp.Application.Services
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
 
-        public GymPlanSelectedTypeService(IGymPlanSelectedTypeRepository gymPlanSelectedTypeRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public GymPlanSelectedTypeService(
+            IGymPlanSelectedTypeRepository gymPlanSelectedTypeRepository,
+            ILogChangeService logChangeService,
+            ILogErrorService logErrorService)
         {
             _gymPlanSelectedTypeRepository = gymPlanSelectedTypeRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<GymPlanSelectedType> CreateGymPlanSelectedType(AddGymPlanSelectedTypeRequest request)
+        public async Task<ApplicationResponse<GymPlanSelectedType>> CreateGymPlanSelectedTypeAsync(AddGymPlanSelectedTypeRequest request)
         {
             try
             {
@@ -31,7 +34,7 @@ namespace FitGymApp.Application.Services
                     Name = request.Name,
                     Ip = request.Ip
                 };
-                var created = _gymPlanSelectedTypeRepository.CreateGymPlanSelectedType(entity);
+                var created = await _gymPlanSelectedTypeRepository.CreateGymPlanSelectedTypeAsync(entity);
                 return new ApplicationResponse<GymPlanSelectedType>
                 {
                     Success = true,
@@ -41,7 +44,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<GymPlanSelectedType>
                 {
                     Success = false,
@@ -51,9 +54,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<GymPlanSelectedType> GetGymPlanSelectedTypeById(Guid id)
+        public async Task<ApplicationResponse<GymPlanSelectedType>> GetGymPlanSelectedTypeByIdAsync(Guid id)
         {
-            var entity = _gymPlanSelectedTypeRepository.GetGymPlanSelectedTypeById(id);
+            var entity = await _gymPlanSelectedTypeRepository.GetGymPlanSelectedTypeByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<GymPlanSelectedType>
@@ -70,9 +73,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<GymPlanSelectedType>> GetAllGymPlanSelectedTypes()
+        public async Task<ApplicationResponse<IEnumerable<GymPlanSelectedType>>> GetAllGymPlanSelectedTypesAsync()
         {
-            var entities = _gymPlanSelectedTypeRepository.GetAllGymPlanSelectedTypes();
+            var entities = await _gymPlanSelectedTypeRepository.GetAllGymPlanSelectedTypesAsync();
             return new ApplicationResponse<IEnumerable<GymPlanSelectedType>>
             {
                 Success = true,
@@ -80,11 +83,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateGymPlanSelectedType(UpdateGymPlanSelectedTypeRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateGymPlanSelectedTypeAsync(UpdateGymPlanSelectedTypeRequest request)
         {
             try
             {
-                var before = _gymPlanSelectedTypeRepository.GetGymPlanSelectedTypeById(request.Id);
+                var before = await _gymPlanSelectedTypeRepository.GetGymPlanSelectedTypeByIdAsync(request.Id);
                 var entity = new GymPlanSelectedType
                 {
                     Id = request.Id,
@@ -92,10 +95,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _gymPlanSelectedTypeRepository.UpdateGymPlanSelectedType(entity);
+                var updated = await _gymPlanSelectedTypeRepository.UpdateGymPlanSelectedTypeAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("GymPlanSelectedType", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("GymPlanSelectedType", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +119,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +130,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteGymPlanSelectedType(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteGymPlanSelectedTypeAsync(Guid id)
         {
             try
             {
-                var deleted = _gymPlanSelectedTypeRepository.DeleteGymPlanSelectedType(id);
+                var deleted = await _gymPlanSelectedTypeRepository.DeleteGymPlanSelectedTypeAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +157,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +168,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<GymPlanSelectedType>> FindGymPlanSelectedTypesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<GymPlanSelectedType>>> FindGymPlanSelectedTypesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _gymPlanSelectedTypeRepository.FindGymPlanSelectedTypesByFields(filters);
+            var entities = await _gymPlanSelectedTypeRepository.FindGymPlanSelectedTypesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<GymPlanSelectedType>>
             {
                 Success = true,

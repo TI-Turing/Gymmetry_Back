@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IDailyHistoryRepository
     {
-        DailyHistory CreateDailyHistory(DailyHistory entity);
-        DailyHistory GetDailyHistoryById(Guid id);
-        IEnumerable<DailyHistory> GetAllDailyHistories();
-        bool UpdateDailyHistory(DailyHistory entity);
-        bool DeleteDailyHistory(Guid id);
-        IEnumerable<DailyHistory> FindDailyHistoriesByFields(Dictionary<string, object> filters);
+        Task<DailyHistory> CreateDailyHistoryAsync(DailyHistory entity);
+        Task<DailyHistory?> GetDailyHistoryByIdAsync(Guid id);
+        Task<IEnumerable<DailyHistory>> GetAllDailyHistoriesAsync();
+        Task<bool> UpdateDailyHistoryAsync(DailyHistory entity);
+        Task<bool> DeleteDailyHistoryAsync(Guid id);
+        Task<IEnumerable<DailyHistory>> FindDailyHistoriesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

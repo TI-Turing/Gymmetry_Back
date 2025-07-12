@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Machine CreateMachine(Machine machine)
+        public async Task<Machine> CreateMachineAsync(Machine machine)
         {
             machine.Id = Guid.NewGuid();
             machine.CreatedAt = DateTime.UtcNow;
             machine.IsActive = true;
             _context.Machines.Add(machine);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return machine;
         }
 
-        public Machine GetMachineById(Guid id)
+        public async Task<Machine?> GetMachineByIdAsync(Guid id)
         {
-            return _context.Machines.FirstOrDefault(m => m.Id == id && m.IsActive);
+            return await _context.Machines.FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
         }
 
-        public IEnumerable<Machine> GetAllMachines()
+        public async Task<IEnumerable<Machine>> GetAllMachinesAsync()
         {
-            return _context.Machines.Where(m => m.IsActive).ToList();
+            return await _context.Machines.Where(m => m.IsActive).ToListAsync();
         }
 
-        public bool UpdateMachine(Machine machine)
+        public async Task<bool> UpdateMachineAsync(Machine machine)
         {
-            var existing = _context.Machines.FirstOrDefault(m => m.Id == machine.Id && m.IsActive);
+            var existing = await _context.Machines.FirstOrDefaultAsync(m => m.Id == machine.Id && m.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(machine);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteMachine(Guid id)
+        public async Task<bool> DeleteMachineAsync(Guid id)
         {
-            var entity = _context.Machines.FirstOrDefault(m => m.Id == id && m.IsActive);
+            var entity = await _context.Machines.FirstOrDefaultAsync(m => m.Id == id && m.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Machine> FindMachinesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Machine>> FindMachinesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Machine), "m");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<Machine, bool>>(predicate, parameter);
-            return _context.Machines.Where(lambda).ToList();
+            return await _context.Machines.Where(lambda).ToListAsync();
         }
     }
 }

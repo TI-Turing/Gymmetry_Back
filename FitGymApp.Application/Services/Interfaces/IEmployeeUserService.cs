@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.EmployeeUser.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IEmployeeUserService
     {
-        ApplicationResponse<EmployeeUser> CreateEmployeeUser(AddEmployeeUserRequest request);
-        ApplicationResponse<EmployeeUser> GetEmployeeUserById(Guid id);
-        ApplicationResponse<IEnumerable<EmployeeUser>> GetAllEmployeeUsers();
-        ApplicationResponse<bool> UpdateEmployeeUser(UpdateEmployeeUserRequest request);
-        ApplicationResponse<bool> DeleteEmployeeUser(Guid id);
-        ApplicationResponse<IEnumerable<EmployeeUser>> FindEmployeeUsersByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<EmployeeUser>> CreateEmployeeUserAsync(AddEmployeeUserRequest request);
+        Task<ApplicationResponse<EmployeeUser>> GetEmployeeUserByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<EmployeeUser>>> GetAllEmployeeUsersAsync();
+        Task<ApplicationResponse<bool>> UpdateEmployeeUserAsync(UpdateEmployeeUserRequest request);
+        Task<ApplicationResponse<bool>> DeleteEmployeeUserAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<EmployeeUser>>> FindEmployeeUsersByFieldsAsync(Dictionary<string, object> filters);
     }
 }

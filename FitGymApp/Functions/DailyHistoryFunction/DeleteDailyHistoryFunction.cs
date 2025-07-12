@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
             _service = service;
         }
 
-        [Function("DeleteDailyHistoryFunction")]
+        [Function("DailyHistory_DeleteDailyHistoryFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "dailyhistory/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
             _logger.LogInformation($"Procesando solicitud de borrado para DailyHistory {id}");
             try
             {
-                var result = _service.DeleteDailyHistory(id);
+                var result = await _service.DeleteDailyHistoryAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

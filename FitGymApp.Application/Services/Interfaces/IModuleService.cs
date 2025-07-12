@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Module.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IModuleService
     {
-        ApplicationResponse<Module> CreateModule(AddModuleRequest request);
-        ApplicationResponse<Module> GetModuleById(Guid id);
-        ApplicationResponse<IEnumerable<Module>> GetAllModules();
-        ApplicationResponse<bool> UpdateModule(UpdateModuleRequest request);
-        ApplicationResponse<bool> DeleteModule(Guid id);
-        ApplicationResponse<IEnumerable<Module>> FindModulesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Module>> CreateModuleAsync(AddModuleRequest request);
+        Task<ApplicationResponse<Module>> GetModuleByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Module>>> GetAllModulesAsync();
+        Task<ApplicationResponse<bool>> UpdateModuleAsync(UpdateModuleRequest request);
+        Task<ApplicationResponse<bool>> DeleteModuleAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Module>>> FindModulesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Diet.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<Diet> CreateDiet(AddDietRequest request)
+        public async Task<ApplicationResponse<Diet>> CreateDietAsync(AddDietRequest request)
         {
             try
             {
                 var diet = _mapper.Map<Diet>(request);
-                var created = _dietRepository.CreateDiet(diet);
+                var created = await _dietRepository.CreateDietAsync(diet);
                 return new ApplicationResponse<Diet>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Diet>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Diet> GetDietById(Guid id)
+        public async Task<ApplicationResponse<Diet>> GetDietByIdAsync(Guid id)
         {
-            var diet = _dietRepository.GetDietById(id);
+            var diet = await _dietRepository.GetDietByIdAsync(id);
             if (diet == null)
             {
                 return new ApplicationResponse<Diet>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Diet>> GetAllDiets()
+        public async Task<ApplicationResponse<IEnumerable<Diet>>> GetAllDietsAsync()
         {
-            var diets = _dietRepository.GetAllDiets();
+            var diets = await _dietRepository.GetAllDietsAsync();
             return new ApplicationResponse<IEnumerable<Diet>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateDiet(UpdateDietRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateDietAsync(UpdateDietRequest request)
         {
             try
             {
-                var dietBefore = _dietRepository.GetDietById(request.Id);
+                var dietBefore = await _dietRepository.GetDietByIdAsync(request.Id);
                 var diet = _mapper.Map<Diet>(request);
-                var updated = _dietRepository.UpdateDiet(diet);
+                var updated = await _dietRepository.UpdateDietAsync(diet);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Diet", dietBefore, diet.Id);
+                    await _logChangeService.LogChangeAsync("Diet", dietBefore, diet.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteDiet(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteDietAsync(Guid id)
         {
             try
             {
-                var deleted = _dietRepository.DeleteDiet(id);
+                var deleted = await _dietRepository.DeleteDietAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Diet>> FindDietsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Diet>>> FindDietsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var diets = _dietRepository.FindDietsByFields(filters);
+            var diets = await _dietRepository.FindDietsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Diet>>
             {
                 Success = true,

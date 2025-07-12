@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IBrandRepository
     {
-        Brand CreateBrand(Brand brand);
-        Brand GetBrandById(Guid id);
-        IEnumerable<Brand> GetAllBrands();
-        bool UpdateBrand(Brand brand);
-        bool DeleteBrand(Guid id);
-        IEnumerable<Brand> FindBrandsByFields(Dictionary<string, object> filters);
+        Task<Brand> CreateBrandAsync(Brand brand);
+        Task<Brand?> GetBrandByIdAsync(Guid id);
+        Task<IEnumerable<Brand>> GetAllBrandsAsync();
+        Task<bool> UpdateBrandAsync(Brand brand);
+        Task<bool> DeleteBrandAsync(Guid id);
+        Task<IEnumerable<Brand>> FindBrandsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

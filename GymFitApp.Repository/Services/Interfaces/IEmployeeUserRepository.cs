@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IEmployeeUserRepository
     {
-        EmployeeUser CreateEmployeeUser(EmployeeUser entity);
-        EmployeeUser GetEmployeeUserById(Guid id);
-        IEnumerable<EmployeeUser> GetAllEmployeeUsers();
-        bool UpdateEmployeeUser(EmployeeUser entity);
-        bool DeleteEmployeeUser(Guid id);
-        IEnumerable<EmployeeUser> FindEmployeeUsersByFields(Dictionary<string, object> filters);
+        Task<EmployeeUser> CreateEmployeeUserAsync(EmployeeUser entity);
+        Task<EmployeeUser?> GetEmployeeUserByIdAsync(Guid id);
+        Task<IEnumerable<EmployeeUser>> GetAllEmployeeUsersAsync();
+        Task<bool> UpdateEmployeeUserAsync(EmployeeUser entity);
+        Task<bool> DeleteEmployeeUserAsync(Guid id);
+        Task<IEnumerable<EmployeeUser>> FindEmployeeUsersByFieldsAsync(Dictionary<string, object> filters);
     }
 }

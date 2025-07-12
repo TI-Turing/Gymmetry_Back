@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Brand CreateBrand(Brand brand)
+        public async Task<Brand> CreateBrandAsync(Brand brand)
         {
             brand.Id = Guid.NewGuid();
             brand.CreatedAt = DateTime.UtcNow;
             brand.IsActive = true;
             _context.Brands.Add(brand);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return brand;
         }
 
-        public Brand GetBrandById(Guid id)
+        public async Task<Brand?> GetBrandByIdAsync(Guid id)
         {
-            return _context.Brands.FirstOrDefault(b => b.Id == id && b.IsActive);
+            return await _context.Brands.FirstOrDefaultAsync(b => b.Id == id && b.IsActive);
         }
 
-        public IEnumerable<Brand> GetAllBrands()
+        public async Task<IEnumerable<Brand>> GetAllBrandsAsync()
         {
-            return _context.Brands.Where(b => b.IsActive).ToList();
+            return await _context.Brands.Where(b => b.IsActive).ToListAsync();
         }
 
-        public bool UpdateBrand(Brand brand)
+        public async Task<bool> UpdateBrandAsync(Brand brand)
         {
-            var existing = _context.Brands.FirstOrDefault(b => b.Id == brand.Id && b.IsActive);
+            var existing = await _context.Brands.FirstOrDefaultAsync(b => b.Id == brand.Id && b.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(brand);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteBrand(Guid id)
+        public async Task<bool> DeleteBrandAsync(Guid id)
         {
-            var entity = _context.Brands.FirstOrDefault(b => b.Id == id && b.IsActive);
+            var entity = await _context.Brands.FirstOrDefaultAsync(b => b.Id == id && b.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Brand> FindBrandsByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Brand>> FindBrandsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Brand), "b");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<Brand, bool>>(predicate, parameter);
-            return _context.Brands.Where(lambda).ToList();
+            return await _context.Brands.Where(lambda).ToListAsync();
         }
     }
 }

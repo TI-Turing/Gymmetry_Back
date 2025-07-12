@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.BranchFunction
             _service = service;
         }
 
-        [Function("DeleteBranchFunction")]
+        [Function("Branch_DeleteBranchFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "branch/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.BranchFunction
             _logger.LogInformation($"Procesando solicitud de borrado para Branch {id}");
             try
             {
-                var result = _service.DeleteBranch(id);
+                var result = await _service.DeleteBranchAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

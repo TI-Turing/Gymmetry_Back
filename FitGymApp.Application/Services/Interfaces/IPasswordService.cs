@@ -4,7 +4,7 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IPasswordService
     {
-        ApplicationResponse<string> HashPassword(string password);
-        ApplicationResponse<bool> VerifyPassword(string password, string hashedPassword);
+        Task<ApplicationResponse<string>> HashPasswordAsync(string password);
+        Task<ApplicationResponse<bool>> VerifyPasswordAsync(string password, string hashedPassword);
     }
 }

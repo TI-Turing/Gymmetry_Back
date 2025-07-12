@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.LogUninstall.Request;
@@ -25,12 +25,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<LogUninstall> CreateLogUninstall(AddLogUninstallRequest request)
+        public async Task<ApplicationResponse<LogUninstall>> CreateLogUninstallAsync(AddLogUninstallRequest request)
         {
             try
             {
                 var entity = _mapper.Map<LogUninstall>(request);
-                var created = _logUninstallRepository.CreateLogUninstall(entity);
+                var created = await _logUninstallRepository.CreateLogUninstallAsync(entity);
                 return new ApplicationResponse<LogUninstall>
                 {
                     Success = true,
@@ -40,7 +40,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<LogUninstall>
                 {
                     Success = false,
@@ -50,9 +50,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<LogUninstall> GetLogUninstallById(Guid id)
+        public async Task<ApplicationResponse<LogUninstall>> GetLogUninstallByIdAsync(Guid id)
         {
-            var entity = _logUninstallRepository.GetLogUninstallById(id);
+            var entity = await _logUninstallRepository.GetLogUninstallByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<LogUninstall>
@@ -69,9 +69,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<LogUninstall>> GetAllLogUninstalls()
+        public async Task<ApplicationResponse<IEnumerable<LogUninstall>>> GetAllLogUninstallsAsync()
         {
-            var entities = _logUninstallRepository.GetAllLogUninstalls();
+            var entities = await _logUninstallRepository.GetAllLogUninstallsAsync();
             return new ApplicationResponse<IEnumerable<LogUninstall>>
             {
                 Success = true,
@@ -79,16 +79,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateLogUninstall(UpdateLogUninstallRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateLogUninstallAsync(UpdateLogUninstallRequest request)
         {
             try
             {
-                var before = _logUninstallRepository.GetLogUninstallById(request.Id);
+                var before = await _logUninstallRepository.GetLogUninstallByIdAsync(request.Id);
                 var entity = _mapper.Map<LogUninstall>(request);
-                var updated = _logUninstallRepository.UpdateLogUninstall(entity);
+                var updated = await _logUninstallRepository.UpdateLogUninstallAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("LogUninstall", before, entity.Id);
+                    _logChangeService.LogChangeAsync("LogUninstall", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +109,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +120,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteLogUninstall(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteLogUninstallAsync(Guid id)
         {
             try
             {
-                var deleted = _logUninstallRepository.DeleteLogUninstall(id);
+                var deleted = await _logUninstallRepository.DeleteLogUninstallAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +147,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +158,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<LogUninstall>> FindLogUninstallsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<LogUninstall>>> FindLogUninstallsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _logUninstallRepository.FindLogUninstallsByFields(filters);
+            var entities = await _logUninstallRepository.FindLogUninstallsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<LogUninstall>>
             {
                 Success = true,

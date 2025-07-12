@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.EmployeeTypeFunction
             _service = service;
         }
 
-        [Function("GetEmployeeTypeByIdFunction")]
+        [Function("EmployeeType_GetEmployeeTypeByIdFunction")]
         public async Task<ApiResponse<EmployeeType>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "employeetype/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.EmployeeTypeFunction
             _logger.LogInformation($"Consultando EmployeeType por Id: {id}");
             try
             {
-                var result = _service.GetEmployeeTypeById(id);
+                var result = await _service.GetEmployeeTypeByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<EmployeeType>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.EmployeeTypeFunction
             }
         }
 
-        [Function("GetAllEmployeeTypesFunction")]
+        [Function("EmployeeType_GetAllEmployeeTypesFunction")]
         public async Task<ApiResponse<IEnumerable<EmployeeType>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "employeetypes")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.EmployeeTypeFunction
             _logger.LogInformation("Consultando todos los EmployeeTypes activos.");
             try
             {
-                var result = _service.GetAllEmployeeTypes();
+                var result = await _service.GetAllEmployeeTypesAsync();
                 return new ApiResponse<IEnumerable<EmployeeType>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.EmployeeTypeFunction
             }
         }
 
-        [Function("FindEmployeeTypesByFieldsFunction")]
+        [Function("EmployeeType_FindEmployeeTypesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<EmployeeType>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "employeetypes/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.EmployeeTypeFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindEmployeeTypesByFields(filters);
+                var result = await _service.FindEmployeeTypesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<EmployeeType>>
                 {
                     Success = result.Success,

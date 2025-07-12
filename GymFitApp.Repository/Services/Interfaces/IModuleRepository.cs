@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IModuleRepository
     {
-        Module CreateModule(Module entity);
-        Module GetModuleById(Guid id);
-        IEnumerable<Module> GetAllModules();
-        bool UpdateModule(Module entity);
-        bool DeleteModule(Guid id);
-        IEnumerable<Module> FindModulesByFields(Dictionary<string, object> filters);
+        Task<Module> CreateModuleAsync(Module entity);
+        Task<Module?> GetModuleByIdAsync(Guid id);
+        Task<IEnumerable<Module>> GetAllModulesAsync();
+        Task<bool> UpdateModuleAsync(Module entity);
+        Task<bool> DeleteModuleAsync(Guid id);
+        Task<IEnumerable<Module>> FindModulesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

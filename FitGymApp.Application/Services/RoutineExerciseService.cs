@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.RoutineExercise.Request;
@@ -23,15 +24,14 @@ namespace FitGymApp.Application.Services
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
             _mapper = mapper;
-            
         }
 
-        public ApplicationResponse<RoutineExercise> CreateRoutineExercise(AddRoutineExerciseRequest request)
+        public async Task<ApplicationResponse<RoutineExercise>> CreateRoutineExerciseAsync(AddRoutineExerciseRequest request)
         {
             try
             {
                 var entity = _mapper.Map<RoutineExercise>(request);
-                var created = _routineExerciseRepository.CreateRoutineExercise(entity);
+                var created = await _routineExerciseRepository.CreateRoutineExerciseAsync(entity);
                 return new ApplicationResponse<RoutineExercise>
                 {
                     Success = true,
@@ -41,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<RoutineExercise>
                 {
                     Success = false,
@@ -51,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<RoutineExercise> GetRoutineExerciseById(Guid id)
+        public async Task<ApplicationResponse<RoutineExercise>> GetRoutineExerciseByIdAsync(Guid id)
         {
-            var entity = _routineExerciseRepository.GetRoutineExerciseById(id);
+            var entity = await _routineExerciseRepository.GetRoutineExerciseByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<RoutineExercise>
@@ -70,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<RoutineExercise>> GetAllRoutineExercises()
+        public async Task<ApplicationResponse<IEnumerable<RoutineExercise>>> GetAllRoutineExercisesAsync()
         {
-            var entities = _routineExerciseRepository.GetAllRoutineExercises();
+            var entities = await _routineExerciseRepository.GetAllRoutineExercisesAsync();
             return new ApplicationResponse<IEnumerable<RoutineExercise>>
             {
                 Success = true,
@@ -80,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateRoutineExercise(UpdateRoutineExerciseRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateRoutineExerciseAsync(UpdateRoutineExerciseRequest request)
         {
             try
             {
-                var before = _routineExerciseRepository.GetRoutineExerciseById(request.Id);
+                var before = await _routineExerciseRepository.GetRoutineExerciseByIdAsync(request.Id);
                 var entity = _mapper.Map<RoutineExercise>(request);
-                var updated = _routineExerciseRepository.UpdateRoutineExercise(entity);
+                var updated = await _routineExerciseRepository.UpdateRoutineExerciseAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("RoutineExercise", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("RoutineExercise", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -110,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -121,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteRoutineExercise(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteRoutineExerciseAsync(Guid id)
         {
             try
             {
-                var deleted = _routineExerciseRepository.DeleteRoutineExercise(id);
+                var deleted = await _routineExerciseRepository.DeleteRoutineExerciseAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -148,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -159,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<RoutineExercise>> FindRoutineExercisesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<RoutineExercise>>> FindRoutineExercisesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _routineExerciseRepository.FindRoutineExercisesByFields(filters);
+            var entities = await _routineExerciseRepository.FindRoutineExercisesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<RoutineExercise>>
             {
                 Success = true,

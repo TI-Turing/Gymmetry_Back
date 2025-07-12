@@ -1,100 +1,109 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
-using FitGymApp.Domain.DTO.Gym.Request;
+using FitGymApp.Domain.DTO.Schedule.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
-using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
-    public class GymService : IGymService
+    public class ScheduleService : IScheduleService
     {
-        private readonly IGymRepository _gymRepository;
+        private readonly IScheduleRepository _scheduleRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
-        private readonly IMapper _mapper;
 
-        public GymService(IGymRepository gymRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
+        public ScheduleService(IScheduleRepository scheduleRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
         {
-            _gymRepository = gymRepository;
+            _scheduleRepository = scheduleRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
-            _mapper = mapper;
         }
 
-        public async Task<ApplicationResponse<Gym>> CreateGymAsync(AddGymRequest request)
+        public async Task<ApplicationResponse<Schedule>> CreateScheduleAsync(AddScheduleRequest request)
         {
             try
             {
-                var entity = _mapper.Map<Gym>(request);
-                var created = await _gymRepository.CreateGymAsync(entity);
-                return new ApplicationResponse<Gym>
+                var entity = new Schedule
+                {
+                    // Map properties from request to entity here
+                    // Example:
+                    // Name = request.Name,
+                    // StartTime = request.StartTime,
+                    // EndTime = request.EndTime,
+                    // ...
+                };
+                var created = await _scheduleRepository.CreateScheduleAsync(entity);
+                return new ApplicationResponse<Schedule>
                 {
                     Success = true,
-                    Message = "Gimnasio creado correctamente.",
+                    Message = "Horario creado correctamente.",
                     Data = created
                 };
             }
             catch (Exception ex)
             {
                 await _logErrorService.LogErrorAsync(ex);
-                return new ApplicationResponse<Gym>
+                return new ApplicationResponse<Schedule>
                 {
                     Success = false,
-                    Message = "Error técnico al crear el gimnasio.",
+                    Message = "Error técnico al crear el horario.",
                     ErrorCode = "TechnicalError"
                 };
             }
         }
 
-        public async Task<ApplicationResponse<Gym>> GetGymByIdAsync(Guid id)
+        public async Task<ApplicationResponse<Schedule>> GetScheduleByIdAsync(Guid id)
         {
-            var entity = await _gymRepository.GetGymByIdAsync(id);
+            var entity = await _scheduleRepository.GetScheduleByIdAsync(id);
             if (entity == null)
             {
-                return new ApplicationResponse<Gym>
+                return new ApplicationResponse<Schedule>
                 {
                     Success = false,
-                    Message = "Gimnasio no encontrado.",
+                    Message = "Horario no encontrado.",
                     ErrorCode = "NotFound"
                 };
             }
-            return new ApplicationResponse<Gym>
+            return new ApplicationResponse<Schedule>
             {
                 Success = true,
                 Data = entity
             };
         }
 
-        public async Task<ApplicationResponse<IEnumerable<Gym>>> GetAllGymsAsync()
+        public async Task<ApplicationResponse<IEnumerable<Schedule>>> GetAllSchedulesAsync()
         {
-            var entities = await _gymRepository.GetAllGymsAsync();
-            return new ApplicationResponse<IEnumerable<Gym>>
+            var entities = await _scheduleRepository.GetAllSchedulesAsync();
+            return new ApplicationResponse<IEnumerable<Schedule>>
             {
                 Success = true,
                 Data = entities
             };
         }
 
-        public async Task<ApplicationResponse<bool>> UpdateGymAsync(UpdateGymRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateScheduleAsync(UpdateScheduleRequest request)
         {
             try
             {
-                var before = await _gymRepository.GetGymByIdAsync(request.Id);
-                var entity = _mapper.Map<Gym>(request);
-                var updated = await _gymRepository.UpdateGymAsync(entity);
+                var before = await _scheduleRepository.GetScheduleByIdAsync(request.Id);
+                var entity = new Schedule
+                {
+                    Id = request.Id,
+                    // Map other properties from request to entity here
+                    // ...
+                };
+                var updated = await _scheduleRepository.UpdateScheduleAsync(entity);
                 if (updated)
                 {
-                    await _logChangeService.LogChangeAsync("Gym", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("Schedule", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
                         Data = true,
-                        Message = "Gimnasio actualizado correctamente."
+                        Message = "Horario actualizado correctamente."
                     };
                 }
                 else
@@ -103,7 +112,7 @@ namespace FitGymApp.Application.Services
                     {
                         Success = false,
                         Data = false,
-                        Message = "No se pudo actualizar el gimnasio (no encontrado o inactivo).",
+                        Message = "No se pudo actualizar el horario (no encontrado o inactivo).",
                         ErrorCode = "NotFound"
                     };
                 }
@@ -115,24 +124,24 @@ namespace FitGymApp.Application.Services
                 {
                     Success = false,
                     Data = false,
-                    Message = "Error técnico al actualizar el gimnasio.",
+                    Message = "Error técnico al actualizar el horario.",
                     ErrorCode = "TechnicalError"
                 };
             }
         }
 
-        public async Task<ApplicationResponse<bool>> DeleteGymAsync(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteScheduleAsync(Guid id)
         {
             try
             {
-                var deleted = await _gymRepository.DeleteGymAsync(id);
+                var deleted = await _scheduleRepository.DeleteScheduleAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
                         Data = true,
-                        Message = "Gimnasio eliminado correctamente."
+                        Message = "Horario eliminado correctamente."
                     };
                 }
                 else
@@ -141,7 +150,7 @@ namespace FitGymApp.Application.Services
                     {
                         Success = false,
                         Data = false,
-                        Message = "Gimnasio no encontrado o ya eliminado.",
+                        Message = "Horario no encontrado o ya eliminado.",
                         ErrorCode = "NotFound"
                     };
                 }
@@ -153,16 +162,16 @@ namespace FitGymApp.Application.Services
                 {
                     Success = false,
                     Data = false,
-                    Message = "Error técnico al eliminar el gimnasio.",
+                    Message = "Error técnico al eliminar el horario.",
                     ErrorCode = "TechnicalError"
                 };
             }
         }
 
-        public async Task<ApplicationResponse<IEnumerable<Gym>>> FindGymsByFieldsAsync(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Schedule>>> FindSchedulesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = await _gymRepository.FindGymsByFieldsAsync(filters);
-            return new ApplicationResponse<IEnumerable<Gym>>
+            var entities = await _scheduleRepository.FindSchedulesByFieldsAsync(filters);
+            return new ApplicationResponse<IEnumerable<Schedule>>
             {
                 Success = true,
                 Data = entities

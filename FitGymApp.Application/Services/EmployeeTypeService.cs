@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.EmployeeType.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<EmployeeType> CreateEmployeeType(AddEmployeeTypeRequest request)
+        public async Task<ApplicationResponse<EmployeeType>> CreateEmployeeTypeAsync(AddEmployeeTypeRequest request)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace FitGymApp.Application.Services
                     Name = request.Name,
                     Ip = request.Ip
                 };
-                var created = _employeeTypeRepository.CreateEmployeeType(entity);
+                var created = await _employeeTypeRepository.CreateEmployeeTypeAsync(entity);
                 return new ApplicationResponse<EmployeeType>
                 {
                     Success = true,
@@ -41,7 +42,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<EmployeeType>
                 {
                     Success = false,
@@ -51,9 +52,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<EmployeeType> GetEmployeeTypeById(Guid id)
+        public async Task<ApplicationResponse<EmployeeType>> GetEmployeeTypeByIdAsync(Guid id)
         {
-            var entity = _employeeTypeRepository.GetEmployeeTypeById(id);
+            var entity = await _employeeTypeRepository.GetEmployeeTypeByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<EmployeeType>
@@ -70,9 +71,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<EmployeeType>> GetAllEmployeeTypes()
+        public async Task<ApplicationResponse<IEnumerable<EmployeeType>>> GetAllEmployeeTypesAsync()
         {
-            var entities = _employeeTypeRepository.GetAllEmployeeTypes();
+            var entities = await _employeeTypeRepository.GetAllEmployeeTypesAsync();
             return new ApplicationResponse<IEnumerable<EmployeeType>>
             {
                 Success = true,
@@ -80,11 +81,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateEmployeeType(UpdateEmployeeTypeRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateEmployeeTypeAsync(UpdateEmployeeTypeRequest request)
         {
             try
             {
-                var before = _employeeTypeRepository.GetEmployeeTypeById(request.Id);
+                var before = await _employeeTypeRepository.GetEmployeeTypeByIdAsync(request.Id);
                 var entity = new EmployeeType
                 {
                     Id = request.Id,
@@ -92,10 +93,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _employeeTypeRepository.UpdateEmployeeType(entity);
+                var updated = await _employeeTypeRepository.UpdateEmployeeTypeAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("EmployeeType", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("EmployeeType", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +117,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +128,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteEmployeeType(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteEmployeeTypeAsync(Guid id)
         {
             try
             {
-                var deleted = _employeeTypeRepository.DeleteEmployeeType(id);
+                var deleted = await _employeeTypeRepository.DeleteEmployeeTypeAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +155,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +166,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<EmployeeType>> FindEmployeeTypesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<EmployeeType>>> FindEmployeeTypesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _employeeTypeRepository.FindEmployeeTypesByFields(filters);
+            var entities = await _employeeTypeRepository.FindEmployeeTypesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<EmployeeType>>
             {
                 Success = true,

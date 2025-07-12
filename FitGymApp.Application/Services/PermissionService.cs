@@ -22,7 +22,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<Permission> CreatePermission(AddPermissionRequest request)
+        public async Task<ApplicationResponse<Permission>> CreatePermissionAsync(AddPermissionRequest request)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace FitGymApp.Application.Services
                     UserTypeId = request.UserTypeId,
                     UserId = request.UserId
                 };
-                var created = _permissionRepository.CreatePermission(entity);
+                var created = await _permissionRepository.CreatePermissionAsync(entity);
                 return new ApplicationResponse<Permission>
                 {
                     Success = true,
@@ -48,7 +48,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Permission>
                 {
                     Success = false,
@@ -58,9 +58,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Permission> GetPermissionById(Guid id)
+        public async Task<ApplicationResponse<Permission>> GetPermissionByIdAsync(Guid id)
         {
-            var entity = _permissionRepository.GetPermissionById(id);
+            var entity = await _permissionRepository.GetPermissionByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<Permission>
@@ -77,9 +77,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Permission>> GetAllPermissions()
+        public async Task<ApplicationResponse<IEnumerable<Permission>>> GetAllPermissionsAsync()
         {
-            var entities = _permissionRepository.GetAllPermissions();
+            var entities = await _permissionRepository.GetAllPermissionsAsync();
             return new ApplicationResponse<IEnumerable<Permission>>
             {
                 Success = true,
@@ -87,11 +87,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdatePermission(UpdatePermissionRequest request)
+        public async Task<ApplicationResponse<bool>> UpdatePermissionAsync(UpdatePermissionRequest request)
         {
             try
             {
-                var before = _permissionRepository.GetPermissionById(request.Id);
+                var before = await _permissionRepository.GetPermissionByIdAsync(request.Id);
                 var entity = new Permission
                 {
                     Id = request.Id,
@@ -105,10 +105,10 @@ namespace FitGymApp.Application.Services
                     UserTypeId = request.UserTypeId,
                     UserId = request.UserId
                 };
-                var updated = _permissionRepository.UpdatePermission(entity);
+                var updated = await _permissionRepository.UpdatePermissionAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Permission", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("Permission", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -129,7 +129,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -140,11 +140,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeletePermission(Guid id)
+        public async Task<ApplicationResponse<bool>> DeletePermissionAsync(Guid id)
         {
             try
             {
-                var deleted = _permissionRepository.DeletePermission(id);
+                var deleted = await _permissionRepository.DeletePermissionAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -167,7 +167,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -178,9 +178,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Permission>> FindPermissionsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Permission>>> FindPermissionsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _permissionRepository.FindPermissionsByFields(filters);
+            var entities = await _permissionRepository.FindPermissionsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Permission>>
             {
                 Success = true,

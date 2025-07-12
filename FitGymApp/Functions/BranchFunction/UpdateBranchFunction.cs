@@ -26,7 +26,7 @@ public class UpdateBranchFunction
         _service = service;
     }
 
-    [Function("UpdateBranchFunction")]
+    [Function("Branch_UpdateBranchFunction")]
     public async Task<ApiResponse<Guid>> UpdateAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "branch/update")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -45,11 +45,10 @@ public class UpdateBranchFunction
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<UpdateBranchRequest>(requestBody);
-
             var validationResult = ModelValidator.ValidateModel<UpdateBranchRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
             if (validationResult is not null) return validationResult;
 
-            var result = _service.UpdateBranch(objRequest);
+            var result = await _service.UpdateBranchAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

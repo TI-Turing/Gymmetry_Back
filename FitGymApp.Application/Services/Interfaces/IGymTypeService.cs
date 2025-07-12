@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.GymType.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IGymTypeService
     {
-        ApplicationResponse<GymType> CreateGymType(AddGymTypeRequest request);
-        ApplicationResponse<GymType> GetGymTypeById(Guid id);
-        ApplicationResponse<IEnumerable<GymType>> GetAllGymTypes();
-        ApplicationResponse<bool> UpdateGymType(UpdateGymTypeRequest request);
-        ApplicationResponse<bool> DeleteGymType(Guid id);
-        ApplicationResponse<IEnumerable<GymType>> FindGymTypesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<GymType>> CreateGymTypeAsync(AddGymTypeRequest request);
+        Task<ApplicationResponse<GymType>> GetGymTypeByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<GymType>>> GetAllGymTypesAsync();
+        Task<ApplicationResponse<bool>> UpdateGymTypeAsync(UpdateGymTypeRequest request);
+        Task<ApplicationResponse<bool>> DeleteGymTypeAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<GymType>>> FindGymTypesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

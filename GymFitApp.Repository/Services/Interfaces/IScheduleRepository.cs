@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IScheduleRepository
     {
-        Schedule CreateSchedule(Schedule entity);
-        Schedule GetScheduleById(Guid id);
-        IEnumerable<Schedule> GetAllSchedules();
-        bool UpdateSchedule(Schedule entity);
-        bool DeleteSchedule(Guid id);
-        IEnumerable<Schedule> FindSchedulesByFields(Dictionary<string, object> filters);
+        Task<Schedule> CreateScheduleAsync(Schedule entity);
+        Task<Schedule?> GetScheduleByIdAsync(Guid id);
+        Task<IEnumerable<Schedule>> GetAllSchedulesAsync();
+        Task<bool> UpdateScheduleAsync(Schedule entity);
+        Task<bool> DeleteScheduleAsync(Guid id);
+        Task<IEnumerable<Schedule>> FindSchedulesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

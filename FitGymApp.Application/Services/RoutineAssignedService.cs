@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.RoutineAssigned.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<RoutineAssigned> CreateRoutineAssigned(AddRoutineAssignedRequest request)
+        public async Task<ApplicationResponse<RoutineAssigned>> CreateRoutineAssignedAsync(AddRoutineAssignedRequest request)
         {
             try
             {
@@ -33,7 +34,7 @@ namespace FitGymApp.Application.Services
                     IsActive = request.IsActive,
                     UserId = request.UserId
                 };
-                var created = _routineAssignedRepository.CreateRoutineAssigned(entity);
+                var created = await _routineAssignedRepository.CreateRoutineAssignedAsync(entity);
                 return new ApplicationResponse<RoutineAssigned>
                 {
                     Success = true,
@@ -43,7 +44,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<RoutineAssigned>
                 {
                     Success = false,
@@ -53,9 +54,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<RoutineAssigned> GetRoutineAssignedById(Guid id)
+        public async Task<ApplicationResponse<RoutineAssigned>> GetRoutineAssignedByIdAsync(Guid id)
         {
-            var entity = _routineAssignedRepository.GetRoutineAssignedById(id);
+            var entity = await _routineAssignedRepository.GetRoutineAssignedByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<RoutineAssigned>
@@ -72,9 +73,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<RoutineAssigned>> GetAllRoutineAssigneds()
+        public async Task<ApplicationResponse<IEnumerable<RoutineAssigned>>> GetAllRoutineAssignedsAsync()
         {
-            var entities = _routineAssignedRepository.GetAllRoutineAssigneds();
+            var entities = await _routineAssignedRepository.GetAllRoutineAssignedsAsync();
             return new ApplicationResponse<IEnumerable<RoutineAssigned>>
             {
                 Success = true,
@@ -82,11 +83,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateRoutineAssigned(UpdateRoutineAssignedRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateRoutineAssignedAsync(UpdateRoutineAssignedRequest request)
         {
             try
             {
-                var before = _routineAssignedRepository.GetRoutineAssignedById(request.Id);
+                var before = await _routineAssignedRepository.GetRoutineAssignedByIdAsync(request.Id);
                 var entity = new RoutineAssigned
                 {
                     Id = request.Id,
@@ -95,10 +96,10 @@ namespace FitGymApp.Application.Services
                     IsActive = request.IsActive,
                     UserId = request.UserId
                 };
-                var updated = _routineAssignedRepository.UpdateRoutineAssigned(entity);
+                var updated = await _routineAssignedRepository.UpdateRoutineAssignedAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("RoutineAssigned", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("RoutineAssigned", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -119,7 +120,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -130,11 +131,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteRoutineAssigned(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteRoutineAssignedAsync(Guid id)
         {
             try
             {
-                var deleted = _routineAssignedRepository.DeleteRoutineAssigned(id);
+                var deleted = await _routineAssignedRepository.DeleteRoutineAssignedAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -157,7 +158,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -168,9 +169,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<RoutineAssigned>> FindRoutineAssignedsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<RoutineAssigned>>> FindRoutineAssignedsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _routineAssignedRepository.FindRoutineAssignedsByFields(filters);
+            var entities = await _routineAssignedRepository.FindRoutineAssignedsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<RoutineAssigned>>
             {
                 Success = true,

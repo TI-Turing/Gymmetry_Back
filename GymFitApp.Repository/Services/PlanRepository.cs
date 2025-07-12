@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,59 +17,60 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Plan CreatePlan(Plan plan)
+        public async Task<Plan> CreatePlanAsync(Plan plan)
         {
             plan.Id = Guid.NewGuid();
             plan.CreatedAt = DateTime.UtcNow;
             plan.IsActive = true;
-            _context.Plans.Add(plan);
-            _context.SaveChanges();
+            await _context.Plans.AddAsync(plan);
+            await _context.SaveChangesAsync();
             return plan;
         }
 
-        public Plan GetPlanById(Guid id)
+        public async Task<Plan> GetPlanByIdAsync(Guid id)
         {
-            return _context.Plans.FirstOrDefault(p => p.Id == id && p.IsActive);
+            return await _context.Plans.FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
         }
 
-        public IEnumerable<Plan> GetAllPlans()
+        public async Task<IEnumerable<Plan>> GetAllPlansAsync()
         {
-            return _context.Plans.Where(p => p.IsActive).ToList();
+            return await _context.Plans.Where(p => p.IsActive).ToListAsync();
         }
 
-        public bool UpdatePlan(Plan plan)
+        public async Task<bool> UpdatePlanAsync(Plan plan)
         {
-            var existing = _context.Plans.FirstOrDefault(p => p.Id == plan.Id && p.IsActive);
+            var existing = await _context.Plans.FirstOrDefaultAsync(p => p.Id == plan.Id && p.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(plan);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeletePlan(Guid id)
+        public async Task<bool> DeletePlanAsync(Guid id)
         {
-            var entity = _context.Plans.FirstOrDefault(p => p.Id == id && p.IsActive);
+            var entity = await _context.Plans.FirstOrDefaultAsync(p => p.Id == id && p.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Plan> FindPlansByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Plan>> FindPlansByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Plan), "p");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(Plan.IsActive)),
                 Expression.Constant(true)
             );
+
             foreach (var filter in filters)
             {
                 var property = typeof(Plan).GetProperty(filter.Key);
@@ -77,8 +80,9 @@ namespace FitGymApp.Repository.Services
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }
+
             var lambda = Expression.Lambda<Func<Plan, bool>>(predicate, parameter);
-            return _context.Plans.Where(lambda).ToList();
+            return await _context.Plans.Where(lambda).ToListAsync();
         }
     }
 }

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,59 +16,60 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public LogUninstall CreateLogUninstall(LogUninstall entity)
+        public async Task<LogUninstall> CreateLogUninstallAsync(LogUninstall entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            _context.LogUninstalls.Add(entity);
-            _context.SaveChanges();
+            await _context.LogUninstalls.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public LogUninstall GetLogUninstallById(Guid id)
+        public async Task<LogUninstall> GetLogUninstallByIdAsync(Guid id)
         {
-            return _context.LogUninstalls.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.LogUninstalls.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<LogUninstall> GetAllLogUninstalls()
+        public async Task<IEnumerable<LogUninstall>> GetAllLogUninstallsAsync()
         {
-            return _context.LogUninstalls.Where(e => e.IsActive).ToList();
+            return await _context.LogUninstalls.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateLogUninstall(LogUninstall entity)
+        public async Task<bool> UpdateLogUninstallAsync(LogUninstall entity)
         {
-            var existing = _context.LogUninstalls.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.LogUninstalls.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteLogUninstall(Guid id)
+        public async Task<bool> DeleteLogUninstallAsync(Guid id)
         {
-            var entity = _context.LogUninstalls.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.LogUninstalls.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<LogUninstall> FindLogUninstallsByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<LogUninstall>> FindLogUninstallsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(LogUninstall), "e");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(LogUninstall.IsActive)),
                 Expression.Constant(true)
             );
+
             foreach (var filter in filters)
             {
                 var property = typeof(LogUninstall).GetProperty(filter.Key);
@@ -77,8 +79,9 @@ namespace FitGymApp.Repository.Services
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }
+
             var lambda = Expression.Lambda<Func<LogUninstall, bool>>(predicate, parameter);
-            return _context.LogUninstalls.Where(lambda).ToList();
+            return await _context.LogUninstalls.Where(lambda).ToListAsync();
         }
     }
 }

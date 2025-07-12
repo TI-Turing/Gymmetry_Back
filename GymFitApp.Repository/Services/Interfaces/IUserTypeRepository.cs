@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IUserTypeRepository
     {
-        UserType CreateUserType(UserType entity);
-        UserType GetUserTypeById(Guid id);
-        IEnumerable<UserType> GetAllUserTypes();
-        bool UpdateUserType(UserType entity);
-        bool DeleteUserType(Guid id);
-        IEnumerable<UserType> FindUserTypesByFields(Dictionary<string, object> filters);
+        Task<UserType> CreateUserTypeAsync(UserType entity);
+        Task<UserType> GetUserTypeByIdAsync(Guid id);
+        Task<IEnumerable<UserType>> GetAllUserTypesAsync();
+        Task<bool> UpdateUserTypeAsync(UserType entity);
+        Task<bool> DeleteUserTypeAsync(Guid id);
+        Task<IEnumerable<UserType>> FindUserTypesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IRoutineExerciseRepository
     {
-        RoutineExercise CreateRoutineExercise(RoutineExercise entity);
-        RoutineExercise GetRoutineExerciseById(Guid id);
-        IEnumerable<RoutineExercise> GetAllRoutineExercises();
-        bool UpdateRoutineExercise(RoutineExercise entity);
-        bool DeleteRoutineExercise(Guid id);
-        IEnumerable<RoutineExercise> FindRoutineExercisesByFields(Dictionary<string, object> filters);
+        Task<RoutineExercise> CreateRoutineExerciseAsync(RoutineExercise entity);
+        Task<RoutineExercise> GetRoutineExerciseByIdAsync(Guid id);
+        Task<IEnumerable<RoutineExercise>> GetAllRoutineExercisesAsync();
+        Task<bool> UpdateRoutineExerciseAsync(RoutineExercise entity);
+        Task<bool> DeleteRoutineExerciseAsync(Guid id);
+        Task<IEnumerable<RoutineExercise>> FindRoutineExercisesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

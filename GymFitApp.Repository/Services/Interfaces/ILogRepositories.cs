@@ -1,17 +1,18 @@
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface ILogErrorRepository
     {
-        bool Add(LogError log);
+        Task<bool> AddAsync(LogError log);
     }
     public interface ILogLoginRepository
     {
-        bool Add(LogLogin log);
+        Task<bool> AddAsync(LogLogin log);
     }
     public interface ILogChangeRepository
     {
-        bool Add(LogChange log);
+        Task<bool> AddAsync(LogChange log);
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Machine.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IMachineService
     {
-        ApplicationResponse<Machine> CreateMachine(AddMachineRequest request);
-        ApplicationResponse<Machine> GetMachineById(Guid id);
-        ApplicationResponse<IEnumerable<Machine>> GetAllMachines();
-        ApplicationResponse<bool> UpdateMachine(UpdateMachineRequest request);
-        ApplicationResponse<bool> DeleteMachine(Guid id);
-        ApplicationResponse<IEnumerable<Machine>> FindMachinesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Machine>> CreateMachineAsync(AddMachineRequest request);
+        Task<ApplicationResponse<Machine>> GetMachineByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Machine>>> GetAllMachinesAsync();
+        Task<ApplicationResponse<bool>> UpdateMachineAsync(UpdateMachineRequest request);
+        Task<ApplicationResponse<bool>> DeleteMachineAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Machine>>> FindMachinesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.JourneyEmployee.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<JourneyEmployee> CreateJourneyEmployee(AddJourneyEmployeeRequest request)
+        public async Task<ApplicationResponse<JourneyEmployee>> CreateJourneyEmployeeAsync(AddJourneyEmployeeRequest request)
         {
             try
             {
@@ -35,7 +36,7 @@ namespace FitGymApp.Application.Services
                     IsActive = request.IsActive,
                     EmployeeUserId = request.EmployeeUserId
                 };
-                var created = _journeyEmployeeRepository.CreateJourneyEmployee(entity);
+                var created = await _journeyEmployeeRepository.CreateJourneyEmployeeAsync(entity);
                 return new ApplicationResponse<JourneyEmployee>
                 {
                     Success = true,
@@ -45,7 +46,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<JourneyEmployee>
                 {
                     Success = false,
@@ -55,9 +56,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<JourneyEmployee> GetJourneyEmployeeById(Guid id)
+        public async Task<ApplicationResponse<JourneyEmployee>> GetJourneyEmployeeByIdAsync(Guid id)
         {
-            var entity = _journeyEmployeeRepository.GetJourneyEmployeeById(id);
+            var entity = await _journeyEmployeeRepository.GetJourneyEmployeeByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<JourneyEmployee>
@@ -74,9 +75,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<JourneyEmployee>> GetAllJourneyEmployees()
+        public async Task<ApplicationResponse<IEnumerable<JourneyEmployee>>> GetAllJourneyEmployeesAsync()
         {
-            var entities = _journeyEmployeeRepository.GetAllJourneyEmployees();
+            var entities = await _journeyEmployeeRepository.GetAllJourneyEmployeesAsync();
             return new ApplicationResponse<IEnumerable<JourneyEmployee>>
             {
                 Success = true,
@@ -84,11 +85,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateJourneyEmployee(UpdateJourneyEmployeeRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateJourneyEmployeeAsync(UpdateJourneyEmployeeRequest request)
         {
             try
             {
-                var before = _journeyEmployeeRepository.GetJourneyEmployeeById(request.Id);
+                var before = await _journeyEmployeeRepository.GetJourneyEmployeeByIdAsync(request.Id);
                 var entity = new JourneyEmployee
                 {
                     Id = request.Id,
@@ -99,10 +100,10 @@ namespace FitGymApp.Application.Services
                     IsActive = request.IsActive,
                     EmployeeUserId = request.EmployeeUserId
                 };
-                var updated = _journeyEmployeeRepository.UpdateJourneyEmployee(entity);
+                var updated = await _journeyEmployeeRepository.UpdateJourneyEmployeeAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("JourneyEmployee", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("JourneyEmployee", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -123,7 +124,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -134,11 +135,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteJourneyEmployee(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteJourneyEmployeeAsync(Guid id)
         {
             try
             {
-                var deleted = _journeyEmployeeRepository.DeleteJourneyEmployee(id);
+                var deleted = await _journeyEmployeeRepository.DeleteJourneyEmployeeAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -161,7 +162,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -172,9 +173,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<JourneyEmployee>> FindJourneyEmployeesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<JourneyEmployee>>> FindJourneyEmployeesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _journeyEmployeeRepository.FindJourneyEmployeesByFields(filters);
+            var entities = await _journeyEmployeeRepository.FindJourneyEmployeesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<JourneyEmployee>>
             {
                 Success = true,

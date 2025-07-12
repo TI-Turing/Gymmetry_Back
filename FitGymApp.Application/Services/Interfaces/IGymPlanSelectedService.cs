@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.GymPlanSelected.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IGymPlanSelectedService
     {
-        ApplicationResponse<GymPlanSelected> CreateGymPlanSelected(AddGymPlanSelectedRequest request);
-        ApplicationResponse<GymPlanSelected> GetGymPlanSelectedById(Guid id);
-        ApplicationResponse<IEnumerable<GymPlanSelected>> GetAllGymPlanSelecteds();
-        ApplicationResponse<bool> UpdateGymPlanSelected(UpdateGymPlanSelectedRequest request);
-        ApplicationResponse<bool> DeleteGymPlanSelected(Guid id);
-        ApplicationResponse<IEnumerable<GymPlanSelected>> FindGymPlanSelectedsByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<GymPlanSelected>> CreateGymPlanSelectedAsync(AddGymPlanSelectedRequest request);
+        Task<ApplicationResponse<GymPlanSelected>> GetGymPlanSelectedByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<GymPlanSelected>>> GetAllGymPlanSelectedsAsync();
+        Task<ApplicationResponse<bool>> UpdateGymPlanSelectedAsync(UpdateGymPlanSelectedRequest request);
+        Task<ApplicationResponse<bool>> DeleteGymPlanSelectedAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<GymPlanSelected>>> FindGymPlanSelectedsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

@@ -6,7 +6,7 @@ namespace FitGymApp.Application.Services
 {
     public class PasswordService : IPasswordService
     {
-        public ApplicationResponse<string> HashPassword(string password)
+        public async Task<ApplicationResponse<string>> HashPasswordAsync(string password)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> VerifyPassword(string password, string hashedPassword)
+        public async Task<ApplicationResponse<bool>> VerifyPasswordAsync(string password, string hashedPassword)
         {
             try
             {

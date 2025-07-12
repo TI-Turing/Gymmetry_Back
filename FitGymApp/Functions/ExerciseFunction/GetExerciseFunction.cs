@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.ExerciseFunction
             _service = service;
         }
 
-        [Function("GetExerciseByIdFunction")]
+        [Function("Exercise_GetExerciseByIdFunction")]
         public async Task<ApiResponse<Exercise>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "exercise/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.ExerciseFunction
             _logger.LogInformation($"Consultando Exercise por Id: {id}");
             try
             {
-                var result = _service.GetExerciseById(id);
+                var result = await _service.GetExerciseByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Exercise>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.ExerciseFunction
             }
         }
 
-        [Function("GetAllExercisesFunction")]
+        [Function("Exercise_GetAllExercisesFunction")]
         public async Task<ApiResponse<IEnumerable<Exercise>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "exercises")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.ExerciseFunction
             _logger.LogInformation("Consultando todos los Exercises activos.");
             try
             {
-                var result = _service.GetAllExercises();
+                var result = await _service.GetAllExercisesAsync();
                 return new ApiResponse<IEnumerable<Exercise>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.ExerciseFunction
             }
         }
 
-        [Function("FindExercisesByFieldsFunction")]
+        [Function("Exercise_FindExercisesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<Exercise>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "exercises/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.ExerciseFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindExercisesByFields(filters);
+                var result = await _service.FindExercisesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<Exercise>>
                 {
                     Success = result.Success,

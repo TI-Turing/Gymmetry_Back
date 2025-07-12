@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Notification CreateNotification(Notification entity)
+        public async Task<Notification> CreateNotificationAsync(Notification entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.Notifications.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public Notification GetNotificationById(Guid id)
+        public async Task<Notification?> GetNotificationByIdAsync(Guid id)
         {
-            return _context.Notifications.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.Notifications.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<Notification> GetAllNotifications()
+        public async Task<IEnumerable<Notification>> GetAllNotificationsAsync()
         {
-            return _context.Notifications.Where(e => e.IsActive).ToList();
+            return await _context.Notifications.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateNotification(Notification entity)
+        public async Task<bool> UpdateNotificationAsync(Notification entity)
         {
-            var existing = _context.Notifications.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.Notifications.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteNotification(Guid id)
+        public async Task<bool> DeleteNotificationAsync(Guid id)
         {
-            var entity = _context.Notifications.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.Notifications.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Notification> FindNotificationsByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Notification>> FindNotificationsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Notification), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<Notification, bool>>(predicate, parameter);
-            return _context.Notifications.Where(lambda).ToList();
+            return await _context.Notifications.Where(lambda).ToListAsync();
         }
     }
 }

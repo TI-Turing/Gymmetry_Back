@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.RoutineAssignedFunction
             _logger.LogInformation($"Consultando RoutineAssigned por Id: {id}");
             try
             {
-                var result = _service.GetRoutineAssignedById(id);
+                var result = await _service.GetRoutineAssignedByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<RoutineAssigned>
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.RoutineAssignedFunction
             _logger.LogInformation("Consultando todos los RoutineAssigneds activos.");
             try
             {
-                var result = _service.GetAllRoutineAssigneds();
+                var result = await _service.GetAllRoutineAssignedsAsync();
                 return new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = result.Success,
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.RoutineAssignedFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindRoutineAssignedsByFields(filters);
+                var result = await _service.FindRoutineAssignedsByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = result.Success,

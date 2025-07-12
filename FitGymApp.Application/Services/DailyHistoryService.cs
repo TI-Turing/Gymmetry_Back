@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.DailyHistory.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<DailyHistory> CreateDailyHistory(AddDailyHistoryRequest request)
+        public async Task<ApplicationResponse<DailyHistory>> CreateDailyHistoryAsync(AddDailyHistoryRequest request)
         {
             try
             {
                 var entity = _mapper.Map<DailyHistory>(request);
-                var created = _dailyHistoryRepository.CreateDailyHistory(entity);
+                var created = await _dailyHistoryRepository.CreateDailyHistoryAsync(entity);
                 return new ApplicationResponse<DailyHistory>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<DailyHistory>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<DailyHistory> GetDailyHistoryById(Guid id)
+        public async Task<ApplicationResponse<DailyHistory>> GetDailyHistoryByIdAsync(Guid id)
         {
-            var entity = _dailyHistoryRepository.GetDailyHistoryById(id);
+            var entity = await _dailyHistoryRepository.GetDailyHistoryByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<DailyHistory>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<DailyHistory>> GetAllDailyHistories()
+        public async Task<ApplicationResponse<IEnumerable<DailyHistory>>> GetAllDailyHistoriesAsync()
         {
-            var entities = _dailyHistoryRepository.GetAllDailyHistories();
+            var entities = await _dailyHistoryRepository.GetAllDailyHistoriesAsync();
             return new ApplicationResponse<IEnumerable<DailyHistory>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateDailyHistory(UpdateDailyHistoryRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateDailyHistoryAsync(UpdateDailyHistoryRequest request)
         {
             try
             {
-                var before = _dailyHistoryRepository.GetDailyHistoryById(request.Id);
+                var before = await _dailyHistoryRepository.GetDailyHistoryByIdAsync(request.Id);
                 var entity = _mapper.Map<DailyHistory>(request);
-                var updated = _dailyHistoryRepository.UpdateDailyHistory(entity);
+                var updated = await _dailyHistoryRepository.UpdateDailyHistoryAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("DailyHistory", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("DailyHistory", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteDailyHistory(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteDailyHistoryAsync(Guid id)
         {
             try
             {
-                var deleted = _dailyHistoryRepository.DeleteDailyHistory(id);
+                var deleted = await _dailyHistoryRepository.DeleteDailyHistoryAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<DailyHistory>> FindDailyHistoriesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<DailyHistory>>> FindDailyHistoriesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _dailyHistoryRepository.FindDailyHistoriesByFields(filters);
+            var entities = await _dailyHistoryRepository.FindDailyHistoriesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<DailyHistory>>
             {
                 Success = true,

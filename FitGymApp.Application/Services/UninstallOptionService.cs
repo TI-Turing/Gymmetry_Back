@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.UninstallOption.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<UninstallOption> CreateUninstallOption(AddUninstallOptionRequest request)
+        public async Task<ApplicationResponse<UninstallOption>> CreateUninstallOptionAsync(AddUninstallOptionRequest request)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var created = _uninstallOptionRepository.CreateUninstallOption(entity);
+                var created = await _uninstallOptionRepository.CreateUninstallOptionAsync(entity);
                 return new ApplicationResponse<UninstallOption>
                 {
                     Success = true,
@@ -42,7 +43,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<UninstallOption>
                 {
                     Success = false,
@@ -52,9 +53,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<UninstallOption> GetUninstallOptionById(Guid id)
+        public async Task<ApplicationResponse<UninstallOption>> GetUninstallOptionByIdAsync(Guid id)
         {
-            var entity = _uninstallOptionRepository.GetUninstallOptionById(id);
+            var entity = await _uninstallOptionRepository.GetUninstallOptionByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<UninstallOption>
@@ -71,9 +72,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<UninstallOption>> GetAllUninstallOptions()
+        public async Task<ApplicationResponse<IEnumerable<UninstallOption>>> GetAllUninstallOptionsAsync()
         {
-            var entities = _uninstallOptionRepository.GetAllUninstallOptions();
+            var entities = await _uninstallOptionRepository.GetAllUninstallOptionsAsync();
             return new ApplicationResponse<IEnumerable<UninstallOption>>
             {
                 Success = true,
@@ -81,11 +82,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateUninstallOption(UpdateUninstallOptionRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateUninstallOptionAsync(UpdateUninstallOptionRequest request)
         {
             try
             {
-                var before = _uninstallOptionRepository.GetUninstallOptionById(request.Id);
+                var before = await _uninstallOptionRepository.GetUninstallOptionByIdAsync(request.Id);
                 var entity = new UninstallOption
                 {
                     Id = request.Id,
@@ -93,10 +94,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _uninstallOptionRepository.UpdateUninstallOption(entity);
+                var updated = await _uninstallOptionRepository.UpdateUninstallOptionAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("UninstallOption", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("UninstallOption", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -117,7 +118,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -128,11 +129,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteUninstallOption(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteUninstallOptionAsync(Guid id)
         {
             try
             {
-                var deleted = _uninstallOptionRepository.DeleteUninstallOption(id);
+                var deleted = await _uninstallOptionRepository.DeleteUninstallOptionAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -155,7 +156,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -166,9 +167,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<UninstallOption>> FindUninstallOptionsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<UninstallOption>>> FindUninstallOptionsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _uninstallOptionRepository.FindUninstallOptionsByFields(filters);
+            var entities = await _uninstallOptionRepository.FindUninstallOptionsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<UninstallOption>>
             {
                 Success = true,

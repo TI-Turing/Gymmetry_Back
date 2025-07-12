@@ -1,18 +1,14 @@
+using FitGymApp.Application.Services.Interfaces;
+using FitGymApp.Domain.DTO;
+using FitGymApp.Domain.DTO.AccessMethodType.Request;
+using FitGymApp.Domain.Models;
+using FitGymApp.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using FitGymApp.Domain.DTO.AccessMethodType.Request;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using FitGymApp.Domain.DTO;
-using FitGymApp.Application.Services.Interfaces;
-using FitGymApp.Domain.Models;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using System.Linq;
-using FitGymApp.Utils;
 
 namespace FitGymApp.Functions.AccessMethodTypeFunction;
 
@@ -27,7 +23,7 @@ public class AddAccessMethodTypeFunction
         _service = service;
     }
 
-    [Function("AddAccessMethodTypeFunction")]
+    [Function("AccessMethodType_AddAccessMethodTypeFunction")]
     public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "accessmethodtype/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -46,34 +42,10 @@ public class AddAccessMethodTypeFunction
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<AddAccessMethodTypeRequest>(requestBody);
+            var validationResult = ModelValidator.ValidateModel<AddAccessMethodTypeRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
+            if (validationResult is not null) return validationResult;
 
-            if (objRequest == null)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "El cuerpo de la solicitud no coincide con la estructura esperada.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var validationContext = new ValidationContext(objRequest, null, null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(objRequest, validationContext, validationResults, true);
-
-            if (!isValid)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = string.Join("; ", validationResults.Select(v => v.ErrorMessage)),
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var result = _service.CreateAccessMethodType(objRequest);
+            var result = await _service.CreateAccessMethodTypeAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>
@@ -92,7 +64,7 @@ public class AddAccessMethodTypeFunction
                 StatusCode = StatusCodes.Status200OK
             };
         }
-        catch (Exception ex)
+        catch (System.Exception ex)
         {
             _logger.LogError(ex, "Error al agregar AccessMethodType.");
             return new ApiResponse<Guid>

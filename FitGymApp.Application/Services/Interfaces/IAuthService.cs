@@ -1,11 +1,12 @@
 using FitGymApp.Domain.DTO.Auth.Request;
 using FitGymApp.Domain.DTO.Auth.Response;
+using System.Threading.Tasks;
 
 namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IAuthService
     {
-        LoginResponse? Login(LoginRequest request);
-        RefreshTokenResponse? RefreshToken(RefreshTokenRequest request);
+        Task<LoginResponse?> LoginAsync(LoginRequest request);
+        Task<RefreshTokenResponse?> RefreshTokenAsync(RefreshTokenRequest request);
     }
 }

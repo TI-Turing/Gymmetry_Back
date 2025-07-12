@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.DietFunction
             _service = service;
         }
 
-        [Function("GetDietByIdFunction")]
+        [Function("Diet_GetDietByIdFunction")]
         public async Task<ApiResponse<Diet>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "diet/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.DietFunction
             _logger.LogInformation($"Consultando Diet por Id: {id}");
             try
             {
-                var result = _service.GetDietById(id);
+                var result = await _service.GetDietByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Diet>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.DietFunction
             }
         }
 
-        [Function("GetAllDietsFunction")]
+        [Function("Diet_GetAllDietsFunction")]
         public async Task<ApiResponse<IEnumerable<Diet>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "diets")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.DietFunction
             _logger.LogInformation("Consultando todos los Diets activos.");
             try
             {
-                var result = _service.GetAllDiets();
+                var result = await _service.GetAllDietsAsync();
                 return new ApiResponse<IEnumerable<Diet>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.DietFunction
             }
         }
 
-        [Function("FindDietsByFieldsFunction")]
+        [Function("Diet_FindDietsByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<Diet>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "diets/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.DietFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindDietsByFields(filters);
+                var result = await _service.FindDietsByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<Diet>>
                 {
                     Success = result.Success,

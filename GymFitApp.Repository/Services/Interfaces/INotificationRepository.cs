@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface INotificationRepository
     {
-        Notification CreateNotification(Notification entity);
-        Notification GetNotificationById(Guid id);
-        IEnumerable<Notification> GetAllNotifications();
-        bool UpdateNotification(Notification entity);
-        bool DeleteNotification(Guid id);
-        IEnumerable<Notification> FindNotificationsByFields(Dictionary<string, object> filters);
+        Task<Notification> CreateNotificationAsync(Notification entity);
+        Task<Notification?> GetNotificationByIdAsync(Guid id);
+        Task<IEnumerable<Notification>> GetAllNotificationsAsync();
+        Task<bool> UpdateNotificationAsync(Notification entity);
+        Task<bool> DeleteNotificationAsync(Guid id);
+        Task<IEnumerable<Notification>> FindNotificationsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

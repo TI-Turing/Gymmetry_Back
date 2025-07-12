@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.EmployeeRegisterDaily.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<EmployeeRegisterDaily> CreateEmployeeRegisterDaily(AddEmployeeRegisterDailyRequest request)
+        public async Task<ApplicationResponse<EmployeeRegisterDaily>> CreateEmployeeRegisterDailyAsync(AddEmployeeRegisterDailyRequest request)
         {
             try
             {
@@ -32,7 +33,7 @@ namespace FitGymApp.Application.Services
                     EndDate = request.EndDate,
                     Ip = request.Ip
                 };
-                var created = _employeeRegisterDailyRepository.CreateEmployeeRegisterDaily(entity);
+                var created = await _employeeRegisterDailyRepository.CreateEmployeeRegisterDailyAsync(entity);
                 return new ApplicationResponse<EmployeeRegisterDaily>
                 {
                     Success = true,
@@ -42,7 +43,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<EmployeeRegisterDaily>
                 {
                     Success = false,
@@ -52,9 +53,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<EmployeeRegisterDaily> GetEmployeeRegisterDailyById(Guid id)
+        public async Task<ApplicationResponse<EmployeeRegisterDaily>> GetEmployeeRegisterDailyByIdAsync(Guid id)
         {
-            var entity = _employeeRegisterDailyRepository.GetEmployeeRegisterDailyById(id);
+            var entity = await _employeeRegisterDailyRepository.GetEmployeeRegisterDailyByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<EmployeeRegisterDaily>
@@ -71,9 +72,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<EmployeeRegisterDaily>> GetAllEmployeeRegisterDailies()
+        public async Task<ApplicationResponse<IEnumerable<EmployeeRegisterDaily>>> GetAllEmployeeRegisterDailiesAsync()
         {
-            var entities = _employeeRegisterDailyRepository.GetAllEmployeeRegisterDailies();
+            var entities = await _employeeRegisterDailyRepository.GetAllEmployeeRegisterDailiesAsync();
             return new ApplicationResponse<IEnumerable<EmployeeRegisterDaily>>
             {
                 Success = true,
@@ -81,11 +82,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateEmployeeRegisterDaily(UpdateEmployeeRegisterDailyRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateEmployeeRegisterDailyAsync(UpdateEmployeeRegisterDailyRequest request)
         {
             try
             {
-                var before = _employeeRegisterDailyRepository.GetEmployeeRegisterDailyById(request.Id);
+                var before = await _employeeRegisterDailyRepository.GetEmployeeRegisterDailyByIdAsync(request.Id);
                 var entity = new EmployeeRegisterDaily
                 {
                     Id = request.Id,
@@ -94,10 +95,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _employeeRegisterDailyRepository.UpdateEmployeeRegisterDaily(entity);
+                var updated = await _employeeRegisterDailyRepository.UpdateEmployeeRegisterDailyAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("EmployeeRegisterDaily", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("EmployeeRegisterDaily", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -118,7 +119,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -129,11 +130,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteEmployeeRegisterDaily(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteEmployeeRegisterDailyAsync(Guid id)
         {
             try
             {
-                var deleted = _employeeRegisterDailyRepository.DeleteEmployeeRegisterDaily(id);
+                var deleted = await _employeeRegisterDailyRepository.DeleteEmployeeRegisterDailyAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -156,7 +157,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -167,9 +168,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<EmployeeRegisterDaily>> FindEmployeeRegisterDailiesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<EmployeeRegisterDaily>>> FindEmployeeRegisterDailiesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _employeeRegisterDailyRepository.FindEmployeeRegisterDailiesByFields(filters);
+            var entities = await _employeeRegisterDailyRepository.FindEmployeeRegisterDailiesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<EmployeeRegisterDaily>>
             {
                 Success = true,

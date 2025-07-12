@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.PhysicalAssessment.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<PhysicalAssessment> CreatePhysicalAssessment(AddPhysicalAssessmentRequest request)
+        public async Task<ApplicationResponse<PhysicalAssessment>> CreatePhysicalAssessmentAsync(AddPhysicalAssessmentRequest request)
         {
             try
             {
@@ -54,7 +55,7 @@ namespace FitGymApp.Application.Services
                     IsActive = request.IsActive,
                     UserId = request.UserId
                 };
-                var created = _physicalAssessmentRepository.CreatePhysicalAssessment(entity);
+                var created = await _physicalAssessmentRepository.CreatePhysicalAssessmentAsync(entity);
                 return new ApplicationResponse<PhysicalAssessment>
                 {
                     Success = true,
@@ -64,7 +65,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<PhysicalAssessment>
                 {
                     Success = false,
@@ -74,9 +75,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<PhysicalAssessment> GetPhysicalAssessmentById(Guid id)
+        public async Task<ApplicationResponse<PhysicalAssessment>> GetPhysicalAssessmentByIdAsync(Guid id)
         {
-            var entity = _physicalAssessmentRepository.GetPhysicalAssessmentById(id);
+            var entity = await _physicalAssessmentRepository.GetPhysicalAssessmentByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<PhysicalAssessment>
@@ -93,9 +94,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<PhysicalAssessment>> GetAllPhysicalAssessments()
+        public async Task<ApplicationResponse<IEnumerable<PhysicalAssessment>>> GetAllPhysicalAssessmentsAsync()
         {
-            var entities = _physicalAssessmentRepository.GetAllPhysicalAssessments();
+            var entities = await _physicalAssessmentRepository.GetAllPhysicalAssessmentsAsync();
             return new ApplicationResponse<IEnumerable<PhysicalAssessment>>
             {
                 Success = true,
@@ -103,11 +104,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdatePhysicalAssessment(UpdatePhysicalAssessmentRequest request)
+        public async Task<ApplicationResponse<bool>> UpdatePhysicalAssessmentAsync(UpdatePhysicalAssessmentRequest request)
         {
             try
             {
-                var before = _physicalAssessmentRepository.GetPhysicalAssessmentById(request.Id);
+                var before = await _physicalAssessmentRepository.GetPhysicalAssessmentByIdAsync(request.Id);
                 var entity = new PhysicalAssessment
                 {
                     Id = request.Id,
@@ -137,10 +138,10 @@ namespace FitGymApp.Application.Services
                     IsActive = request.IsActive,
                     UserId = request.UserId
                 };
-                var updated = _physicalAssessmentRepository.UpdatePhysicalAssessment(entity);
+                var updated = await _physicalAssessmentRepository.UpdatePhysicalAssessmentAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("PhysicalAssessment", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("PhysicalAssessment", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -161,7 +162,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -172,11 +173,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeletePhysicalAssessment(Guid id)
+        public async Task<ApplicationResponse<bool>> DeletePhysicalAssessmentAsync(Guid id)
         {
             try
             {
-                var deleted = _physicalAssessmentRepository.DeletePhysicalAssessment(id);
+                var deleted = await _physicalAssessmentRepository.DeletePhysicalAssessmentAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -199,7 +200,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -210,9 +211,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<PhysicalAssessment>> FindPhysicalAssessmentsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<PhysicalAssessment>>> FindPhysicalAssessmentsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _physicalAssessmentRepository.FindPhysicalAssessmentsByFields(filters);
+            var entities = await _physicalAssessmentRepository.FindPhysicalAssessmentsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<PhysicalAssessment>>
             {
                 Success = true,

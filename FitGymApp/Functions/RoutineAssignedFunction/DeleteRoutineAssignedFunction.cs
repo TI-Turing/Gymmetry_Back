@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.RoutineAssignedFunction
             _logger.LogInformation($"Procesando solicitud de borrado para RoutineAssigned {id}");
             try
             {
-                var result = _service.DeleteRoutineAssigned(id);
+                var result = await _service.DeleteRoutineAssignedAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

@@ -1,73 +1,76 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
     public class GymTypeRepository : IGymTypeRepository
     {
         private readonly FitGymAppContext _context;
+
         public GymTypeRepository(FitGymAppContext context)
         {
             _context = context;
         }
 
-        public GymType CreateGymType(GymType entity)
+        public async Task<GymType> CreateGymTypeAsync(GymType entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            _context.GymTypes.Add(entity);
-            _context.SaveChanges();
+            await _context.GymTypes.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public GymType GetGymTypeById(Guid id)
+        public async Task<GymType?> GetGymTypeByIdAsync(Guid id)
         {
-            return _context.GymTypes.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.GymTypes.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<GymType> GetAllGymTypes()
+        public async Task<IEnumerable<GymType>> GetAllGymTypesAsync()
         {
-            return _context.GymTypes.Where(e => e.IsActive).ToList();
+            return await _context.GymTypes.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateGymType(GymType entity)
+        public async Task<bool> UpdateGymTypeAsync(GymType entity)
         {
-            var existing = _context.GymTypes.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.GymTypes.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteGymType(Guid id)
+        public async Task<bool> DeleteGymTypeAsync(Guid id)
         {
-            var entity = _context.GymTypes.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.GymTypes.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<GymType> FindGymTypesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<GymType>> FindGymTypesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(GymType), "e");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(GymType.IsActive)),
                 Expression.Constant(true)
             );
+
             foreach (var filter in filters)
             {
                 var property = typeof(GymType).GetProperty(filter.Key);
@@ -77,8 +80,9 @@ namespace FitGymApp.Repository.Services
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }
+
             var lambda = Expression.Lambda<Func<GymType, bool>>(predicate, parameter);
-            return _context.GymTypes.Where(lambda).ToList();
+            return await _context.GymTypes.Where(lambda).ToListAsync();
         }
     }
 }

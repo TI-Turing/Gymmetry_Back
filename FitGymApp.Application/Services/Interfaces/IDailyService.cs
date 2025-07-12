@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Daily.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IDailyService
     {
-        ApplicationResponse<Daily> CreateDaily(AddDailyRequest request);
-        ApplicationResponse<Daily> GetDailyById(Guid id);
-        ApplicationResponse<IEnumerable<Daily>> GetAllDailies();
-        ApplicationResponse<bool> UpdateDaily(UpdateDailyRequest request);
-        ApplicationResponse<bool> DeleteDaily(Guid id);
-        ApplicationResponse<IEnumerable<Daily>> FindDailiesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Daily>> CreateDailyAsync(AddDailyRequest request);
+        Task<ApplicationResponse<Daily>> GetDailyByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Daily>>> GetAllDailiesAsync();
+        Task<ApplicationResponse<bool>> UpdateDailyAsync(UpdateDailyRequest request);
+        Task<ApplicationResponse<bool>> DeleteDailyAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Daily>>> FindDailiesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

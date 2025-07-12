@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.GymPlanSelectedModule.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<GymPlanSelectedModule> CreateGymPlanSelectedModule(AddGymPlanSelectedModuleRequest request)
+        public async Task<ApplicationResponse<GymPlanSelectedModule>> CreateGymPlanSelectedModuleAsync(AddGymPlanSelectedModuleRequest request)
         {
             try
             {
                 var entity = _mapper.Map<GymPlanSelectedModule>(request);
-                var created = _gymPlanSelectedModuleRepository.CreateGymPlanSelectedModule(entity);
+                var created = await _gymPlanSelectedModuleRepository.CreateGymPlanSelectedModuleAsync(entity);
                 return new ApplicationResponse<GymPlanSelectedModule>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<GymPlanSelectedModule>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<GymPlanSelectedModule> GetGymPlanSelectedModuleById(Guid id)
+        public async Task<ApplicationResponse<GymPlanSelectedModule>> GetGymPlanSelectedModuleByIdAsync(Guid id)
         {
-            var entity = _gymPlanSelectedModuleRepository.GetGymPlanSelectedModuleById(id);
+            var entity = await _gymPlanSelectedModuleRepository.GetGymPlanSelectedModuleByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<GymPlanSelectedModule>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<GymPlanSelectedModule>> GetAllGymPlanSelectedModules()
+        public async Task<ApplicationResponse<IEnumerable<GymPlanSelectedModule>>> GetAllGymPlanSelectedModulesAsync()
         {
-            var entities = _gymPlanSelectedModuleRepository.GetAllGymPlanSelectedModules();
+            var entities = await _gymPlanSelectedModuleRepository.GetAllGymPlanSelectedModulesAsync();
             return new ApplicationResponse<IEnumerable<GymPlanSelectedModule>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateGymPlanSelectedModule(UpdateGymPlanSelectedModuleRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateGymPlanSelectedModuleAsync(UpdateGymPlanSelectedModuleRequest request)
         {
             try
             {
-                var before = _gymPlanSelectedModuleRepository.GetGymPlanSelectedModuleById(request.Id);
+                var before = await _gymPlanSelectedModuleRepository.GetGymPlanSelectedModuleByIdAsync(request.Id);
                 var entity = _mapper.Map<GymPlanSelectedModule>(request);
-                var updated = _gymPlanSelectedModuleRepository.UpdateGymPlanSelectedModule(entity);
+                var updated = await _gymPlanSelectedModuleRepository.UpdateGymPlanSelectedModuleAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("GymPlanSelectedModule", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("GymPlanSelectedModule", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteGymPlanSelectedModule(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteGymPlanSelectedModuleAsync(Guid id)
         {
             try
             {
-                var deleted = _gymPlanSelectedModuleRepository.DeleteGymPlanSelectedModule(id);
+                var deleted = await _gymPlanSelectedModuleRepository.DeleteGymPlanSelectedModuleAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<GymPlanSelectedModule>> FindGymPlanSelectedModulesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<GymPlanSelectedModule>>> FindGymPlanSelectedModulesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _gymPlanSelectedModuleRepository.FindGymPlanSelectedModulesByFields(filters);
+            var entities = await _gymPlanSelectedModuleRepository.FindGymPlanSelectedModulesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<GymPlanSelectedModule>>
             {
                 Success = true,

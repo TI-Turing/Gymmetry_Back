@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Diet CreateDiet(Diet diet)
+        public async Task<Diet> CreateDietAsync(Diet diet)
         {
             diet.Id = Guid.NewGuid();
             diet.CreatedAt = DateTime.UtcNow;
             diet.IsActive = true;
             _context.Diets.Add(diet);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return diet;
         }
 
-        public Diet GetDietById(Guid id)
+        public async Task<Diet?> GetDietByIdAsync(Guid id)
         {
-            return _context.Diets.FirstOrDefault(d => d.Id == id && d.IsActive);
+            return await _context.Diets.FirstOrDefaultAsync(d => d.Id == id && d.IsActive);
         }
 
-        public IEnumerable<Diet> GetAllDiets()
+        public async Task<IEnumerable<Diet>> GetAllDietsAsync()
         {
-            return _context.Diets.Where(d => d.IsActive).ToList();
+            return await _context.Diets.Where(d => d.IsActive).ToListAsync();
         }
 
-        public bool UpdateDiet(Diet diet)
+        public async Task<bool> UpdateDietAsync(Diet diet)
         {
-            var existing = _context.Diets.FirstOrDefault(d => d.Id == diet.Id && d.IsActive);
+            var existing = await _context.Diets.FirstOrDefaultAsync(d => d.Id == diet.Id && d.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(diet);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteDiet(Guid id)
+        public async Task<bool> DeleteDietAsync(Guid id)
         {
-            var entity = _context.Diets.FirstOrDefault(d => d.Id == id && d.IsActive);
+            var entity = await _context.Diets.FirstOrDefaultAsync(d => d.Id == id && d.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Diet> FindDietsByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Diet>> FindDietsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Diet), "d");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<Diet, bool>>(predicate, parameter);
-            return _context.Diets.Where(lambda).ToList();
+            return await _context.Diets.Where(lambda).ToListAsync();
         }
     }
 }

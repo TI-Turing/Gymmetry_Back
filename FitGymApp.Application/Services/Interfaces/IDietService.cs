@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Diet.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IDietService
     {
-        ApplicationResponse<Diet> CreateDiet(AddDietRequest request);
-        ApplicationResponse<Diet> GetDietById(Guid id);
-        ApplicationResponse<IEnumerable<Diet>> GetAllDiets();
-        ApplicationResponse<bool> UpdateDiet(UpdateDietRequest request);
-        ApplicationResponse<bool> DeleteDiet(Guid id);
-        ApplicationResponse<IEnumerable<Diet>> FindDietsByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Diet>> CreateDietAsync(AddDietRequest request);
+        Task<ApplicationResponse<Diet>> GetDietByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Diet>>> GetAllDietsAsync();
+        Task<ApplicationResponse<bool>> UpdateDietAsync(UpdateDietRequest request);
+        Task<ApplicationResponse<bool>> DeleteDietAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Diet>>> FindDietsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

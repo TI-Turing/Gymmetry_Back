@@ -4,6 +4,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
 using System;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace FitGymApp.Application.Services
 {
@@ -11,7 +12,7 @@ namespace FitGymApp.Application.Services
     {
         private readonly ILogErrorRepository _repo;
         public LogErrorService(ILogErrorRepository repo) { _repo = repo; }
-        public ApplicationResponse<bool> LogError(Exception ex, string? userId = null, string? ip = null)
+        public async Task<ApplicationResponse<bool>> LogErrorAsync(Exception ex, string? userId = null, string? ip = null)
         {
             var log = new LogError
             {
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
                 UserId = userId != null ? Guid.Parse(userId) : Guid.Empty,
                 IsActive = true
             };
-            return new ApplicationResponse<bool> { Success = _repo.Add(log) };
+            return new ApplicationResponse<bool> { Success = await _repo.AddAsync(log) };
         }
     }
 
@@ -30,7 +31,7 @@ namespace FitGymApp.Application.Services
     {
         private readonly ILogLoginRepository _repo;
         public LogLoginService(ILogLoginRepository repo) { _repo = repo; }
-        public ApplicationResponse<bool> LogLogin(Guid? userId, bool success, string? ip = null, string? message = null)
+        public async Task<ApplicationResponse<bool>> LogLoginAsync(Guid? userId, bool success, string? ip = null, string? message = null)
         {
             var log = new LogLogin
             {
@@ -41,7 +42,7 @@ namespace FitGymApp.Application.Services
                 IsActive = true,
                 IsSuccess = success
             };
-            return new ApplicationResponse<bool> { Success = _repo.Add(log) };
+            return new ApplicationResponse<bool> { Success = await _repo.AddAsync(log) };
         }
     }
 
@@ -49,7 +50,7 @@ namespace FitGymApp.Application.Services
     {
         private readonly ILogChangeRepository _repo;
         public LogChangeService(ILogChangeRepository repo) { _repo = repo; }
-        public ApplicationResponse<bool> LogChange(string table, object pastObject, Guid? userId, string? ip = null)
+        public async Task<ApplicationResponse<bool>> LogChangeAsync(string table, object pastObject, Guid? userId, string? ip = null)
         {
             var log = new LogChange
             {
@@ -61,7 +62,7 @@ namespace FitGymApp.Application.Services
                 UserId = userId ?? Guid.Empty,
                 IsActive = true
             };
-            return new ApplicationResponse<bool> { Success = _repo.Add(log) };
+            return new ApplicationResponse<bool> { Success = await _repo.AddAsync(log) };
         }
     }
 }

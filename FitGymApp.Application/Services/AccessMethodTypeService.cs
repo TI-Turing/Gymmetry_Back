@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.AccessMethodType.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<AccessMethodType> CreateAccessMethodType(AddAccessMethodTypeRequest request)
+        public async Task<ApplicationResponse<AccessMethodType>> CreateAccessMethodTypeAsync(AddAccessMethodTypeRequest request)
         {
             try
             {
                 var entity = _mapper.Map<AccessMethodType>(request);
-                var created = _accessMethodTypeRepository.CreateAccessMethodType(entity);
+                var created = await _accessMethodTypeRepository.CreateAccessMethodTypeAsync(entity);
                 return new ApplicationResponse<AccessMethodType>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<AccessMethodType>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<AccessMethodType> GetAccessMethodTypeById(Guid id)
+        public async Task<ApplicationResponse<AccessMethodType>> GetAccessMethodTypeByIdAsync(Guid id)
         {
-            var entity = _accessMethodTypeRepository.GetAccessMethodTypeById(id);
+            var entity = await _accessMethodTypeRepository.GetAccessMethodTypeByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<AccessMethodType>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<AccessMethodType>> GetAllAccessMethodTypes()
+        public async Task<ApplicationResponse<IEnumerable<AccessMethodType>>> GetAllAccessMethodTypesAsync()
         {
-            var entities = _accessMethodTypeRepository.GetAllAccessMethodTypes();
+            var entities = await _accessMethodTypeRepository.GetAllAccessMethodTypesAsync();
             return new ApplicationResponse<IEnumerable<AccessMethodType>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateAccessMethodType(UpdateAccessMethodTypeRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateAccessMethodTypeAsync(UpdateAccessMethodTypeRequest request)
         {
             try
             {
-                var before = _accessMethodTypeRepository.GetAccessMethodTypeById(request.Id);
+                var before = await _accessMethodTypeRepository.GetAccessMethodTypeByIdAsync(request.Id);
                 var entity = _mapper.Map<AccessMethodType>(request);
-                var updated = _accessMethodTypeRepository.UpdateAccessMethodType(entity);
+                var updated = await _accessMethodTypeRepository.UpdateAccessMethodTypeAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("AccessMethodType", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("AccessMethodType", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteAccessMethodType(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteAccessMethodTypeAsync(Guid id)
         {
             try
             {
-                var deleted = _accessMethodTypeRepository.DeleteAccessMethodType(id);
+                var deleted = await _accessMethodTypeRepository.DeleteAccessMethodTypeAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<AccessMethodType>> FindAccessMethodTypesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<AccessMethodType>>> FindAccessMethodTypesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _accessMethodTypeRepository.FindAccessMethodTypesByFields(filters);
+            var entities = await _accessMethodTypeRepository.FindAccessMethodTypesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<AccessMethodType>>
             {
                 Success = true,

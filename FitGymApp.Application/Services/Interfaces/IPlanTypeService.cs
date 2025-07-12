@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.PlanType.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IPlanTypeService
     {
-        ApplicationResponse<PlanType> CreatePlanType(AddPlanTypeRequest request);
-        ApplicationResponse<PlanType> GetPlanTypeById(Guid id);
-        ApplicationResponse<IEnumerable<PlanType>> GetAllPlanTypes();
-        ApplicationResponse<bool> UpdatePlanType(UpdatePlanTypeRequest request);
-        ApplicationResponse<bool> DeletePlanType(Guid id);
-        ApplicationResponse<IEnumerable<PlanType>> FindPlanTypesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<PlanType>> CreatePlanTypeAsync(AddPlanTypeRequest request);
+        Task<ApplicationResponse<PlanType>> GetPlanTypeByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<PlanType>>> GetAllPlanTypesAsync();
+        Task<ApplicationResponse<bool>> UpdatePlanTypeAsync(UpdatePlanTypeRequest request);
+        Task<ApplicationResponse<bool>> DeletePlanTypeAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<PlanType>>> FindPlanTypesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

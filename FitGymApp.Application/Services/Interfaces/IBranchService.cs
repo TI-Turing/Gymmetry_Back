@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Branch.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IBranchService
     {
-        ApplicationResponse<Branch> CreateBranch(AddBranchRequest request);
-        ApplicationResponse<Branch> GetBranchById(Guid id);
-        ApplicationResponse<IEnumerable<Branch>> GetAllBranches();
-        ApplicationResponse<bool> UpdateBranch(UpdateBranchRequest request);
-        ApplicationResponse<bool> DeleteBranch(Guid id);
-        ApplicationResponse<IEnumerable<Branch>> FindBranchesByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<Branch>> CreateBranchAsync(AddBranchRequest request);
+        Task<ApplicationResponse<Branch>> GetBranchByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Branch>>> GetAllBranchesAsync();
+        Task<ApplicationResponse<bool>> UpdateBranchAsync(UpdateBranchRequest request);
+        Task<ApplicationResponse<bool>> DeleteBranchAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<Branch>>> FindBranchesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

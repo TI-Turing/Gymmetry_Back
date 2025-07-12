@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.FitUser.Request;
 using FitGymApp.Domain.DTO;
@@ -8,11 +9,11 @@ namespace FitGymApp.Application.Services.Interfaces
 {
     public interface IFitUserService
     {
-        ApplicationResponse<FitUser> CreateFitUser(AddFitUserRequest request);
-        ApplicationResponse<FitUser> GetFitUserById(Guid id);
-        ApplicationResponse<IEnumerable<FitUser>> GetAllFitUsers();
-        ApplicationResponse<bool> UpdateFitUser(UpdateFitUserRequest request);
-        ApplicationResponse<bool> DeleteFitUser(Guid id);
-        ApplicationResponse<IEnumerable<FitUser>> FindFitUsersByFields(Dictionary<string, object> filters);
+        Task<ApplicationResponse<FitUser>> CreateFitUserAsync(AddFitUserRequest request);
+        Task<ApplicationResponse<FitUser>> GetFitUserByIdAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<FitUser>>> GetAllFitUsersAsync();
+        Task<ApplicationResponse<bool>> UpdateFitUserAsync(UpdateFitUserRequest request);
+        Task<ApplicationResponse<bool>> DeleteFitUserAsync(Guid id);
+        Task<ApplicationResponse<IEnumerable<FitUser>>> FindFitUsersByFieldsAsync(Dictionary<string, object> filters);
     }
 }

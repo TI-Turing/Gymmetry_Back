@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Module.Request;
@@ -22,7 +22,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<Module> CreateModule(AddModuleRequest request)
+        public async Task<ApplicationResponse<Module>> CreateModuleAsync(AddModuleRequest request)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace FitGymApp.Application.Services
                     Name = request.Name,
                     Ip = request.Ip
                 };
-                var created = _moduleRepository.CreateModule(entity);
+                var created = await _moduleRepository.CreateModuleAsync(entity);
                 return new ApplicationResponse<Module>
                 {
                     Success = true,
@@ -41,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Module>
                 {
                     Success = false,
@@ -51,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Module> GetModuleById(Guid id)
+        public async Task<ApplicationResponse<Module>> GetModuleByIdAsync(Guid id)
         {
-            var entity = _moduleRepository.GetModuleById(id);
+            var entity = await _moduleRepository.GetModuleByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<Module>
@@ -70,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Module>> GetAllModules()
+        public async Task<ApplicationResponse<IEnumerable<Module>>> GetAllModulesAsync()
         {
-            var entities = _moduleRepository.GetAllModules();
+            var entities = await _moduleRepository.GetAllModulesAsync();
             return new ApplicationResponse<IEnumerable<Module>>
             {
                 Success = true,
@@ -80,11 +80,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateModule(UpdateModuleRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateModuleAsync(UpdateModuleRequest request)
         {
             try
             {
-                var before = _moduleRepository.GetModuleById(request.Id);
+                var before = await _moduleRepository.GetModuleByIdAsync(request.Id);
                 var entity = new Module
                 {
                     Id = request.Id,
@@ -92,10 +92,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _moduleRepository.UpdateModule(entity);
+                var updated = await _moduleRepository.UpdateModuleAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Module", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("Module", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +116,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +127,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteModule(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteModuleAsync(Guid id)
         {
             try
             {
-                var deleted = _moduleRepository.DeleteModule(id);
+                var deleted = await _moduleRepository.DeleteModuleAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +154,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +165,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Module>> FindModulesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Module>>> FindModulesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _moduleRepository.FindModulesByFields(filters);
+            var entities = await _moduleRepository.FindModulesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Module>>
             {
                 Success = true,

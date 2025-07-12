@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Daily.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<Daily> CreateDaily(AddDailyRequest request)
+        public async Task<ApplicationResponse<Daily>> CreateDailyAsync(AddDailyRequest request)
         {
             try
             {
                 var daily = _mapper.Map<Daily>(request);
-                var created = _dailyRepository.CreateDaily(daily);
+                var created = await _dailyRepository.CreateDailyAsync(daily);
                 return new ApplicationResponse<Daily>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Daily>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Daily> GetDailyById(Guid id)
+        public async Task<ApplicationResponse<Daily>> GetDailyByIdAsync(Guid id)
         {
-            var daily = _dailyRepository.GetDailyById(id);
+            var daily = await _dailyRepository.GetDailyByIdAsync(id);
             if (daily == null)
             {
                 return new ApplicationResponse<Daily>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Daily>> GetAllDailies()
+        public async Task<ApplicationResponse<IEnumerable<Daily>>> GetAllDailiesAsync()
         {
-            var dailies = _dailyRepository.GetAllDailies();
+            var dailies = await _dailyRepository.GetAllDailiesAsync();
             return new ApplicationResponse<IEnumerable<Daily>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateDaily(UpdateDailyRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateDailyAsync(UpdateDailyRequest request)
         {
             try
             {
-                var dailyBefore = _dailyRepository.GetDailyById(request.Id);
+                var dailyBefore = await _dailyRepository.GetDailyByIdAsync(request.Id);
                 var daily = _mapper.Map<Daily>(request);
-                var updated = _dailyRepository.UpdateDaily(daily);
+                var updated = await _dailyRepository.UpdateDailyAsync(daily);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Daily", dailyBefore, daily.Id);
+                    await _logChangeService.LogChangeAsync("Daily", dailyBefore, daily.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteDaily(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteDailyAsync(Guid id)
         {
             try
             {
-                var deleted = _dailyRepository.DeleteDaily(id);
+                var deleted = await _dailyRepository.DeleteDailyAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Daily>> FindDailiesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Daily>>> FindDailiesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var dailies = _dailyRepository.FindDailiesByFields(filters);
+            var dailies = await _dailyRepository.FindDailiesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Daily>>
             {
                 Success = true,

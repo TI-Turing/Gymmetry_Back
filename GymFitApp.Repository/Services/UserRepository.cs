@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -16,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public User CreateUser(User user)
+        public async Task<User> CreateUserAsync(User user)
         {
             user.Id = Guid.NewGuid();
             user.CreatedAt = DateTime.UtcNow;
             user.IsActive = true;
             _context.Users.Add(user);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return user;
         }
 
-        public User GetUserById(Guid id)
+        public async Task<User?> GetUserByIdAsync(Guid id)
         {
-            return _context.Users.FirstOrDefault(u => u.Id == id && (u.IsActive ?? false));
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id && (u.IsActive ?? false));
         }
 
-        public IEnumerable<User> GetAllUsers()
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
         {
-            return _context.Users.Where(u => u.IsActive ?? false).ToList();
+            return await _context.Users.Where(u => u.IsActive ?? false).ToListAsync();
         }
 
-        public bool UpdateUser(User user)
+        public async Task<bool> UpdateUserAsync(User user)
         {
-            var existingUser = _context.Users.FirstOrDefault(u => u.Id == user.Id && (u.IsActive ?? false));
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Id == user.Id && (u.IsActive ?? false));
             if (existingUser != null)
             {
                 _context.Entry(existingUser).CurrentValues.SetValues(user);
                 existingUser.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteUser(Guid id)
+        public async Task<bool> DeleteUserAsync(Guid id)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Id == id && (u.IsActive ?? false));
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id == id && (u.IsActive ?? false));
             if (user != null)
             {
                 user.IsActive = false;
                 user.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<User> FindUsersByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<User>> FindUsersByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(User), "u");
             Expression predicate = Expression.Equal(
@@ -81,7 +82,7 @@ namespace FitGymApp.Repository.Services
             }
 
             var lambda = Expression.Lambda<Func<User, bool>>(predicate, parameter);
-            return _context.Users.Where(lambda).ToList();
+            return await _context.Users.Where(lambda).ToListAsync();
         }
     }
 }

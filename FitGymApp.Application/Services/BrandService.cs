@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Brand.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<Brand> CreateBrand(AddBrandRequest request)
+        public async Task<ApplicationResponse<Brand>> CreateBrandAsync(AddBrandRequest request)
         {
             try
             {
                 var brand = _mapper.Map<Brand>(request);
-                var created = _brandRepository.CreateBrand(brand);
+                var created = await _brandRepository.CreateBrandAsync(brand);
                 return new ApplicationResponse<Brand>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Brand>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Brand> GetBrandById(Guid id)
+        public async Task<ApplicationResponse<Brand>> GetBrandByIdAsync(Guid id)
         {
-            var brand = _brandRepository.GetBrandById(id);
+            var brand = await _brandRepository.GetBrandByIdAsync(id);
             if (brand == null)
             {
                 return new ApplicationResponse<Brand>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Brand>> GetAllBrands()
+        public async Task<ApplicationResponse<IEnumerable<Brand>>> GetAllBrandsAsync()
         {
-            var brands = _brandRepository.GetAllBrands();
+            var brands = await _brandRepository.GetAllBrandsAsync();
             return new ApplicationResponse<IEnumerable<Brand>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateBrand(UpdateBrandRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateBrandAsync(UpdateBrandRequest request)
         {
             try
             {
-                var brandBefore = _brandRepository.GetBrandById(request.Id);
+                var brandBefore = await _brandRepository.GetBrandByIdAsync(request.Id);
                 var brand = _mapper.Map<Brand>(request);
-                var updated = _brandRepository.UpdateBrand(brand);
+                var updated = await _brandRepository.UpdateBrandAsync(brand);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Brand", brandBefore, brand.Id);
+                    await _logChangeService.LogChangeAsync("Brand", brandBefore, brand.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteBrand(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteBrandAsync(Guid id)
         {
             try
             {
-                var deleted = _brandRepository.DeleteBrand(id);
+                var deleted = await _brandRepository.DeleteBrandAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Brand>> FindBrandsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Brand>>> FindBrandsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var brands = _brandRepository.FindBrandsByFields(filters);
+            var brands = await _brandRepository.FindBrandsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Brand>>
             {
                 Success = true,

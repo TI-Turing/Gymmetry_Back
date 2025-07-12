@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.RoutineTemplate.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<RoutineTemplate> CreateRoutineTemplate(AddRoutineTemplateRequest request)
+        public async Task<ApplicationResponse<RoutineTemplate>> CreateRoutineTemplateAsync(AddRoutineTemplateRequest request)
         {
             try
             {
@@ -36,7 +37,7 @@ namespace FitGymApp.Application.Services
                     RoutineUserRoutineId = request.RoutineUserRoutineId,
                     RoutineAssignedId = request.RoutineAssignedId
                 };
-                var created = _routineTemplateRepository.CreateRoutineTemplate(entity);
+                var created = await _routineTemplateRepository.CreateRoutineTemplateAsync(entity);
                 return new ApplicationResponse<RoutineTemplate>
                 {
                     Success = true,
@@ -46,7 +47,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<RoutineTemplate>
                 {
                     Success = false,
@@ -56,9 +57,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<RoutineTemplate> GetRoutineTemplateById(Guid id)
+        public async Task<ApplicationResponse<RoutineTemplate>> GetRoutineTemplateByIdAsync(Guid id)
         {
-            var entity = _routineTemplateRepository.GetRoutineTemplateById(id);
+            var entity = await _routineTemplateRepository.GetRoutineTemplateByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<RoutineTemplate>
@@ -75,9 +76,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<RoutineTemplate>> GetAllRoutineTemplates()
+        public async Task<ApplicationResponse<IEnumerable<RoutineTemplate>>> GetAllRoutineTemplatesAsync()
         {
-            var entities = _routineTemplateRepository.GetAllRoutineTemplates();
+            var entities = await _routineTemplateRepository.GetAllRoutineTemplatesAsync();
             return new ApplicationResponse<IEnumerable<RoutineTemplate>>
             {
                 Success = true,
@@ -85,11 +86,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateRoutineTemplate(UpdateRoutineTemplateRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateRoutineTemplateAsync(UpdateRoutineTemplateRequest request)
         {
             try
             {
-                var before = _routineTemplateRepository.GetRoutineTemplateById(request.Id);
+                var before = await _routineTemplateRepository.GetRoutineTemplateByIdAsync(request.Id);
                 var entity = new RoutineTemplate
                 {
                     Id = request.Id,
@@ -101,10 +102,10 @@ namespace FitGymApp.Application.Services
                     RoutineUserRoutineId = request.RoutineUserRoutineId,
                     RoutineAssignedId = request.RoutineAssignedId
                 };
-                var updated = _routineTemplateRepository.UpdateRoutineTemplate(entity);
+                var updated = await _routineTemplateRepository.UpdateRoutineTemplateAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("RoutineTemplate", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("RoutineTemplate", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -125,7 +126,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -136,11 +137,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteRoutineTemplate(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteRoutineTemplateAsync(Guid id)
         {
             try
             {
-                var deleted = _routineTemplateRepository.DeleteRoutineTemplate(id);
+                var deleted = await _routineTemplateRepository.DeleteRoutineTemplateAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -163,7 +164,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -174,9 +175,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<RoutineTemplate>> FindRoutineTemplatesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<RoutineTemplate>>> FindRoutineTemplatesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _routineTemplateRepository.FindRoutineTemplatesByFields(filters);
+            var entities = await _routineTemplateRepository.FindRoutineTemplatesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<RoutineTemplate>>
             {
                 Success = true,

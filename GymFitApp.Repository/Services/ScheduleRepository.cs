@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Schedule CreateSchedule(Schedule entity)
+        public async Task<Schedule> CreateScheduleAsync(Schedule entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.Schedules.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public Schedule GetScheduleById(Guid id)
+        public async Task<Schedule?> GetScheduleByIdAsync(Guid id)
         {
-            return _context.Schedules.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.Schedules.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<Schedule> GetAllSchedules()
+        public async Task<IEnumerable<Schedule>> GetAllSchedulesAsync()
         {
-            return _context.Schedules.Where(e => e.IsActive).ToList();
+            return await _context.Schedules.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateSchedule(Schedule entity)
+        public async Task<bool> UpdateScheduleAsync(Schedule entity)
         {
-            var existing = _context.Schedules.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.Schedules.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteSchedule(Guid id)
+        public async Task<bool> DeleteScheduleAsync(Guid id)
         {
-            var entity = _context.Schedules.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.Schedules.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Schedule> FindSchedulesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Schedule>> FindSchedulesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Schedule), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<Schedule, bool>>(predicate, parameter);
-            return _context.Schedules.Where(lambda).ToList();
+            return await _context.Schedules.Where(lambda).ToListAsync();
         }
     }
 }

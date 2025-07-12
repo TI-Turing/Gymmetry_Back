@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public EmployeeUser CreateEmployeeUser(EmployeeUser entity)
+        public async Task<EmployeeUser> CreateEmployeeUserAsync(EmployeeUser entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.EmployeeUsers.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public EmployeeUser GetEmployeeUserById(Guid id)
+        public async Task<EmployeeUser?> GetEmployeeUserByIdAsync(Guid id)
         {
-            return _context.EmployeeUsers.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.EmployeeUsers.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<EmployeeUser> GetAllEmployeeUsers()
+        public async Task<IEnumerable<EmployeeUser>> GetAllEmployeeUsersAsync()
         {
-            return _context.EmployeeUsers.Where(e => e.IsActive).ToList();
+            return await _context.EmployeeUsers.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateEmployeeUser(EmployeeUser entity)
+        public async Task<bool> UpdateEmployeeUserAsync(EmployeeUser entity)
         {
-            var existing = _context.EmployeeUsers.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.EmployeeUsers.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteEmployeeUser(Guid id)
+        public async Task<bool> DeleteEmployeeUserAsync(Guid id)
         {
-            var entity = _context.EmployeeUsers.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.EmployeeUsers.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<EmployeeUser> FindEmployeeUsersByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<EmployeeUser>> FindEmployeeUsersByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(EmployeeUser), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<EmployeeUser, bool>>(predicate, parameter);
-            return _context.EmployeeUsers.Where(lambda).ToList();
+            return await _context.EmployeeUsers.Where(lambda).ToListAsync();
         }
     }
 }

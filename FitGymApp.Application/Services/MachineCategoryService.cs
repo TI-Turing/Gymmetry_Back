@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.MachineCategory.Request;
@@ -22,7 +23,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<MachineCategory> CreateMachineCategory(AddMachineCategoryRequest request)
+        public async Task<ApplicationResponse<MachineCategory>> CreateMachineCategoryAsync(AddMachineCategoryRequest request)
         {
             try
             {
@@ -31,7 +32,7 @@ namespace FitGymApp.Application.Services
                     Name = request.Name,
                     Ip = request.Ip
                 };
-                var created = _machineCategoryRepository.CreateMachineCategory(entity);
+                var created = await _machineCategoryRepository.CreateMachineCategoryAsync(entity);
                 return new ApplicationResponse<MachineCategory>
                 {
                     Success = true,
@@ -41,7 +42,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<MachineCategory>
                 {
                     Success = false,
@@ -51,9 +52,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<MachineCategory> GetMachineCategoryById(Guid id)
+        public async Task<ApplicationResponse<MachineCategory>> GetMachineCategoryByIdAsync(Guid id)
         {
-            var entity = _machineCategoryRepository.GetMachineCategoryById(id);
+            var entity = await _machineCategoryRepository.GetMachineCategoryByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<MachineCategory>
@@ -70,9 +71,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<MachineCategory>> GetAllMachineCategories()
+        public async Task<ApplicationResponse<IEnumerable<MachineCategory>>> GetAllMachineCategoriesAsync()
         {
-            var entities = _machineCategoryRepository.GetAllMachineCategories();
+            var entities = await _machineCategoryRepository.GetAllMachineCategoriesAsync();
             return new ApplicationResponse<IEnumerable<MachineCategory>>
             {
                 Success = true,
@@ -80,11 +81,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateMachineCategory(UpdateMachineCategoryRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateMachineCategoryAsync(UpdateMachineCategoryRequest request)
         {
             try
             {
-                var before = _machineCategoryRepository.GetMachineCategoryById(request.Id);
+                var before = await _machineCategoryRepository.GetMachineCategoryByIdAsync(request.Id);
                 var entity = new MachineCategory
                 {
                     Id = request.Id,
@@ -92,10 +93,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _machineCategoryRepository.UpdateMachineCategory(entity);
+                var updated = await _machineCategoryRepository.UpdateMachineCategoryAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("MachineCategory", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("MachineCategory", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +117,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +128,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteMachineCategory(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteMachineCategoryAsync(Guid id)
         {
             try
             {
-                var deleted = _machineCategoryRepository.DeleteMachineCategory(id);
+                var deleted = await _machineCategoryRepository.DeleteMachineCategoryAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +155,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +166,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<MachineCategory>> FindMachineCategoriesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<MachineCategory>>> FindMachineCategoriesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _machineCategoryRepository.FindMachineCategoriesByFields(filters);
+            var entities = await _machineCategoryRepository.FindMachineCategoriesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<MachineCategory>>
             {
                 Success = true,

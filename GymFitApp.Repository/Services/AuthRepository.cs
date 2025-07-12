@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using FitGymApp.Domain.DTO.Auth.Request;
 using FitGymApp.Domain.DTO.Auth.Response;
 using FitGymApp.Domain.Models;
@@ -14,9 +16,9 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public LoginResponse? Login(LoginRequest request)
+        public async Task<LoginResponse?> LoginAsync(LoginRequest request)
         {
-            var user = _context.Users.FirstOrDefault(u =>
+            var user = await _context.Users.FirstOrDefaultAsync(u =>
                 (u.IsActive ?? false) &&
                 (u.UserName == request.UserNameOrEmail || u.Email == request.UserNameOrEmail)
                 && u.Password == request.Password

@@ -73,7 +73,7 @@ public class AddGymFunction
                 };
             }
 
-            var result = _service.CreateGym(objRequest);
+            var result = await _service.CreateGymAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

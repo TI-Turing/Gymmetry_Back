@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IBillRepository
     {
-        Bill CreateBill(Bill entity);
-        Bill GetBillById(Guid id);
-        IEnumerable<Bill> GetAllBills();
-        bool UpdateBill(Bill entity);
-        bool DeleteBill(Guid id);
-        IEnumerable<Bill> FindBillsByFields(Dictionary<string, object> filters);
+        Task<Bill> CreateBillAsync(Bill entity);
+        Task<Bill?> GetBillByIdAsync(Guid id);
+        Task<IEnumerable<Bill>> GetAllBillsAsync();
+        Task<bool> UpdateBillAsync(Bill entity);
+        Task<bool> DeleteBillAsync(Guid id);
+        Task<IEnumerable<Bill>> FindBillsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

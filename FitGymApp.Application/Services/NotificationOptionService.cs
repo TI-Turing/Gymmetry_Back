@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.NotificationOption.Request;
@@ -22,7 +22,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<NotificationOption> CreateNotificationOption(AddNotificationOptionRequest request)
+        public async Task<ApplicationResponse<NotificationOption>> CreateNotificationOptionAsync(AddNotificationOptionRequest request)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace FitGymApp.Application.Services
                     UserId = request.UserId,
                     NotificationOptionNotificationNotificationOptionId = request.NotificationOptionNotificationNotificationOptionId
                 };
-                var created = _notificationOptionRepository.CreateNotificationOption(entity);
+                var created = await _notificationOptionRepository.CreateNotificationOptionAsync(entity);
                 return new ApplicationResponse<NotificationOption>
                 {
                     Success = true,
@@ -48,7 +48,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<NotificationOption>
                 {
                     Success = false,
@@ -58,9 +58,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<NotificationOption> GetNotificationOptionById(Guid id)
+        public async Task<ApplicationResponse<NotificationOption>> GetNotificationOptionByIdAsync(Guid id)
         {
-            var entity = _notificationOptionRepository.GetNotificationOptionById(id);
+            var entity = await _notificationOptionRepository.GetNotificationOptionByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<NotificationOption>
@@ -77,9 +77,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<NotificationOption>> GetAllNotificationOptions()
+        public async Task<ApplicationResponse<IEnumerable<NotificationOption>>> GetAllNotificationOptionsAsync()
         {
-            var entities = _notificationOptionRepository.GetAllNotificationOptions();
+            var entities = await _notificationOptionRepository.GetAllNotificationOptionsAsync();
             return new ApplicationResponse<IEnumerable<NotificationOption>>
             {
                 Success = true,
@@ -87,11 +87,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateNotificationOption(UpdateNotificationOptionRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateNotificationOptionAsync(UpdateNotificationOptionRequest request)
         {
             try
             {
-                var before = _notificationOptionRepository.GetNotificationOptionById(request.Id);
+                var before = await _notificationOptionRepository.GetNotificationOptionByIdAsync(request.Id);
                 var entity = new NotificationOption
                 {
                     Id = request.Id,
@@ -105,10 +105,10 @@ namespace FitGymApp.Application.Services
                     UserId = request.UserId,
                     NotificationOptionNotificationNotificationOptionId = request.NotificationOptionNotificationNotificationOptionId
                 };
-                var updated = _notificationOptionRepository.UpdateNotificationOption(entity);
+                var updated = await _notificationOptionRepository.UpdateNotificationOptionAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("NotificationOption", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("NotificationOption", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -129,7 +129,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -140,11 +140,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteNotificationOption(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteNotificationOptionAsync(Guid id)
         {
             try
             {
-                var deleted = _notificationOptionRepository.DeleteNotificationOption(id);
+                var deleted = await _notificationOptionRepository.DeleteNotificationOptionAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -167,7 +167,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -178,9 +178,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<NotificationOption>> FindNotificationOptionsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<NotificationOption>>> FindNotificationOptionsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _notificationOptionRepository.FindNotificationOptionsByFields(filters);
+            var entities = await _notificationOptionRepository.FindNotificationOptionsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<NotificationOption>>
             {
                 Success = true,

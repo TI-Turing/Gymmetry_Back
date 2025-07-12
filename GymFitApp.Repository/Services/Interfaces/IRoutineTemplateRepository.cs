@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IRoutineTemplateRepository
     {
-        RoutineTemplate CreateRoutineTemplate(RoutineTemplate entity);
-        RoutineTemplate GetRoutineTemplateById(Guid id);
-        IEnumerable<RoutineTemplate> GetAllRoutineTemplates();
-        bool UpdateRoutineTemplate(RoutineTemplate entity);
-        bool DeleteRoutineTemplate(Guid id);
-        IEnumerable<RoutineTemplate> FindRoutineTemplatesByFields(Dictionary<string, object> filters);
+        Task<RoutineTemplate> CreateRoutineTemplateAsync(RoutineTemplate entity);
+        Task<RoutineTemplate> GetRoutineTemplateByIdAsync(Guid id);
+        Task<IEnumerable<RoutineTemplate>> GetAllRoutineTemplatesAsync();
+        Task<bool> UpdateRoutineTemplateAsync(RoutineTemplate entity);
+        Task<bool> DeleteRoutineTemplateAsync(Guid id);
+        Task<IEnumerable<RoutineTemplate>> FindRoutineTemplatesByFieldsAsync(Dictionary<string, object> filters);
     }
 }

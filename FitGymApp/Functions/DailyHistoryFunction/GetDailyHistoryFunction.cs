@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
             _service = service;
         }
 
-        [Function("GetDailyHistoryByIdFunction")]
+        [Function("DailyHistory_GetDailyHistoryByIdFunction")]
         public async Task<ApiResponse<DailyHistory>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailyhistory/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
             _logger.LogInformation($"Consultando DailyHistory por Id: {id}");
             try
             {
-                var result = _service.GetDailyHistoryById(id);
+                var result = await _service.GetDailyHistoryByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<DailyHistory>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
             }
         }
 
-        [Function("GetAllDailyHistoriesFunction")]
+        [Function("DailyHistory_GetAllDailyHistoriesFunction")]
         public async Task<ApiResponse<IEnumerable<DailyHistory>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailyhistories")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
             _logger.LogInformation("Consultando todos los DailyHistories activos.");
             try
             {
-                var result = _service.GetAllDailyHistories();
+                var result = await _service.GetAllDailyHistoriesAsync();
                 return new ApiResponse<IEnumerable<DailyHistory>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
             }
         }
 
-        [Function("FindDailyHistoriesByFieldsFunction")]
+        [Function("DailyHistory_FindDailyHistoriesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<DailyHistory>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailyhistories/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.DailyHistoryFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindDailyHistoriesByFields(filters);
+                var result = await _service.FindDailyHistoriesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<DailyHistory>>
                 {
                     Success = result.Success,

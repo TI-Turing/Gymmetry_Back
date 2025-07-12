@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IGymPlanSelectedRepository
     {
-        GymPlanSelected CreateGymPlanSelected(GymPlanSelected entity);
-        GymPlanSelected GetGymPlanSelectedById(Guid id);
-        IEnumerable<GymPlanSelected> GetAllGymPlanSelecteds();
-        bool UpdateGymPlanSelected(GymPlanSelected entity);
-        bool DeleteGymPlanSelected(Guid id);
-        IEnumerable<GymPlanSelected> FindGymPlanSelectedsByFields(Dictionary<string, object> filters);
+        Task<GymPlanSelected> CreateGymPlanSelectedAsync(GymPlanSelected entity);
+        Task<GymPlanSelected?> GetGymPlanSelectedByIdAsync(Guid id);
+        Task<IEnumerable<GymPlanSelected>> GetAllGymPlanSelectedsAsync();
+        Task<bool> UpdateGymPlanSelectedAsync(GymPlanSelected entity);
+        Task<bool> DeleteGymPlanSelectedAsync(Guid id);
+        Task<IEnumerable<GymPlanSelected>> FindGymPlanSelectedsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

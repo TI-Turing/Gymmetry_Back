@@ -25,7 +25,7 @@ namespace FitGymApp.Functions.BranchFunction
             _service = service;
         }
 
-        [Function("GetBranchByIdFunction")]
+        [Function("Branch_GetBranchByIdFunction")]
         public async Task<ApiResponse<Branch>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "branch/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -41,7 +41,7 @@ namespace FitGymApp.Functions.BranchFunction
             _logger.LogInformation($"Consultando Branch por Id: {id}");
             try
             {
-                var result = _service.GetBranchById(id);
+                var result = await _service.GetBranchByIdAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Branch>
@@ -73,7 +73,7 @@ namespace FitGymApp.Functions.BranchFunction
             }
         }
 
-        [Function("GetAllBranchesFunction")]
+        [Function("Branch_GetAllBranchesFunction")]
         public async Task<ApiResponse<IEnumerable<Branch>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "branches")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -89,7 +89,7 @@ namespace FitGymApp.Functions.BranchFunction
             _logger.LogInformation("Consultando todos los Branches activos.");
             try
             {
-                var result = _service.GetAllBranches();
+                var result = await _service.GetAllBranchesAsync();
                 return new ApiResponse<IEnumerable<Branch>>
                 {
                     Success = result.Success,
@@ -111,7 +111,7 @@ namespace FitGymApp.Functions.BranchFunction
             }
         }
 
-        [Function("FindBranchesByFieldsFunction")]
+        [Function("Branch_FindBranchesByFieldsFunction")]
         public async Task<ApiResponse<IEnumerable<Branch>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "branches/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -128,7 +128,7 @@ namespace FitGymApp.Functions.BranchFunction
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
                     return new ApiResponse<IEnumerable<Branch>>
@@ -139,7 +139,7 @@ namespace FitGymApp.Functions.BranchFunction
                         StatusCode = StatusCodes.Status400BadRequest
                     };
                 }
-                var result = _service.FindBranchesByFields(filters);
+                var result = await _service.FindBranchesByFieldsAsync(filters);
                 return new ApiResponse<IEnumerable<Branch>>
                 {
                     Success = result.Success,

@@ -4,13 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.ComponentModel.DataAnnotations;
-using FitGymApp.Application.Services.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Utils;
 
 namespace FitGymApp.Functions.DietFunction;
@@ -26,7 +23,7 @@ public class UpdateDietFunction
         _service = service;
     }
 
-    [Function("UpdateDietFunction")]
+    [Function("Diet_UpdateDietFunction")]
     public async Task<ApiResponse<Guid>> UpdateAsync([HttpTrigger(AuthorizationLevel.Function, "put", Route = "diet/update")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -45,34 +42,10 @@ public class UpdateDietFunction
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<UpdateDietRequest>(requestBody);
+            var validationResult = ModelValidator.ValidateModel<UpdateDietRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
+            if (validationResult is not null) return validationResult;
 
-            if (objRequest == null)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "El cuerpo de la solicitud no coincide con la estructura esperada.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var validationContext = new ValidationContext(objRequest, null, null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(objRequest, validationContext, validationResults, true);
-
-            if (!isValid)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = string.Join("; ", validationResults.Select(v => v.ErrorMessage)),
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var result = _service.UpdateDiet(objRequest);
+            var result = await _service.UpdateDietAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

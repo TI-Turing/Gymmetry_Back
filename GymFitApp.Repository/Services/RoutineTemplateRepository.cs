@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,59 +16,60 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public RoutineTemplate CreateRoutineTemplate(RoutineTemplate entity)
+        public async Task<RoutineTemplate> CreateRoutineTemplateAsync(RoutineTemplate entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            _context.RoutineTemplates.Add(entity);
-            _context.SaveChanges();
+            await _context.RoutineTemplates.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public RoutineTemplate GetRoutineTemplateById(Guid id)
+        public async Task<RoutineTemplate> GetRoutineTemplateByIdAsync(Guid id)
         {
-            return _context.RoutineTemplates.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.RoutineTemplates.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<RoutineTemplate> GetAllRoutineTemplates()
+        public async Task<IEnumerable<RoutineTemplate>> GetAllRoutineTemplatesAsync()
         {
-            return _context.RoutineTemplates.Where(e => e.IsActive).ToList();
+            return await _context.RoutineTemplates.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateRoutineTemplate(RoutineTemplate entity)
+        public async Task<bool> UpdateRoutineTemplateAsync(RoutineTemplate entity)
         {
-            var existing = _context.RoutineTemplates.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.RoutineTemplates.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteRoutineTemplate(Guid id)
+        public async Task<bool> DeleteRoutineTemplateAsync(Guid id)
         {
-            var entity = _context.RoutineTemplates.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.RoutineTemplates.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<RoutineTemplate> FindRoutineTemplatesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<RoutineTemplate>> FindRoutineTemplatesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(RoutineTemplate), "e");
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(RoutineTemplate.IsActive)),
                 Expression.Constant(true)
             );
+
             foreach (var filter in filters)
             {
                 var property = typeof(RoutineTemplate).GetProperty(filter.Key);
@@ -77,8 +79,9 @@ namespace FitGymApp.Repository.Services
                 var equals = Expression.Equal(left, right);
                 predicate = Expression.AndAlso(predicate, equals);
             }
+
             var lambda = Expression.Lambda<Func<RoutineTemplate, bool>>(predicate, parameter);
-            return _context.RoutineTemplates.Where(lambda).ToList();
+            return await _context.RoutineTemplates.Where(lambda).ToListAsync();
         }
     }
 }

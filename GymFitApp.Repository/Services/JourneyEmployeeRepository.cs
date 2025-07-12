@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public JourneyEmployee CreateJourneyEmployee(JourneyEmployee entity)
+        public async Task<JourneyEmployee> CreateJourneyEmployeeAsync(JourneyEmployee entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.JourneyEmployees.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public JourneyEmployee GetJourneyEmployeeById(Guid id)
+        public async Task<JourneyEmployee?> GetJourneyEmployeeByIdAsync(Guid id)
         {
-            return _context.JourneyEmployees.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.JourneyEmployees.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<JourneyEmployee> GetAllJourneyEmployees()
+        public async Task<IEnumerable<JourneyEmployee>> GetAllJourneyEmployeesAsync()
         {
-            return _context.JourneyEmployees.Where(e => e.IsActive).ToList();
+            return await _context.JourneyEmployees.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateJourneyEmployee(JourneyEmployee entity)
+        public async Task<bool> UpdateJourneyEmployeeAsync(JourneyEmployee entity)
         {
-            var existing = _context.JourneyEmployees.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.JourneyEmployees.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteJourneyEmployee(Guid id)
+        public async Task<bool> DeleteJourneyEmployeeAsync(Guid id)
         {
-            var entity = _context.JourneyEmployees.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.JourneyEmployees.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<JourneyEmployee> FindJourneyEmployeesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<JourneyEmployee>> FindJourneyEmployeesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(JourneyEmployee), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<JourneyEmployee, bool>>(predicate, parameter);
-            return _context.JourneyEmployees.Where(lambda).ToList();
+            return await _context.JourneyEmployees.Where(lambda).ToListAsync();
         }
     }
 }

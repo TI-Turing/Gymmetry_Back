@@ -21,7 +21,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
             _service = service;
         }
 
-        [Function("DeleteEmployeeRegisterDailyFunction")]
+        [Function("EmployeeRegisterDaily_DeleteEmployeeRegisterDailyFunction")]
         public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "employeeregisterdaily/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error))
@@ -38,7 +38,7 @@ namespace FitGymApp.Functions.EmployeeRegisterDailyFunction
             _logger.LogInformation($"Procesando solicitud de borrado para EmployeeRegisterDaily {id}");
             try
             {
-                var result = _service.DeleteEmployeeRegisterDaily(id);
+                var result = await _service.DeleteEmployeeRegisterDailyAsync(id);
                 if (!result.Success)
                 {
                     return new ApiResponse<Guid>

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public Branch CreateBranch(Branch branch)
+        public async Task<Branch> CreateBranchAsync(Branch branch)
         {
             branch.Id = Guid.NewGuid();
             branch.CreatedAt = DateTime.UtcNow;
             branch.IsActive = true;
             _context.Branches.Add(branch);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return branch;
         }
 
-        public Branch GetBranchById(Guid id)
+        public async Task<Branch?> GetBranchByIdAsync(Guid id)
         {
-            return _context.Branches.FirstOrDefault(b => b.Id == id && b.IsActive);
+            return await _context.Branches.FirstOrDefaultAsync(b => b.Id == id && b.IsActive);
         }
 
-        public IEnumerable<Branch> GetAllBranches()
+        public async Task<IEnumerable<Branch>> GetAllBranchesAsync()
         {
-            return _context.Branches.Where(b => b.IsActive).ToList();
+            return await _context.Branches.Where(b => b.IsActive).ToListAsync();
         }
 
-        public bool UpdateBranch(Branch branch)
+        public async Task<bool> UpdateBranchAsync(Branch branch)
         {
-            var existing = _context.Branches.FirstOrDefault(b => b.Id == branch.Id && b.IsActive);
+            var existing = await _context.Branches.FirstOrDefaultAsync(b => b.Id == branch.Id && b.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(branch);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteBranch(Guid id)
+        public async Task<bool> DeleteBranchAsync(Guid id)
         {
-            var entity = _context.Branches.FirstOrDefault(b => b.Id == id && b.IsActive);
+            var entity = await _context.Branches.FirstOrDefaultAsync(b => b.Id == id && b.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<Branch> FindBranchesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<Branch>> FindBranchesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(Branch), "b");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<Branch, bool>>(predicate, parameter);
-            return _context.Branches.Where(lambda).ToList();
+            return await _context.Branches.Where(lambda).ToListAsync();
         }
     }
 }

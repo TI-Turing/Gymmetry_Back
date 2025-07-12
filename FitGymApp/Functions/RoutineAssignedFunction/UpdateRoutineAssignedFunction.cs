@@ -73,7 +73,7 @@ public class UpdateRoutineAssignedFunction
                 };
             }
 
-            var result = _service.UpdateRoutineAssigned(objRequest);
+            var result = await _service.UpdateRoutineAssignedAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

@@ -27,7 +27,7 @@ public class AddEmployeeRegisterDailyFunction
         _service = service;
     }
 
-    [Function("AddEmployeeRegisterDailyFunction")]
+    [Function("EmployeeRegisterDaily_AddEmployeeRegisterDailyFunction")]
     public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "employeeregisterdaily/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error))
@@ -46,34 +46,10 @@ public class AddEmployeeRegisterDailyFunction
         {
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<AddEmployeeRegisterDailyRequest>(requestBody);
+            var validationResult = ModelValidator.ValidateModel<AddEmployeeRegisterDailyRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
+            if (validationResult is not null) return validationResult;
 
-            if (objRequest == null)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "El cuerpo de la solicitud no coincide con la estructura esperada.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var validationContext = new ValidationContext(objRequest, null, null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(objRequest, validationContext, validationResults, true);
-
-            if (!isValid)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = string.Join("; ", validationResults.Select(v => v.ErrorMessage)),
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var result = _service.CreateEmployeeRegisterDaily(objRequest);
+            var result = await _service.CreateEmployeeRegisterDailyAsync(objRequest);
             if (!result.Success)
             {
                 return new ApiResponse<Guid>

@@ -1,16 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 
 namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IDietRepository
     {
-        Diet CreateDiet(Diet diet);
-        Diet GetDietById(Guid id);
-        IEnumerable<Diet> GetAllDiets();
-        bool UpdateDiet(Diet diet);
-        bool DeleteDiet(Guid id);
-        IEnumerable<Diet> FindDietsByFields(Dictionary<string, object> filters);
+        Task<Diet> CreateDietAsync(Diet diet);
+        Task<Diet?> GetDietByIdAsync(Guid id);
+        Task<IEnumerable<Diet>> GetAllDietsAsync();
+        Task<bool> UpdateDietAsync(Diet diet);
+        Task<bool> DeleteDietAsync(Guid id);
+        Task<IEnumerable<Diet>> FindDietsByFieldsAsync(Dictionary<string, object> filters);
     }
 }

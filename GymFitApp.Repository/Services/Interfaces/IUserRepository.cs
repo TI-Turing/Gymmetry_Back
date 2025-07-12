@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 using FitGymApp.Domain.Models;
@@ -6,11 +7,11 @@ namespace FitGymApp.Repository.Services.Interfaces
 {
     public interface IUserRepository
     {
-        User CreateUser(User user);
-        User GetUserById(Guid id);
-        IEnumerable<User> GetAllUsers();
-        bool UpdateUser(User user);
-        bool DeleteUser(Guid id);
-        IEnumerable<User> FindUsersByFields(Dictionary<string, object> filters);
+        Task<User> CreateUserAsync(User user);
+        Task<User?> GetUserByIdAsync(Guid id);
+        Task<IEnumerable<User>> GetAllUsersAsync();
+        Task<bool> UpdateUserAsync(User user);
+        Task<bool> DeleteUserAsync(Guid id);
+        Task<IEnumerable<User>> FindUsersByFieldsAsync(Dictionary<string, object> filters);
     }
 }

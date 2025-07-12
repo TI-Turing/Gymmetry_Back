@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Bill.Request;
@@ -25,12 +26,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<Bill> CreateBill(AddBillRequest request)
+        public async Task<ApplicationResponse<Bill>> CreateBillAsync(AddBillRequest request)
         {
             try
             {
                 var bill = _mapper.Map<Bill>(request);
-                var created = _billRepository.CreateBill(bill);
+                var created = await _billRepository.CreateBillAsync(bill);
                 return new ApplicationResponse<Bill>
                 {
                     Success = true,
@@ -40,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<Bill>
                 {
                     Success = false,
@@ -50,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<Bill> GetBillById(Guid id)
+        public async Task<ApplicationResponse<Bill>> GetBillByIdAsync(Guid id)
         {
-            var bill = _billRepository.GetBillById(id);
+            var bill = await _billRepository.GetBillByIdAsync(id);
             if (bill == null)
             {
                 return new ApplicationResponse<Bill>
@@ -69,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<Bill>> GetAllBills()
+        public async Task<ApplicationResponse<IEnumerable<Bill>>> GetAllBillsAsync()
         {
-            var bills = _billRepository.GetAllBills();
+            var bills = await _billRepository.GetAllBillsAsync();
             return new ApplicationResponse<IEnumerable<Bill>>
             {
                 Success = true,
@@ -79,16 +80,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateBill(UpdateBillRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateBillAsync(UpdateBillRequest request)
         {
             try
             {
-                var billBefore = _billRepository.GetBillById(request.Id);
+                var billBefore = await _billRepository.GetBillByIdAsync(request.Id);
                 var bill = _mapper.Map<Bill>(request);
-                var updated = _billRepository.UpdateBill(bill);
+                var updated = await _billRepository.UpdateBillAsync(bill);
                 if (updated)
                 {
-                    _logChangeService.LogChange("Bill", billBefore, bill.Id);
+                    await _logChangeService.LogChangeAsync("Bill", billBefore, bill.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +110,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +121,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteBill(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteBillAsync(Guid id)
         {
             try
             {
-                var deleted = _billRepository.DeleteBill(id);
+                var deleted = await _billRepository.DeleteBillAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +148,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +159,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<Bill>> FindBillsByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<Bill>>> FindBillsByFieldsAsync(Dictionary<string, object> filters)
         {
-            var bills = _billRepository.FindBillsByFields(filters);
+            var bills = await _billRepository.FindBillsByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<Bill>>
             {
                 Success = true,

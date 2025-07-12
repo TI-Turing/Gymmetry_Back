@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.UserType.Request;
@@ -22,7 +22,7 @@ namespace FitGymApp.Application.Services
             _logErrorService = logErrorService;
         }
 
-        public ApplicationResponse<UserType> CreateUserType(AddUserTypeRequest request)
+        public async Task<ApplicationResponse<UserType>> CreateUserTypeAsync(AddUserTypeRequest request)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace FitGymApp.Application.Services
                     Name = request.Name,
                     Ip = request.Ip
                 };
-                var created = _userTypeRepository.CreateUserType(entity);
+                var created = await _userTypeRepository.CreateUserTypeAsync(entity);
                 return new ApplicationResponse<UserType>
                 {
                     Success = true,
@@ -41,7 +41,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<UserType>
                 {
                     Success = false,
@@ -51,9 +51,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<UserType> GetUserTypeById(Guid id)
+        public async Task<ApplicationResponse<UserType>> GetUserTypeByIdAsync(Guid id)
         {
-            var entity = _userTypeRepository.GetUserTypeById(id);
+            var entity = await _userTypeRepository.GetUserTypeByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<UserType>
@@ -70,9 +70,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<UserType>> GetAllUserTypes()
+        public async Task<ApplicationResponse<IEnumerable<UserType>>> GetAllUserTypesAsync()
         {
-            var entities = _userTypeRepository.GetAllUserTypes();
+            var entities = await _userTypeRepository.GetAllUserTypesAsync();
             return new ApplicationResponse<IEnumerable<UserType>>
             {
                 Success = true,
@@ -80,11 +80,11 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateUserType(UpdateUserTypeRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateUserTypeAsync(UpdateUserTypeRequest request)
         {
             try
             {
-                var before = _userTypeRepository.GetUserTypeById(request.Id);
+                var before = await _userTypeRepository.GetUserTypeByIdAsync(request.Id);
                 var entity = new UserType
                 {
                     Id = request.Id,
@@ -92,10 +92,10 @@ namespace FitGymApp.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive
                 };
-                var updated = _userTypeRepository.UpdateUserType(entity);
+                var updated = await _userTypeRepository.UpdateUserTypeAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("UserType", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("UserType", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -116,7 +116,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -127,11 +127,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteUserType(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteUserTypeAsync(Guid id)
         {
             try
             {
-                var deleted = _userTypeRepository.DeleteUserType(id);
+                var deleted = await _userTypeRepository.DeleteUserTypeAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -154,7 +154,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -165,9 +165,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<UserType>> FindUserTypesByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<UserType>>> FindUserTypesByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _userTypeRepository.FindUserTypesByFields(filters);
+            var entities = await _userTypeRepository.FindUserTypesByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<UserType>>
             {
                 Success = true,

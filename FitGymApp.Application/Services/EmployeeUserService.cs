@@ -6,7 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace FitGymApp.Application.Services
 {
@@ -25,12 +25,12 @@ namespace FitGymApp.Application.Services
             _mapper = mapper;
         }
 
-        public ApplicationResponse<EmployeeUser> CreateEmployeeUser(AddEmployeeUserRequest request)
+        public async Task<ApplicationResponse<EmployeeUser>> CreateEmployeeUserAsync(AddEmployeeUserRequest request)
         {
             try
             {
                 var entity = _mapper.Map<EmployeeUser>(request);
-                var created = _employeeUserRepository.CreateEmployeeUser(entity);
+                var created = await _employeeUserRepository.CreateEmployeeUserAsync(entity);
                 return new ApplicationResponse<EmployeeUser>
                 {
                     Success = true,
@@ -40,7 +40,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<EmployeeUser>
                 {
                     Success = false,
@@ -50,9 +50,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<EmployeeUser> GetEmployeeUserById(Guid id)
+        public async Task<ApplicationResponse<EmployeeUser>> GetEmployeeUserByIdAsync(Guid id)
         {
-            var entity = _employeeUserRepository.GetEmployeeUserById(id);
+            var entity = await _employeeUserRepository.GetEmployeeUserByIdAsync(id);
             if (entity == null)
             {
                 return new ApplicationResponse<EmployeeUser>
@@ -69,9 +69,9 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<IEnumerable<EmployeeUser>> GetAllEmployeeUsers()
+        public async Task<ApplicationResponse<IEnumerable<EmployeeUser>>> GetAllEmployeeUsersAsync()
         {
-            var entities = _employeeUserRepository.GetAllEmployeeUsers();
+            var entities = await _employeeUserRepository.GetAllEmployeeUsersAsync();
             return new ApplicationResponse<IEnumerable<EmployeeUser>>
             {
                 Success = true,
@@ -79,16 +79,16 @@ namespace FitGymApp.Application.Services
             };
         }
 
-        public ApplicationResponse<bool> UpdateEmployeeUser(UpdateEmployeeUserRequest request)
+        public async Task<ApplicationResponse<bool>> UpdateEmployeeUserAsync(UpdateEmployeeUserRequest request)
         {
             try
             {
-                var before = _employeeUserRepository.GetEmployeeUserById(request.Id);
+                var before = await _employeeUserRepository.GetEmployeeUserByIdAsync(request.Id);
                 var entity = _mapper.Map<EmployeeUser>(request);
-                var updated = _employeeUserRepository.UpdateEmployeeUser(entity);
+                var updated = await _employeeUserRepository.UpdateEmployeeUserAsync(entity);
                 if (updated)
                 {
-                    _logChangeService.LogChange("EmployeeUser", before, entity.Id);
+                    await _logChangeService.LogChangeAsync("EmployeeUser", before, entity.Id);
                     return new ApplicationResponse<bool>
                     {
                         Success = true,
@@ -109,7 +109,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -120,11 +120,11 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<bool> DeleteEmployeeUser(Guid id)
+        public async Task<ApplicationResponse<bool>> DeleteEmployeeUserAsync(Guid id)
         {
             try
             {
-                var deleted = _employeeUserRepository.DeleteEmployeeUser(id);
+                var deleted = await _employeeUserRepository.DeleteEmployeeUserAsync(id);
                 if (deleted)
                 {
                     return new ApplicationResponse<bool>
@@ -147,7 +147,7 @@ namespace FitGymApp.Application.Services
             }
             catch (Exception ex)
             {
-                _logErrorService.LogError(ex);
+                await _logErrorService.LogErrorAsync(ex);
                 return new ApplicationResponse<bool>
                 {
                     Success = false,
@@ -158,9 +158,9 @@ namespace FitGymApp.Application.Services
             }
         }
 
-        public ApplicationResponse<IEnumerable<EmployeeUser>> FindEmployeeUsersByFields(Dictionary<string, object> filters)
+        public async Task<ApplicationResponse<IEnumerable<EmployeeUser>>> FindEmployeeUsersByFieldsAsync(Dictionary<string, object> filters)
         {
-            var entities = _employeeUserRepository.FindEmployeeUsersByFields(filters);
+            var entities = await _employeeUserRepository.FindEmployeeUsersByFieldsAsync(filters);
             return new ApplicationResponse<IEnumerable<EmployeeUser>>
             {
                 Success = true,

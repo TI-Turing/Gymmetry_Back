@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using FitGymApp.Domain.Models;
 using FitGymApp.Repository.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FitGymApp.Repository.Services
 {
@@ -15,53 +17,53 @@ namespace FitGymApp.Repository.Services
             _context = context;
         }
 
-        public CategoryExercise CreateCategoryExercise(CategoryExercise entity)
+        public async Task<CategoryExercise> CreateCategoryExerciseAsync(CategoryExercise entity)
         {
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
             _context.CategoryExercises.Add(entity);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return entity;
         }
 
-        public CategoryExercise GetCategoryExerciseById(Guid id)
+        public async Task<CategoryExercise?> GetCategoryExerciseByIdAsync(Guid id)
         {
-            return _context.CategoryExercises.FirstOrDefault(e => e.Id == id && e.IsActive);
+            return await _context.CategoryExercises.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
         }
 
-        public IEnumerable<CategoryExercise> GetAllCategoryExercises()
+        public async Task<IEnumerable<CategoryExercise>> GetAllCategoryExercisesAsync()
         {
-            return _context.CategoryExercises.Where(e => e.IsActive).ToList();
+            return await _context.CategoryExercises.Where(e => e.IsActive).ToListAsync();
         }
 
-        public bool UpdateCategoryExercise(CategoryExercise entity)
+        public async Task<bool> UpdateCategoryExerciseAsync(CategoryExercise entity)
         {
-            var existing = _context.CategoryExercises.FirstOrDefault(e => e.Id == entity.Id && e.IsActive);
+            var existing = await _context.CategoryExercises.FirstOrDefaultAsync(e => e.Id == entity.Id && e.IsActive);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(entity);
                 existing.UpdatedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public bool DeleteCategoryExercise(Guid id)
+        public async Task<bool> DeleteCategoryExerciseAsync(Guid id)
         {
-            var entity = _context.CategoryExercises.FirstOrDefault(e => e.Id == id && e.IsActive);
+            var entity = await _context.CategoryExercises.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
             if (entity != null)
             {
                 entity.IsActive = false;
                 entity.DeletedAt = DateTime.UtcNow;
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
         }
 
-        public IEnumerable<CategoryExercise> FindCategoryExercisesByFields(Dictionary<string, object> filters)
+        public async Task<IEnumerable<CategoryExercise>> FindCategoryExercisesByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(CategoryExercise), "e");
             Expression predicate = Expression.Equal(
@@ -78,7 +80,7 @@ namespace FitGymApp.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<CategoryExercise, bool>>(predicate, parameter);
-            return _context.CategoryExercises.Where(lambda).ToList();
+            return await _context.CategoryExercises.Where(lambda).ToListAsync();
         }
     }
 }
