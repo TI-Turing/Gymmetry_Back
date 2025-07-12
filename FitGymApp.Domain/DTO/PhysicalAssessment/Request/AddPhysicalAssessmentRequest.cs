@@ -1,8 +1,9 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.PhysicalAssessment.Request
 {
-    public class AddPhysicalAssessmentRequest
+    public class AddPhysicalAssessmentRequest : ApiRequest
     {
         public string Height { get; set; } = null!;
         public string Weight { get; set; } = null!;
@@ -26,8 +27,6 @@ namespace FitGymApp.Domain.DTO.PhysicalAssessment.Request
         public string BodyFatPercentage { get; set; } = null!;
         public string MuscleMass { get; set; } = null!;
         public string Bmi { get; set; } = null!;
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; } = true;
         public Guid UserId { get; set; }
     }
 }

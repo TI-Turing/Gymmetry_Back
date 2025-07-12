@@ -2,7 +2,7 @@ using System;
 
 namespace FitGymApp.Domain.DTO.Branch.Request
 {
-    public class UpdateBranchRequest
+    public class UpdateBranchRequest : ApiRequest
     {
         public Guid Id { get; set; }
         public string Address { get; set; } = null!;

@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.RoutineExercise.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,25 +15,22 @@ namespace FitGymApp.Application.Services
         private readonly IRoutineExerciseRepository _routineExerciseRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public RoutineExerciseService(IRoutineExerciseRepository routineExerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public RoutineExerciseService(IRoutineExerciseRepository routineExerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _routineExerciseRepository = routineExerciseRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
+            
         }
 
         public ApplicationResponse<RoutineExercise> CreateRoutineExercise(AddRoutineExerciseRequest request)
         {
             try
             {
-                var entity = new RoutineExercise
-                {
-                    Name = request.Name,
-                    Description = request.Description,
-                    UserId = request.UserId,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<RoutineExercise>(request);
                 var created = _routineExerciseRepository.CreateRoutineExercise(entity);
                 return new ApplicationResponse<RoutineExercise>
                 {
@@ -87,15 +85,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _routineExerciseRepository.GetRoutineExerciseById(request.Id);
-                var entity = new RoutineExercise
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Description = request.Description,
-                    UserId = request.UserId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<RoutineExercise>(request);
                 var updated = _routineExerciseRepository.UpdateRoutineExercise(entity);
                 if (updated)
                 {

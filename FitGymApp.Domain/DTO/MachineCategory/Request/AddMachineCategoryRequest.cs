@@ -1,11 +1,10 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.MachineCategory.Request
 {
-    public class AddMachineCategoryRequest
+    public class AddMachineCategoryRequest : ApiRequest
     {
         public string Name { get; set; } = null!;
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; } = true;
     }
 }

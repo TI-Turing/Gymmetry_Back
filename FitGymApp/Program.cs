@@ -28,6 +28,10 @@ var connectionString = configuration.GetConnectionString("DefaultConnection")
 builder.Services.AddDbContext<FitGymAppContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddAutoMapper(cfg => {
+    cfg.AddProfile<AutoMapperProfile>();
+});
+
 // Inyección de dependencias de repositorios
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();

@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Diet.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,32 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IDietRepository _dietRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public DietService(IDietRepository dietRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public DietService(IDietRepository dietRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _dietRepository = dietRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Diet> CreateDiet(AddDietRequest request)
         {
             try
             {
-                var diet = new Diet
-                {
-                    BreakFast = request.BreakFast,
-                    MidMorning = request.MidMorning,
-                    Lunch = request.Lunch,
-                    MidAfternoon = request.MidAfternoon,
-                    Night = request.Night,
-                    MidNight = request.MidNight,
-                    Observations = request.Observations,
-                    StartDate = request.StartDate,
-                    EndDate = request.EndDate,
-                    UserId = request.UserId,
-                    Ip = request.Ip
-                };
+                var diet = _mapper.Map<Diet>(request);
                 var created = _dietRepository.CreateDiet(diet);
                 return new ApplicationResponse<Diet>
                 {
@@ -94,22 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var dietBefore = _dietRepository.GetDietById(request.Id);
-                var diet = new Diet
-                {
-                    Id = request.Id,
-                    BreakFast = request.BreakFast,
-                    MidMorning = request.MidMorning,
-                    Lunch = request.Lunch,
-                    MidAfternoon = request.MidAfternoon,
-                    Night = request.Night,
-                    MidNight = request.MidNight,
-                    Observations = request.Observations,
-                    StartDate = request.StartDate,
-                    EndDate = request.EndDate,
-                    UserId = request.UserId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var diet = _mapper.Map<Diet>(request);
                 var updated = _dietRepository.UpdateDiet(diet);
                 if (updated)
                 {

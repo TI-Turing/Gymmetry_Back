@@ -1,11 +1,10 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.UninstallOption.Request
 {
-    public class AddUninstallOptionRequest
+    public class AddUninstallOptionRequest : ApiRequest
     {
         public string Name { get; set; } = null!;
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; } = true;
     }
 }

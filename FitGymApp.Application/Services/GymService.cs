@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Gym.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,26 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IGymRepository _gymRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public GymService(IGymRepository gymRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public GymService(IGymRepository gymRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _gymRepository = gymRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Gym> CreateGym(AddGymRequest request)
         {
             try
             {
-                var entity = new Gym
-                {
-                    Name = request.Name,
-                    Address = request.Address,
-                    CityId = request.CityId,
-                    RegionId = request.RegionId,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<Gym>(request);
                 var created = _gymRepository.CreateGym(entity);
                 return new ApplicationResponse<Gym>
                 {
@@ -88,16 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _gymRepository.GetGymById(request.Id);
-                var entity = new Gym
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Address = request.Address,
-                    CityId = request.CityId,
-                    RegionId = request.RegionId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<Gym>(request);
                 var updated = _gymRepository.UpdateGym(entity);
                 if (updated)
                 {

@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.DailyExercise.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,27 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IDailyExerciseRepository _dailyExerciseRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public DailyExerciseService(IDailyExerciseRepository dailyExerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public DailyExerciseService(IDailyExerciseRepository dailyExerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _dailyExerciseRepository = dailyExerciseRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<DailyExercise> CreateDailyExercise(AddDailyExerciseRequest request)
         {
             try
             {
-                var entity = new DailyExercise
-                {
-                    UserId = request.UserId,
-                    ExerciseId = request.ExerciseId,
-                    Date = request.Date,
-                    Repetitions = request.Repetitions,
-                    Weight = request.Weight,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<DailyExercise>(request);
                 var created = _dailyExerciseRepository.CreateDailyExercise(entity);
                 return new ApplicationResponse<DailyExercise>
                 {
@@ -89,17 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _dailyExerciseRepository.GetDailyExerciseById(request.Id);
-                var entity = new DailyExercise
-                {
-                    Id = request.Id,
-                    UserId = request.UserId,
-                    ExerciseId = request.ExerciseId,
-                    Date = request.Date,
-                    Repetitions = request.Repetitions,
-                    Weight = request.Weight,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<DailyExercise>(request);
                 var updated = _dailyExerciseRepository.UpdateDailyExercise(entity);
                 if (updated)
                 {

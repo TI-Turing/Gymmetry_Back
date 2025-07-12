@@ -2,7 +2,7 @@ using System;
 
 namespace FitGymApp.Domain.DTO.Branch.Request
 {
-    public class AddBranchRequest
+    public class AddBranchRequest : ApiRequest
     {
         public string Address { get; set; } = null!;
         public Guid CityId { get; set; }

@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Brand.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,23 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IBrandRepository _brandRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public BrandService(IBrandRepository brandRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public BrandService(IBrandRepository brandRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _brandRepository = brandRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Brand> CreateBrand(AddBrandRequest request)
         {
             try
             {
-                var brand = new Brand
-                {
-                    Name = request.Name,
-                    Ip = request.Ip
-                };
+                var brand = _mapper.Map<Brand>(request);
                 var created = _brandRepository.CreateBrand(brand);
                 return new ApplicationResponse<Brand>
                 {
@@ -85,13 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var brandBefore = _brandRepository.GetBrandById(request.Id);
-                var brand = new Brand
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var brand = _mapper.Map<Brand>(request);
                 var updated = _brandRepository.UpdateBrand(brand);
                 if (updated)
                 {

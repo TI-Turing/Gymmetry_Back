@@ -1,11 +1,12 @@
+using AutoMapper;
+using FitGymApp.Application.Services.Interfaces;
+using FitGymApp.Domain.DTO;
+using FitGymApp.Domain.DTO.EmployeeUser.Request;
+using FitGymApp.Domain.Models;
+using FitGymApp.Repository.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using FitGymApp.Application.Services.Interfaces;
-using FitGymApp.Domain.Models;
-using FitGymApp.Domain.DTO.EmployeeUser.Request;
-using FitGymApp.Domain.DTO;
-using FitGymApp.Repository.Services.Interfaces;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,24 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IEmployeeUserRepository _employeeUserRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public EmployeeUserService(IEmployeeUserRepository employeeUserRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public EmployeeUserService(IEmployeeUserRepository employeeUserRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _employeeUserRepository = employeeUserRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<EmployeeUser> CreateEmployeeUser(AddEmployeeUserRequest request)
         {
             try
             {
-                var entity = new EmployeeUser
-                {
-                    UserId = request.UserId,
-                    EmployeeTypeId = request.EmployeeTypeId,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<EmployeeUser>(request);
                 var created = _employeeUserRepository.CreateEmployeeUser(entity);
                 return new ApplicationResponse<EmployeeUser>
                 {
@@ -86,14 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _employeeUserRepository.GetEmployeeUserById(request.Id);
-                var entity = new EmployeeUser
-                {
-                    Id = request.Id,
-                    UserId = request.UserId,
-                    EmployeeTypeId = request.EmployeeTypeId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<EmployeeUser>(request);
                 var updated = _employeeUserRepository.UpdateEmployeeUser(entity);
                 if (updated)
                 {

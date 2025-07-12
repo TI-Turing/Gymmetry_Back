@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Bill.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,27 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IBillRepository _billRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public BillService(IBillRepository billRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public BillService(IBillRepository billRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _billRepository = billRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Bill> CreateBill(AddBillRequest request)
         {
             try
             {
-                var bill = new Bill
-                {
-                    Ammount = request.Ammount,
-                    UserTypeId = request.UserTypeId,
-                    UserId = request.UserId,
-                    UserSellerId = request.UserSellerId,
-                    GymId = request.GymId,
-                    Ip = request.Ip
-                };
+                var bill = _mapper.Map<Bill>(request);
                 var created = _billRepository.CreateBill(bill);
                 return new ApplicationResponse<Bill>
                 {
@@ -89,17 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var billBefore = _billRepository.GetBillById(request.Id);
-                var bill = new Bill
-                {
-                    Id = request.Id,
-                    Ammount = request.Ammount,
-                    UserTypeId = request.UserTypeId,
-                    UserId = request.UserId,
-                    UserSellerId = request.UserSellerId,
-                    GymId = request.GymId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var bill = _mapper.Map<Bill>(request);
                 var updated = _billRepository.UpdateBill(bill);
                 if (updated)
                 {

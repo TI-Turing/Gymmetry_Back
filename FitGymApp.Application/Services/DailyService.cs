@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Daily.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,26 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IDailyRepository _dailyRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public DailyService(IDailyRepository dailyRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public DailyService(IDailyRepository dailyRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _dailyRepository = dailyRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Daily> CreateDaily(AddDailyRequest request)
         {
             try
             {
-                var daily = new Daily
-                {
-                    StartDate = request.StartDate,
-                    EndDate = request.EndDate,
-                    UserId = request.UserId,
-                    RoutineExerciseId = request.RoutineExerciseId,
-                    Ip = request.Ip
-                };
+                var daily = _mapper.Map<Daily>(request);
                 var created = _dailyRepository.CreateDaily(daily);
                 return new ApplicationResponse<Daily>
                 {
@@ -88,16 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var dailyBefore = _dailyRepository.GetDailyById(request.Id);
-                var daily = new Daily
-                {
-                    Id = request.Id,
-                    StartDate = request.StartDate,
-                    EndDate = request.EndDate,
-                    UserId = request.UserId,
-                    RoutineExerciseId = request.RoutineExerciseId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var daily = _mapper.Map<Daily>(request);
                 var updated = _dailyRepository.UpdateDaily(daily);
                 if (updated)
                 {

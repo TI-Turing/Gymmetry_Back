@@ -2,7 +2,7 @@ using System;
 
 namespace FitGymApp.Domain.DTO.Diet.Request
 {
-    public class AddDietRequest
+    public class AddDietRequest : ApiRequest
     {
         public string BreakFast { get; set; } = null!;
         public string MidMorning { get; set; } = null!;
@@ -13,8 +13,6 @@ namespace FitGymApp.Domain.DTO.Diet.Request
         public string? Observations { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; } = true;
         public Guid UserId { get; set; }
     }
 }

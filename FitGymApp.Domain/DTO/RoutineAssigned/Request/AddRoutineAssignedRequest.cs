@@ -1,12 +1,11 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.RoutineAssigned.Request
 {
-    public class AddRoutineAssignedRequest
+    public class AddRoutineAssignedRequest : ApiRequest
     {
         public string? Comments { get; set; }
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; } = true;
         public Guid UserId { get; set; }
     }
 }

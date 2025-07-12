@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Notification.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,25 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly INotificationRepository _notificationRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public NotificationService(INotificationRepository notificationRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public NotificationService(INotificationRepository notificationRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _notificationRepository = notificationRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Notification> CreateNotification(AddNotificationRequest request)
         {
             try
             {
-                var entity = new Notification
-                {
-                    Title = request.Title,
-                    Message = request.Message,
-                    UserId = request.UserId,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<Notification>(request);
                 var created = _notificationRepository.CreateNotification(entity);
                 return new ApplicationResponse<Notification>
                 {
@@ -87,15 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _notificationRepository.GetNotificationById(request.Id);
-                var entity = new Notification
-                {
-                    Id = request.Id,
-                    Title = request.Title,
-                    Message = request.Message,
-                    UserId = request.UserId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<Notification>(request);
                 var updated = _notificationRepository.UpdateNotification(entity);
                 if (updated)
                 {

@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.GymPlanSelectedModule.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,24 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IGymPlanSelectedModuleRepository _gymPlanSelectedModuleRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public GymPlanSelectedModuleService(IGymPlanSelectedModuleRepository gymPlanSelectedModuleRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public GymPlanSelectedModuleService(IGymPlanSelectedModuleRepository gymPlanSelectedModuleRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _gymPlanSelectedModuleRepository = gymPlanSelectedModuleRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<GymPlanSelectedModule> CreateGymPlanSelectedModule(AddGymPlanSelectedModuleRequest request)
         {
             try
             {
-                var entity = new GymPlanSelectedModule
-                {
-                    GymPlanSelectedId = request.GymPlanSelectedId,
-                    ModuleId = request.ModuleId,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<GymPlanSelectedModule>(request);
                 var created = _gymPlanSelectedModuleRepository.CreateGymPlanSelectedModule(entity);
                 return new ApplicationResponse<GymPlanSelectedModule>
                 {
@@ -86,14 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _gymPlanSelectedModuleRepository.GetGymPlanSelectedModuleById(request.Id);
-                var entity = new GymPlanSelectedModule
-                {
-                    Id = request.Id,
-                    GymPlanSelectedId = request.GymPlanSelectedId,
-                    ModuleId = request.ModuleId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<GymPlanSelectedModule>(request);
                 var updated = _gymPlanSelectedModuleRepository.UpdateGymPlanSelectedModule(entity);
                 if (updated)
                 {

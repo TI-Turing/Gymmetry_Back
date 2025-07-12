@@ -1,8 +1,9 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.EmployeeUser.Request
 {
-    public class AddEmployeeUserRequest
+    public class AddEmployeeUserRequest : ApiRequest
     {
         public string Arl { get; set; } = null!;
         public string PensionFund { get; set; } = null!;
@@ -12,8 +13,6 @@ namespace FitGymApp.Domain.DTO.EmployeeUser.Request
         public string AccountType { get; set; } = null!;
         public string AccountNumber { get; set; } = null!;
         public string Salary { get; set; } = null!;
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; } = true;
         public Guid EmployeeTypeId { get; set; }
     }
 }

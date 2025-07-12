@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.DailyExerciseHistory.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,27 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IDailyExerciseHistoryRepository _dailyExerciseHistoryRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public DailyExerciseHistoryService(IDailyExerciseHistoryRepository dailyExerciseHistoryRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public DailyExerciseHistoryService(IDailyExerciseHistoryRepository dailyExerciseHistoryRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _dailyExerciseHistoryRepository = dailyExerciseHistoryRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<DailyExerciseHistory> CreateDailyExerciseHistory(AddDailyExerciseHistoryRequest request)
         {
             try
             {
-                var entity = new DailyExerciseHistory
-                {
-                    UserId = request.UserId,
-                    ExerciseId = request.ExerciseId,
-                    Date = request.Date,
-                    Repetitions = request.Repetitions,
-                    Weight = request.Weight,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<DailyExerciseHistory>(request);
                 var created = _dailyExerciseHistoryRepository.CreateDailyExerciseHistory(entity);
                 return new ApplicationResponse<DailyExerciseHistory>
                 {
@@ -89,17 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _dailyExerciseHistoryRepository.GetDailyExerciseHistoryById(request.Id);
-                var entity = new DailyExerciseHistory
-                {
-                    Id = request.Id,
-                    UserId = request.UserId,
-                    ExerciseId = request.ExerciseId,
-                    Date = request.Date,
-                    Repetitions = request.Repetitions,
-                    Weight = request.Weight,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<DailyExerciseHistory>(request);
                 var updated = _dailyExerciseHistoryRepository.UpdateDailyExerciseHistory(entity);
                 if (updated)
                 {

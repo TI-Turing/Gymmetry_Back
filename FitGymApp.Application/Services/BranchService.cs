@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Branch.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,28 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IBranchRepository _branchRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public BranchService(IBranchRepository branchRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public BranchService(IBranchRepository branchRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _branchRepository = branchRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Branch> CreateBranch(AddBranchRequest request)
         {
             try
             {
-                var branch = new Branch
-                {
-                    Address = request.Address,
-                    CityId = request.CityId,
-                    RegionId = request.RegionId,
-                    GymId = request.GymId,
-                    BranchDailyBranchId = request.BranchDailyBranchId,
-                    AccessMethodId = request.AccessMethodId,
-                    Ip = request.Ip
-                };
+                var branch = _mapper.Map<Branch>(request);
                 var created = _branchRepository.CreateBranch(branch);
                 return new ApplicationResponse<Branch>
                 {
@@ -90,18 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var branchBefore = _branchRepository.GetBranchById(request.Id);
-                var branch = new Branch
-                {
-                    Id = request.Id,
-                    Address = request.Address,
-                    CityId = request.CityId,
-                    RegionId = request.RegionId,
-                    GymId = request.GymId,
-                    BranchDailyBranchId = request.BranchDailyBranchId,
-                    AccessMethodId = request.AccessMethodId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var branch = _mapper.Map<Branch>(request);
                 var updated = _branchRepository.UpdateBranch(branch);
                 if (updated)
                 {

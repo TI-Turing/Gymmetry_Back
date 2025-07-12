@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Plan.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,28 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IPlanRepository _planRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public PlanService(IPlanRepository planRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public PlanService(IPlanRepository planRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _planRepository = planRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Plan> CreatePlan(AddPlanRequest request)
         {
             try
             {
-                var entity = new Plan
-                {
-                    Name = request.Name,
-                    Description = request.Description,
-                    Price = request.Price,
-                    Duration = request.Duration,
-                    GymId = request.GymId,
-                    PlanTypeId = request.PlanTypeId,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<Plan>(request);
                 var created = _planRepository.CreatePlan(entity);
                 return new ApplicationResponse<Plan>
                 {
@@ -90,18 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _planRepository.GetPlanById(request.Id);
-                var entity = new Plan
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Description = request.Description,
-                    Price = request.Price,
-                    Duration = request.Duration,
-                    GymId = request.GymId,
-                    PlanTypeId = request.PlanTypeId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<Plan>(request);
                 var updated = _planRepository.UpdatePlan(entity);
                 if (updated)
                 {

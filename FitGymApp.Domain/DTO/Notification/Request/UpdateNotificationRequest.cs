@@ -1,8 +1,9 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.Notification.Request
 {
-    public class UpdateNotificationRequest
+    public class UpdateNotificationRequest : ApiRequest
     {
         public Guid Id { get; set; }
         public string Title { get; set; } = null!;
@@ -15,8 +16,6 @@ namespace FitGymApp.Domain.DTO.Notification.Request
         public bool Seen { get; set; }
         public bool Opened { get; set; }
         public DateTime? ShowDate { get; set; }
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; }
         public Guid UserId { get; set; }
     }
 }

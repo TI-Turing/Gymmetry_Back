@@ -1,13 +1,12 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.EmployeeRegisterDaily.Request
 {
-    public class UpdateEmployeeRegisterDailyRequest
+    public class UpdateEmployeeRegisterDailyRequest : ApiRequest
     {
         public Guid Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; }
     }
 }

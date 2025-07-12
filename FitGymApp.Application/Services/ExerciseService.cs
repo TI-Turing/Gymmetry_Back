@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.Exercise.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,25 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IExerciseRepository _exerciseRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public ExerciseService(IExerciseRepository exerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public ExerciseService(IExerciseRepository exerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _exerciseRepository = exerciseRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<Exercise> CreateExercise(AddExerciseRequest request)
         {
             try
             {
-                var entity = new Exercise
-                {
-                    Name = request.Name,
-                    Description = request.Description,
-                    CategoryExerciseId = request.CategoryExerciseId,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<Exercise>(request);
                 var created = _exerciseRepository.CreateExercise(entity);
                 return new ApplicationResponse<Exercise>
                 {
@@ -87,15 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _exerciseRepository.GetExerciseById(request.Id);
-                var entity = new Exercise
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Description = request.Description,
-                    CategoryExerciseId = request.CategoryExerciseId,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<Exercise>(request);
                 var updated = _exerciseRepository.UpdateExercise(entity);
                 if (updated)
                 {

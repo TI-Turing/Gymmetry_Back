@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.LogUninstall.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,25 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly ILogUninstallRepository _logUninstallRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public LogUninstallService(ILogUninstallRepository logUninstallRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public LogUninstallService(ILogUninstallRepository logUninstallRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _logUninstallRepository = logUninstallRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<LogUninstall> CreateLogUninstall(AddLogUninstallRequest request)
         {
             try
             {
-                var entity = new LogUninstall
-                {
-                    UserId = request.UserId,
-                    Reason = request.Reason,
-                    Date = request.Date,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<LogUninstall>(request);
                 var created = _logUninstallRepository.CreateLogUninstall(entity);
                 return new ApplicationResponse<LogUninstall>
                 {
@@ -87,15 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _logUninstallRepository.GetLogUninstallById(request.Id);
-                var entity = new LogUninstall
-                {
-                    Id = request.Id,
-                    UserId = request.UserId,
-                    Reason = request.Reason,
-                    Date = request.Date,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<LogUninstall>(request);
                 var updated = _logUninstallRepository.UpdateLogUninstall(entity);
                 if (updated)
                 {

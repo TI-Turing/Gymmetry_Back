@@ -1,12 +1,11 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.GymType.Request
 {
-    public class AddGymTypeRequest
+    public class AddGymTypeRequest : ApiRequest
     {
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; } = true;
     }
 }

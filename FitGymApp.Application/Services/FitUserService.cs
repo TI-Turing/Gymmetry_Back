@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.FitUser.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,23 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IFitUserRepository _fitUserRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public FitUserService(IFitUserRepository fitUserRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public FitUserService(IFitUserRepository fitUserRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _fitUserRepository = fitUserRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<FitUser> CreateFitUser(AddFitUserRequest request)
         {
             try
             {
-                var entity = new FitUser
-                {
-                    Name = request.Name,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<FitUser>(request);
                 var created = _fitUserRepository.CreateFitUser(entity);
                 return new ApplicationResponse<FitUser>
                 {
@@ -85,13 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _fitUserRepository.GetFitUserById(request.Id);
-                var entity = new FitUser
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<FitUser>(request);
                 var updated = _fitUserRepository.UpdateFitUser(entity);
                 if (updated)
                 {

@@ -6,6 +6,7 @@ using FitGymApp.Domain.Models;
 using FitGymApp.Domain.DTO.AccessMethodType.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
+using AutoMapper;
 
 namespace FitGymApp.Application.Services
 {
@@ -14,23 +15,21 @@ namespace FitGymApp.Application.Services
         private readonly IAccessMethodTypeRepository _accessMethodTypeRepository;
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
+        private readonly IMapper _mapper;
 
-        public AccessMethodTypeService(IAccessMethodTypeRepository accessMethodTypeRepository, ILogChangeService logChangeService, ILogErrorService logErrorService)
+        public AccessMethodTypeService(IAccessMethodTypeRepository accessMethodTypeRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
         {
             _accessMethodTypeRepository = accessMethodTypeRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
+            _mapper = mapper;
         }
 
         public ApplicationResponse<AccessMethodType> CreateAccessMethodType(AddAccessMethodTypeRequest request)
         {
             try
             {
-                var entity = new AccessMethodType
-                {
-                    Name = request.Name,
-                    Ip = request.Ip
-                };
+                var entity = _mapper.Map<AccessMethodType>(request);
                 var created = _accessMethodTypeRepository.CreateAccessMethodType(entity);
                 return new ApplicationResponse<AccessMethodType>
                 {
@@ -85,13 +84,7 @@ namespace FitGymApp.Application.Services
             try
             {
                 var before = _accessMethodTypeRepository.GetAccessMethodTypeById(request.Id);
-                var entity = new AccessMethodType
-                {
-                    Id = request.Id,
-                    Name = request.Name,
-                    Ip = request.Ip,
-                    IsActive = request.IsActive
-                };
+                var entity = _mapper.Map<AccessMethodType>(request);
                 var updated = _accessMethodTypeRepository.UpdateAccessMethodType(entity);
                 if (updated)
                 {

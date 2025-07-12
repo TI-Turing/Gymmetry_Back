@@ -1,15 +1,14 @@
 using System;
+using FitGymApp.Domain.DTO;
 
 namespace FitGymApp.Domain.DTO.JourneyEmployee.Request
 {
-    public class UpdateJourneyEmployeeRequest
+    public class UpdateJourneyEmployeeRequest : ApiRequest
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = null!;
         public string StartHour { get; set; } = null!;
         public string EndHour { get; set; } = null!;
-        public string? Ip { get; set; }
-        public bool IsActive { get; set; }
         public Guid EmployeeUserId { get; set; }
     }
 }
