@@ -10,8 +10,4 @@
     <ProjectReference Include="..\FitGymApp.Domain\FitGymApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Persistence\Seeds\" />
-  </ItemGroup>
-
 </Project>

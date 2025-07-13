@@ -97,4 +97,83 @@ public class UpdateUserFunction
             return errorResponse;
         }
     }
+
+    [Function("User_UpdateUserGymFunction")]
+    public async Task<HttpResponseData> UpdateUserGymAsync(
+        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "user/update-gym")] HttpRequestData req,
+        FunctionContext executionContext)
+    {
+        var logger = executionContext.GetLogger("User_UpdateUserGymFunction");
+        logger.LogInformation("Procesando solicitud para actualizar GymUserId de usuario.");
+        try
+        {
+            if (!JwtValidator.ValidateJwt(req, out var error))
+            {
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+                {
+                    Success = false,
+                    Message = error!,
+                    Data = default,
+                    StatusCode = StatusCodes.Status401Unauthorized
+                });
+                return unauthorizedResponse;
+            }
+            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var data = System.Text.Json.JsonSerializer.Deserialize<UpdateUserGymRequest>(requestBody);
+            if (data == null || data.UserId == Guid.Empty || data.GymId == Guid.Empty)
+            {
+                var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await badResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+                {
+                    Success = false,
+                    Message = "Debe enviar UserId y GymId válidos.",
+                    Data = default,
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
+                return badResponse;
+            }
+            var result = await _userService.UpdateUserGymAsync(data.UserId, data.GymId);
+            if (!result.Success)
+            {
+                var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                await notFoundResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+                {
+                    Success = false,
+                    Message = result.Message,
+                    Data = data.UserId,
+                    StatusCode = StatusCodes.Status404NotFound
+                });
+                return notFoundResponse;
+            }
+            var successResponse = req.CreateResponse(HttpStatusCode.OK);
+            await successResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+            {
+                Success = true,
+                Message = result.Message,
+                Data = data.UserId,
+                StatusCode = StatusCodes.Status200OK
+            });
+            return successResponse;
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error al actualizar GymUserId de usuario.");
+            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+            await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+            {
+                Success = false,
+                Message = "Ocurrió un error al procesar la solicitud.",
+                Data = default,
+                StatusCode = StatusCodes.Status400BadRequest
+            });
+            return errorResponse;
+        }
+    }
+}
+
+public class UpdateUserGymRequest
+{
+    public Guid UserId { get; set; }
+    public Guid GymId { get; set; }
 }

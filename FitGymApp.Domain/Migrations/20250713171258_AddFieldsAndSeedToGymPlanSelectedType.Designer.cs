@@ -4,6 +4,7 @@ using FitGymApp.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,15 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FitGymApp.Domain.Migrations
 {
     [DbContext(typeof(FitGymAppContext))]
-    partial class FitGymAppContextModelSnapshot : ModelSnapshot
+    [Migration("20250713171258_AddFieldsAndSeedToGymPlanSelectedType")]
+    partial class AddFieldsAndSeedToGymPlanSelectedType
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.7")
+                .HasAnnotation("ProductVersion", "9.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -842,6 +845,46 @@ namespace FitGymApp.Domain.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("GymPlanSelectedType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-111111111111"),
+                            CreatedAt = new DateTime(2025, 7, 13, 17, 12, 58, 248, DateTimeKind.Utc).AddTicks(4464),
+                            Description = "Plan Básico - $20.000 COP/mes.",
+                            IsActive = true,
+                            Name = "Plan Básico",
+                            Price = 20000m,
+                            UsdPrice = 5m
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-2222-2222-2222-222222222222"),
+                            CreatedAt = new DateTime(2025, 7, 13, 17, 12, 58, 248, DateTimeKind.Utc).AddTicks(5177),
+                            Description = "Plan Pro (Gestión + Rutinas) - $45.000 COP/mes o $2.000 COP por cliente activo.",
+                            IsActive = true,
+                            Name = "Plan Pro (Gestión + Rutinas)",
+                            Price = 45000m,
+                            UsdPrice = 11m
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-3333-3333-3333-333333333333"),
+                            CreatedAt = new DateTime(2025, 7, 13, 17, 12, 58, 248, DateTimeKind.Utc).AddTicks(5180),
+                            Description = "Plan Premium - $70.000 COP/mes.",
+                            IsActive = true,
+                            Name = "Plan Premium",
+                            Price = 70000m,
+                            UsdPrice = 17m
+                        },
+                        new
+                        {
+                            Id = new Guid("44444444-4444-4444-4444-444444444444"),
+                            CreatedAt = new DateTime(2025, 7, 13, 17, 12, 58, 248, DateTimeKind.Utc).AddTicks(5182),
+                            Description = "Plan Corporativo / White Label - Precio null.",
+                            IsActive = true,
+                            Name = "Plan Corporativo / White Label"
+                        });
                 });
 
             modelBuilder.Entity("FitGymApp.Domain.Models.GymType", b =>

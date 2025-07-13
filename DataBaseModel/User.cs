@@ -37,31 +37,31 @@ namespace DataBaseModel
         public System.Guid Id { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string IdEPS { get; set; }
+        public Nullable<System.Guid> IdEPS { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public string UserName { get; set; }
-        public System.Guid IdGender { get; set; }
-        public System.DateTime BirthDate { get; set; }
+        public Nullable<System.Guid> IdGender { get; set; }
+        public Nullable<System.DateTime> BirthDate { get; set; }
         public string ProfileImageUrl { get; set; }
-        public System.Guid DocumentTypeId { get; set; }
+        public Nullable<System.Guid> DocumentTypeId { get; set; }
         public string DocumentType { get; set; }
         public string Phone { get; set; }
-        public System.Guid CountryId { get; set; }
+        public Nullable<System.Guid> CountryId { get; set; }
         public string Address { get; set; }
-        public System.Guid CityId { get; set; }
+        public Nullable<System.Guid> CityId { get; set; }
         public Nullable<System.Guid> RegionId { get; set; }
         public string RH { get; set; }
         public string EmergencyName { get; set; }
         public string EmergencyPhone { get; set; }
         public string PhysicalExceptions { get; set; }
-        public System.DateTime CreatedAt { get; set; }
+        public Nullable<System.DateTime> CreatedAt { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string Ip { get; set; }
-        public bool IsActive { get; set; }
-        public System.Guid GymId { get; set; }
-        public System.Guid UserTypeId { get; set; }
+        public Nullable<bool> IsActive { get; set; }
+        public Nullable<System.Guid> GymId { get; set; }
+        public Nullable<System.Guid> UserTypeId { get; set; }
         public Nullable<System.Guid> PlanId { get; set; }
         public Nullable<System.Guid> UserFitUser_UserId { get; set; }
         public Nullable<System.Guid> UserDiet_UserId { get; set; }

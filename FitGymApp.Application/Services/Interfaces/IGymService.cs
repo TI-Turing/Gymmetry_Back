@@ -15,5 +15,6 @@ namespace FitGymApp.Application.Services.Interfaces
         Task<ApplicationResponse<bool>> UpdateGymAsync(UpdateGymRequest request);
         Task<ApplicationResponse<bool>> DeleteGymAsync(Guid id);
         Task<ApplicationResponse<IEnumerable<Gym>>> FindGymsByFieldsAsync(Dictionary<string, object> filters);
+        Task<ApplicationResponse<byte[]>> GenerateGymQrAsync(Guid gymId);
     }
 }

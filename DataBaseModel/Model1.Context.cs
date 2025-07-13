@@ -13,10 +13,10 @@ namespace DataBaseModel
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class FitGymAppEntities2 : DbContext
+    public partial class FitGymAppEntities3 : DbContext
     {
-        public FitGymAppEntities2()
-            : base("name=FitGymAppEntities2")
+        public FitGymAppEntities3()
+            : base("name=FitGymAppEntities3")
         {
         }
     
@@ -25,6 +25,7 @@ namespace DataBaseModel
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<C__EFMigrationsHistory> C__EFMigrationsHistory { get; set; }
         public virtual DbSet<AccessMethodType> AccessMethodType { get; set; }
         public virtual DbSet<Bill> Bill { get; set; }
         public virtual DbSet<Branch> Branch { get; set; }
@@ -44,6 +45,7 @@ namespace DataBaseModel
         public virtual DbSet<GymPlanSelected> GymPlanSelected { get; set; }
         public virtual DbSet<GymPlanSelectedModule> GymPlanSelectedModule { get; set; }
         public virtual DbSet<GymPlanSelectedType> GymPlanSelectedType { get; set; }
+        public virtual DbSet<GymTypes> GymTypes { get; set; }
         public virtual DbSet<JourneyEmployee> JourneyEmployee { get; set; }
         public virtual DbSet<LogChanges> LogChanges { get; set; }
         public virtual DbSet<LogErrors> LogErrors { get; set; }
@@ -63,6 +65,7 @@ namespace DataBaseModel
         public virtual DbSet<RoutineTemplate> RoutineTemplate { get; set; }
         public virtual DbSet<Schedule> Schedule { get; set; }
         public virtual DbSet<SubModule> SubModule { get; set; }
+        public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<UninstallOptions> UninstallOptions { get; set; }
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<UserType> UserType { get; set; }

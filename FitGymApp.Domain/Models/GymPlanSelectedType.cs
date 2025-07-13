@@ -19,5 +19,10 @@ public partial class GymPlanSelectedType
 
     public bool IsActive { get; set; }
 
+    public string? CountryId { get; set; }
+    public decimal? Price { get; set; }
+    public decimal? UsdPrice { get; set; }
+    public string? Description { get; set; }
+
     public virtual ICollection<GymPlanSelected> GymPlanSelecteds { get; set; } = new List<GymPlanSelected>();
 }

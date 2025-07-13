@@ -36,11 +36,13 @@ namespace DataBaseModel
         public string Ip { get; set; }
         public bool IsActive { get; set; }
         public System.Guid GymPlanSelectedId { get; set; }
+        public System.Guid GymTypeId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bill { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Branch> Branch { get; set; }
+        public virtual GymTypes GymTypes { get; set; }
         public virtual GymPlanSelected GymPlanSelected { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Plan> Plan { get; set; }

@@ -99,10 +99,6 @@ public partial class FitGymAppContext : DbContext
 
     public virtual DbSet<UserType> UserTypes { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=.;Database=FitGymApp;Integrated Security=True;TrustServerCertificate=True;Encrypt=True;");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccessMethodType>(entity =>
@@ -512,6 +508,10 @@ public partial class FitGymAppContext : DbContext
             entity.Property(e => e.Ip).HasMaxLength(45);
             entity.Property(e => e.Name).HasMaxLength(100);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.CountryId).HasMaxLength(50);
+            entity.Property(e => e.Price).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.UsdPrice).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.Description).HasMaxLength(255);
         });
 
         modelBuilder.Entity<GymType>(entity =>
@@ -1040,20 +1040,12 @@ public partial class FitGymAppContext : DbContext
 
             entity.HasIndex(e => e.EmployeeRegisterDailyUserUserId, "IX_FK_EmployeeRegisterDailyUser");
 
-            entity.HasIndex(e => e.GymId, "IX_FK_GymUser");
-
             entity.HasIndex(e => e.ScheduleUserUserId, "IX_FK_ScheduleUser");
-
             entity.HasIndex(e => e.UserDietUserId, "IX_FK_UserDiet");
-
             entity.HasIndex(e => e.UserEmployeeUserUserId, "IX_FK_UserEmployeeUser");
-
             entity.HasIndex(e => e.UserFitUserUserId, "IX_FK_UserFitUser");
-
-            entity.HasIndex(e => e.UserGymUserId, "IX_FK_UserGym");
-
+            entity.HasIndex(e => e.GymUserId, "IX_FK_UserGymUser");
             entity.HasIndex(e => e.PlanId, "IX_FK_UserPlan");
-
             entity.HasIndex(e => e.UserTypeId, "IX_FK_UserUserType");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
@@ -1083,17 +1075,12 @@ public partial class FitGymAppContext : DbContext
             entity.Property(e => e.UserDietUserId).HasColumnName("UserDiet_UserId");
             entity.Property(e => e.UserEmployeeUserUserId).HasColumnName("UserEmployeeUser_UserId");
             entity.Property(e => e.UserFitUserUserId).HasColumnName("UserFitUser_UserId");
-            entity.Property(e => e.UserGymUserId).HasColumnName("UserGym_UserId");
+            entity.Property(e => e.GymUserId).HasColumnName("GymUser_Id");
             entity.Property(e => e.UserName).HasMaxLength(100);
 
             entity.HasOne(d => d.EmployeeRegisterDailyUserUser).WithMany(p => p.Users)
                 .HasForeignKey(d => d.EmployeeRegisterDailyUserUserId)
                 .HasConstraintName("FK_EmployeeRegisterDailyUser");
-
-            entity.HasOne(d => d.Gym).WithMany(p => p.UserGyms)
-                .HasForeignKey(d => d.GymId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_GymUser");
 
             entity.HasOne(d => d.Plan).WithMany(p => p.Users)
                 .HasForeignKey(d => d.PlanId)
@@ -1115,9 +1102,10 @@ public partial class FitGymAppContext : DbContext
                 .HasForeignKey(d => d.UserFitUserUserId)
                 .HasConstraintName("FK_UserFitUser");
 
-            entity.HasOne(d => d.UserGymUser).WithMany(p => p.UserUserGymUsers)
-                .HasForeignKey(d => d.UserGymUserId)
-                .HasConstraintName("FK_UserGym");
+            entity.HasOne(d => d.GymUser)
+                .WithMany(p => p.UserUserGymAssigneds)
+                .HasForeignKey(d => d.GymUserId)
+                .HasConstraintName("FK_UserGymUser");
 
             entity.HasOne(d => d.UserType).WithMany(p => p.Users)
                 .HasForeignKey(d => d.UserTypeId)

@@ -12,17 +12,9 @@ namespace DataBaseModel
     using System;
     using System.Collections.Generic;
     
-    public partial class LogLogin
+    public partial class C__EFMigrationsHistory
     {
-        public System.Guid Id { get; set; }
-        public bool IsSuccess { get; set; }
-        public System.DateTime CreatedAt { get; set; }
-        public Nullable<System.DateTime> UpdatedAt { get; set; }
-        public Nullable<System.DateTime> DeletedAt { get; set; }
-        public string Ip { get; set; }
-        public bool IsActive { get; set; }
-        public System.Guid UserId { get; set; }
-    
-        public virtual User User { get; set; }
+        public string MigrationId { get; set; }
+        public string ProductVersion { get; set; }
     }
 }

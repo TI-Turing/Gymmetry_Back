@@ -29,6 +29,11 @@ namespace DataBaseModel
         public System.Guid GymId { get; set; }
         public System.Guid BranchDaily_BranchId { get; set; }
         public System.Guid AccessMethodId { get; set; }
+        public System.DateTime CreatedAt { get; set; }
+        public Nullable<System.DateTime> UpdatedAt { get; set; }
+        public Nullable<System.DateTime> DeletedAt { get; set; }
+        public string Ip { get; set; }
+        public bool IsActive { get; set; }
     
         public virtual AccessMethodType AccessMethodType { get; set; }
         public virtual Daily Daily { get; set; }

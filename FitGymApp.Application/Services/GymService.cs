@@ -8,6 +8,9 @@ using FitGymApp.Domain.DTO.Gym.Request;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Repository.Services.Interfaces;
 using AutoMapper;
+using QRCoder;
+using System.Drawing;
+using System.IO;
 
 namespace FitGymApp.Application.Services
 {
@@ -167,6 +170,47 @@ namespace FitGymApp.Application.Services
                 Success = true,
                 Data = entities
             };
+        }
+
+        public async Task<ApplicationResponse<byte[]>> GenerateGymQrAsync(Guid gymId)
+        {
+            try
+            {
+                // Validar que el gym exista
+                var gym = await _gymRepository.GetGymByIdAsync(gymId);
+                if (gym == null)
+                {
+                    return new ApplicationResponse<byte[]>
+                    {
+                        Success = false,
+                        Message = "Gimnasio no encontrado.",
+                        ErrorCode = "NotFound"
+                    };
+                }
+                // Generar QR usando PngByteQRCode
+                using (var qrGenerator = new QRCodeGenerator())
+                using (var qrCodeData = qrGenerator.CreateQrCode(gymId.ToString(), QRCodeGenerator.ECCLevel.Q))
+                using (var qrCode = new PngByteQRCode(qrCodeData))
+                {
+                    byte[] qrCodeImage = qrCode.GetGraphic(20);
+                    return new ApplicationResponse<byte[]>
+                    {
+                        Success = true,
+                        Data = qrCodeImage,
+                        Message = "QR generado correctamente."
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                await _logErrorService.LogErrorAsync(ex);
+                return new ApplicationResponse<byte[]>
+                {
+                    Success = false,
+                    Message = "Error técnico al generar el QR.",
+                    ErrorCode = "TechnicalError"
+                };
+            }
         }
     }
 }

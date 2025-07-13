@@ -5,6 +5,13 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="FitGymAppModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__EFMigrationsHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
         <EntityType Name="AccessMethodType">
           <Key>
             <PropertyRef Name="Id" />
@@ -44,6 +51,11 @@
           <Property Name="GymId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BranchDaily_BranchId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="AccessMethodId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="7" />
+          <Property Name="DeletedAt" Type="datetime2" Precision="7" />
+          <Property Name="Ip" Type="nvarchar(max)" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Brand">
           <Key>
@@ -237,6 +249,7 @@
           <Property Name="Ip" Type="nvarchar" MaxLength="45" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
           <Property Name="GymPlanSelectedId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="GymTypeId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="GymPlanSelected">
           <Key>
@@ -274,6 +287,19 @@
           <Property Name="UpdatedAt" Type="datetime" />
           <Property Name="DeletedAt" Type="datetime" />
           <Property Name="Ip" Type="nvarchar" MaxLength="45" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GymTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="255" />
+          <Property Name="CreatedAt" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="UpdatedAt" Type="datetime2" Precision="7" />
+          <Property Name="DeletedAt" Type="datetime2" Precision="7" />
+          <Property Name="Ip" Type="nvarchar(max)" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="JourneyEmployee">
@@ -324,6 +350,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsSuccess" Type="bit" Nullable="false" />
           <Property Name="CreatedAt" Type="datetime" Nullable="false" />
           <Property Name="UpdatedAt" Type="datetime" />
           <Property Name="DeletedAt" Type="datetime" />
@@ -588,6 +615,16 @@
           <Property Name="ModuleId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="BranchId" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="UninstallOptions">
           <Key>
             <PropertyRef Name="Id" />
@@ -607,31 +644,31 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Email" Type="nvarchar" MaxLength="255" Nullable="false" />
           <Property Name="Password" Type="nvarchar" MaxLength="255" Nullable="false" />
-          <Property Name="IdEPS" Type="nvarchar" MaxLength="50" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="UserName" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="IdGender" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="BirthDate" Type="datetime" Nullable="false" />
+          <Property Name="IdEPS" Type="uniqueidentifier" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="100" />
+          <Property Name="IdGender" Type="uniqueidentifier" />
+          <Property Name="BirthDate" Type="datetime" />
           <Property Name="ProfileImageUrl" Type="nvarchar" MaxLength="255" />
-          <Property Name="DocumentTypeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="DocumentTypeId" Type="uniqueidentifier" />
           <Property Name="DocumentType" Type="nvarchar" MaxLength="50" />
           <Property Name="Phone" Type="nvarchar" MaxLength="20" />
-          <Property Name="CountryId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CountryId" Type="uniqueidentifier" />
           <Property Name="Address" Type="nvarchar" MaxLength="255" />
-          <Property Name="CityId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CityId" Type="uniqueidentifier" />
           <Property Name="RegionId" Type="uniqueidentifier" />
           <Property Name="RH" Type="nvarchar" MaxLength="5" />
           <Property Name="EmergencyName" Type="nvarchar" MaxLength="100" />
           <Property Name="EmergencyPhone" Type="nvarchar" MaxLength="20" />
           <Property Name="PhysicalExceptions" Type="nvarchar(max)" />
-          <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="CreatedAt" Type="datetime" />
           <Property Name="UpdatedAt" Type="datetime" />
           <Property Name="DeletedAt" Type="datetime" />
           <Property Name="Ip" Type="nvarchar" MaxLength="45" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-          <Property Name="GymId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="UserTypeId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="GymId" Type="uniqueidentifier" />
+          <Property Name="UserTypeId" Type="uniqueidentifier" />
           <Property Name="PlanId" Type="uniqueidentifier" />
           <Property Name="UserFitUser_UserId" Type="uniqueidentifier" />
           <Property Name="UserDiet_UserId" Type="uniqueidentifier" />
@@ -892,6 +929,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Gym_GymTypes_GymTypeId">
+          <End Role="GymTypes" Type="Self.GymTypes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Gym" Type="Self.Gym" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GymTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Gym">
+              <PropertyRef Name="GymTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GymBranch">
           <End Role="Gym" Type="Self.Gym" Multiplicity="1" />
           <End Role="Branch" Type="Self.Branch" Multiplicity="*" />
@@ -977,7 +1028,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_GymUser">
-          <End Role="Gym" Type="Self.Gym" Multiplicity="1" />
+          <End Role="Gym" Type="Self.Gym" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Gym">
@@ -1373,7 +1424,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserUserType">
-          <End Role="UserType" Type="Self.UserType" Multiplicity="1" />
+          <End Role="UserType" Type="Self.UserType" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserType">
@@ -1385,6 +1436,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="FitGymAppModelStoreContainer">
+          <EntitySet Name="__EFMigrationsHistory" EntityType="Self.__EFMigrationsHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AccessMethodType" EntityType="Self.AccessMethodType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Branch" EntityType="Self.Branch" Schema="dbo" store:Type="Tables" />
@@ -1404,6 +1456,7 @@
           <EntitySet Name="GymPlanSelected" EntityType="Self.GymPlanSelected" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GymPlanSelectedModule" EntityType="Self.GymPlanSelectedModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GymPlanSelectedType" EntityType="Self.GymPlanSelectedType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GymTypes" EntityType="Self.GymTypes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JourneyEmployee" EntityType="Self.JourneyEmployee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogChanges" EntityType="Self.LogChanges" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogErrors" EntityType="Self.LogErrors" Schema="dbo" store:Type="Tables" />
@@ -1424,6 +1477,7 @@
           <EntitySet Name="RoutineTemplate" EntityType="Self.RoutineTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubModule" EntityType="Self.SubModule" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UninstallOptions" EntityType="Self.UninstallOptions" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserType" EntityType="Self.UserType" Schema="dbo" store:Type="Tables" />
@@ -1506,6 +1560,10 @@
           <AssociationSet Name="FK_ExerciseRoutineExercise" Association="Self.FK_ExerciseRoutineExercise">
             <End Role="Exercise" EntitySet="Exercise" />
             <End Role="RoutineExercise" EntitySet="RoutineExercise" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gym_GymTypes_GymTypeId" Association="Self.FK_Gym_GymTypes_GymTypeId">
+            <End Role="GymTypes" EntitySet="GymTypes" />
+            <End Role="Gym" EntitySet="Gym" />
           </AssociationSet>
           <AssociationSet Name="FK_GymBranch" Association="Self.FK_GymBranch">
             <End Role="Gym" EntitySet="Gym" />
@@ -1677,6 +1735,13 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FitGymAppModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__EFMigrationsHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
         <EntityType Name="AccessMethodType">
           <Key>
             <PropertyRef Name="Id" />
@@ -1721,6 +1786,11 @@
           <Property Name="GymId" Type="Guid" Nullable="false" />
           <Property Name="BranchDaily_BranchId" Type="Guid" Nullable="false" />
           <Property Name="AccessMethodId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="Ip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="AccessMethodType" Relationship="Self.FK_BranchAccessMethod" FromRole="Branch" ToRole="AccessMethodType" />
           <NavigationProperty Name="Daily" Relationship="Self.FK_BranchDaily" FromRole="Branch" ToRole="Daily" />
           <NavigationProperty Name="DailyHistory" Relationship="Self.FK_BranchDailyHistory" FromRole="Branch" ToRole="DailyHistory" />
@@ -1947,8 +2017,10 @@
           <Property Name="Ip" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="GymPlanSelectedId" Type="Guid" Nullable="false" />
+          <Property Name="GymTypeId" Type="Guid" Nullable="false" />
           <NavigationProperty Name="Bill" Relationship="Self.FK_BillGym" FromRole="Gym" ToRole="Bill" />
           <NavigationProperty Name="Branch" Relationship="Self.FK_GymBranch" FromRole="Gym" ToRole="Branch" />
+          <NavigationProperty Name="GymTypes" Relationship="Self.FK_Gym_GymTypes_GymTypeId" FromRole="Gym" ToRole="GymTypes" />
           <NavigationProperty Name="GymPlanSelected" Relationship="Self.FK_GymGymPlanSelected" FromRole="Gym" ToRole="GymPlanSelected" />
           <NavigationProperty Name="Plan" Relationship="Self.FK_GymPlan" FromRole="Gym" ToRole="Plan" />
           <NavigationProperty Name="RoutineTemplate" Relationship="Self.FK_GymRoutine" FromRole="Gym" ToRole="RoutineTemplate" />
@@ -1998,6 +2070,20 @@
           <Property Name="Ip" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="GymPlanSelected" Relationship="Self.FK_GymPlanSelectedTypeGymPlanSelected" FromRole="GymPlanSelectedType" ToRole="GymPlanSelected" />
+        </EntityType>
+        <EntityType Name="GymTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="UpdatedAt" Type="DateTime" Precision="7" />
+          <Property Name="DeletedAt" Type="DateTime" Precision="7" />
+          <Property Name="Ip" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Gym" Relationship="Self.FK_Gym_GymTypes_GymTypeId" FromRole="GymTypes" ToRole="Gym" />
         </EntityType>
         <EntityType Name="JourneyEmployee">
           <Key>
@@ -2051,6 +2137,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="IsSuccess" Type="Boolean" Nullable="false" />
           <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
           <Property Name="DeletedAt" Type="DateTime" Precision="3" />
@@ -2343,6 +2430,16 @@
           <NavigationProperty Name="LogErrors" Relationship="Self.FK_SubModuleLogErrors" FromRole="SubModule" ToRole="LogErrors" />
           <NavigationProperty Name="Module" Relationship="Self.FK_ModuleSubModule" FromRole="SubModule" ToRole="Module" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="UninstallOptions">
           <Key>
             <PropertyRef Name="Id" />
@@ -2363,31 +2460,31 @@
           <Property Name="Id" Type="Guid" Nullable="false" />
           <Property Name="Email" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Password" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IdEPS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="IdGender" Type="Guid" Nullable="false" />
-          <Property Name="BirthDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IdEPS" Type="Guid" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IdGender" Type="Guid" />
+          <Property Name="BirthDate" Type="DateTime" Precision="3" />
           <Property Name="ProfileImageUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="DocumentTypeId" Type="Guid" Nullable="false" />
+          <Property Name="DocumentTypeId" Type="Guid" />
           <Property Name="DocumentType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
-          <Property Name="CountryId" Type="Guid" Nullable="false" />
+          <Property Name="CountryId" Type="Guid" />
           <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
-          <Property Name="CityId" Type="Guid" Nullable="false" />
+          <Property Name="CityId" Type="Guid" />
           <Property Name="RegionId" Type="Guid" />
           <Property Name="RH" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
           <Property Name="EmergencyName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="EmergencyPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
           <Property Name="PhysicalExceptions" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedAt" Type="DateTime" Precision="3" />
           <Property Name="UpdatedAt" Type="DateTime" Precision="3" />
           <Property Name="DeletedAt" Type="DateTime" Precision="3" />
           <Property Name="Ip" Type="String" MaxLength="45" FixedLength="false" Unicode="true" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-          <Property Name="GymId" Type="Guid" Nullable="false" />
-          <Property Name="UserTypeId" Type="Guid" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="GymId" Type="Guid" />
+          <Property Name="UserTypeId" Type="Guid" />
           <Property Name="PlanId" Type="Guid" />
           <Property Name="UserFitUser_UserId" Type="Guid" />
           <Property Name="UserDiet_UserId" Type="Guid" />
@@ -2772,6 +2869,20 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Gym_GymTypes_GymTypeId">
+          <End Role="GymTypes" Type="Self.GymTypes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Gym" Type="Self.Gym" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GymTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Gym">
+              <PropertyRef Name="GymTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_GymGymPlanSelected">
           <End Role="GymPlanSelected" Type="Self.GymPlanSelected" Multiplicity="1" />
           <End Role="Gym" Type="Self.Gym" Multiplicity="*" />
@@ -2809,7 +2920,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_GymUser">
-          <End Role="Gym" Type="Self.Gym" Multiplicity="1" />
+          <End Role="Gym" Type="Self.Gym" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Gym">
@@ -3133,7 +3244,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UserUserType">
-          <End Role="UserType" Type="Self.UserType" Multiplicity="1" />
+          <End Role="UserType" Type="Self.UserType" Multiplicity="0..1" />
           <End Role="User" Type="Self.User" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="UserType">
@@ -3148,7 +3259,8 @@
           <End Role="Exercise" Type="Self.Exercise" Multiplicity="*" />
           <End Role="Machine" Type="Self.Machine" Multiplicity="*" />
         </Association>
-        <EntityContainer Name="FitGymAppEntities2" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="FitGymAppEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__EFMigrationsHistory" EntityType="Self.C__EFMigrationsHistory" />
           <EntitySet Name="AccessMethodType" EntityType="Self.AccessMethodType" />
           <EntitySet Name="Bill" EntityType="Self.Bill" />
           <EntitySet Name="Branch" EntityType="Self.Branch" />
@@ -3168,6 +3280,7 @@
           <EntitySet Name="GymPlanSelected" EntityType="Self.GymPlanSelected" />
           <EntitySet Name="GymPlanSelectedModule" EntityType="Self.GymPlanSelectedModule" />
           <EntitySet Name="GymPlanSelectedType" EntityType="Self.GymPlanSelectedType" />
+          <EntitySet Name="GymTypes" EntityType="Self.GymTypes" />
           <EntitySet Name="JourneyEmployee" EntityType="Self.JourneyEmployee" />
           <EntitySet Name="LogChanges" EntityType="Self.LogChanges" />
           <EntitySet Name="LogErrors" EntityType="Self.LogErrors" />
@@ -3187,6 +3300,7 @@
           <EntitySet Name="RoutineTemplate" EntityType="Self.RoutineTemplate" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" />
           <EntitySet Name="SubModule" EntityType="Self.SubModule" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
           <EntitySet Name="UninstallOptions" EntityType="Self.UninstallOptions" />
           <EntitySet Name="User" EntityType="Self.User" />
           <EntitySet Name="UserType" EntityType="Self.UserType" />
@@ -3301,6 +3415,10 @@
           <AssociationSet Name="FK_UserFitUser" Association="Self.FK_UserFitUser">
             <End Role="FitUser" EntitySet="FitUser" />
             <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Gym_GymTypes_GymTypeId" Association="Self.FK_Gym_GymTypes_GymTypeId">
+            <End Role="GymTypes" EntitySet="GymTypes" />
+            <End Role="Gym" EntitySet="Gym" />
           </AssociationSet>
           <AssociationSet Name="FK_GymGymPlanSelected" Association="Self.FK_GymGymPlanSelected">
             <End Role="GymPlanSelected" EntitySet="GymPlanSelected" />
@@ -3436,7 +3554,15 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="FitGymAppModelStoreContainer" CdmEntityContainer="FitGymAppEntities2">
+        <EntityContainerMapping StorageEntityContainer="FitGymAppModelStoreContainer" CdmEntityContainer="FitGymAppEntities3">
+          <EntitySetMapping Name="C__EFMigrationsHistory">
+            <EntityTypeMapping TypeName="FitGymAppModel.C__EFMigrationsHistory">
+              <MappingFragment StoreEntitySet="__EFMigrationsHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="AccessMethodType">
             <EntityTypeMapping TypeName="FitGymAppModel.AccessMethodType">
               <MappingFragment StoreEntitySet="AccessMethodType">
@@ -3477,6 +3603,11 @@
                 <ScalarProperty Name="GymId" ColumnName="GymId" />
                 <ScalarProperty Name="BranchDaily_BranchId" ColumnName="BranchDaily_BranchId" />
                 <ScalarProperty Name="AccessMethodId" ColumnName="AccessMethodId" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3683,6 +3814,7 @@
                 <ScalarProperty Name="Ip" ColumnName="Ip" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="GymPlanSelectedId" ColumnName="GymPlanSelectedId" />
+                <ScalarProperty Name="GymTypeId" ColumnName="GymTypeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -3719,6 +3851,20 @@
               <MappingFragment StoreEntitySet="GymPlanSelectedType">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
+                <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
+                <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
+                <ScalarProperty Name="Ip" ColumnName="Ip" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GymTypes">
+            <EntityTypeMapping TypeName="FitGymAppModel.GymTypes">
+              <MappingFragment StoreEntitySet="GymTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
                 <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
@@ -3777,6 +3923,7 @@
             <EntityTypeMapping TypeName="FitGymAppModel.LogLogin">
               <MappingFragment StoreEntitySet="LogLogin">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsSuccess" ColumnName="IsSuccess" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="UpdatedAt" ColumnName="UpdatedAt" />
                 <ScalarProperty Name="DeletedAt" ColumnName="DeletedAt" />
@@ -4047,6 +4194,17 @@
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ModuleId" ColumnName="ModuleId" />
                 <ScalarProperty Name="BranchId" ColumnName="BranchId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="FitGymAppModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -12,17 +12,12 @@ namespace DataBaseModel
     using System;
     using System.Collections.Generic;
     
-    public partial class LogLogin
+    public partial class sysdiagrams
     {
-        public System.Guid Id { get; set; }
-        public bool IsSuccess { get; set; }
-        public System.DateTime CreatedAt { get; set; }
-        public Nullable<System.DateTime> UpdatedAt { get; set; }
-        public Nullable<System.DateTime> DeletedAt { get; set; }
-        public string Ip { get; set; }
-        public bool IsActive { get; set; }
-        public System.Guid UserId { get; set; }
-    
-        public virtual User User { get; set; }
+        public string name { get; set; }
+        public int principal_id { get; set; }
+        public int diagram_id { get; set; }
+        public Nullable<int> version { get; set; }
+        public byte[] definition { get; set; }
     }
 }

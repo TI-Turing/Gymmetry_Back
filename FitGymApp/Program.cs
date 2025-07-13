@@ -9,6 +9,7 @@ using FitGymApp.Application.Services;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Repository.Services;
 using FitGymApp.Repository.Services.Interfaces;
+using GymFitApp.Repository.Persistence.Seed;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -64,6 +65,7 @@ builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 builder.Services.AddScoped<INotificationOptionRepository, NotificationOptionRepository>();
 builder.Services.AddScoped<INotificationRepository, NotificationRepository>();
+builder.Services.AddScoped<IConfigAutoRepository, ConfigAutoRepository>();
 
 // Inyección de dependencias de servicios de aplicación
 builder.Services.AddScoped<IPasswordService, PasswordService>();
@@ -98,13 +100,20 @@ builder.Services.AddScoped<IMachineService, MachineService>();
 builder.Services.AddScoped<IModuleService, ModuleService>();
 builder.Services.AddScoped<INotificationOptionService, NotificationOptionService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IConfigAutoService, ConfigAutoService>();
+builder.Services.AddHttpClient<FitGymApp.Application.Services.ConfigAutoService>();
+builder.Services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(builder.Configuration);
 
 // Aplicar migraciones y ejecutar seeds (opcional, solo en desarrollo o si es seguro)
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<FitGymAppContext>();
     db.Database.Migrate(); // Aplica migraciones pendientes
-    // TODO: Llamar a método de seeders aquí si lo implementas
+    GymFitApp.Repository.Persistence.Seed.DbInitializer.SeedAsync(db).GetAwaiter().GetResult(); // Llamar al inicializador de seeds de repository
+
+    // Ejecutar funciones de ConfigFunction
+    var configAutoService = scope.ServiceProvider.GetRequiredService<IConfigAutoService>();
+    configAutoService.UpdateUsdPricesFromExchangeAsync().GetAwaiter().GetResult();
 }
 
 builder.Build().Run();

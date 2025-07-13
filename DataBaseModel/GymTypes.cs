@@ -12,17 +12,24 @@ namespace DataBaseModel
     using System;
     using System.Collections.Generic;
     
-    public partial class LogLogin
+    public partial class GymTypes
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public GymTypes()
+        {
+            this.Gym = new HashSet<Gym>();
+        }
+    
         public System.Guid Id { get; set; }
-        public bool IsSuccess { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public System.DateTime CreatedAt { get; set; }
         public Nullable<System.DateTime> UpdatedAt { get; set; }
         public Nullable<System.DateTime> DeletedAt { get; set; }
         public string Ip { get; set; }
         public bool IsActive { get; set; }
-        public System.Guid UserId { get; set; }
     
-        public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Gym> Gym { get; set; }
     }
 }

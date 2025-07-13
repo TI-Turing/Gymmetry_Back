@@ -148,6 +148,19 @@ namespace FitGymApp.Application.Services
                     };
                 }
 
+                // Nueva regla: No permitir actualizar GymUserId desde este método
+                var gymUserIdProp = updateRequestType.GetProperty("GymUserId");
+                if (gymUserIdProp != null)
+                {
+                    return new ApplicationResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "No está permitido actualizar el campo GymUserId desde este método.",
+                        ErrorCode = "GymUserIdUpdateNotAllowed"
+                    };
+                }
+
                 var user = new User
                 {
                     Id = request.Id,
@@ -203,6 +216,58 @@ namespace FitGymApp.Application.Services
                     Success = false,
                     Data = false,
                     Message = "Technical error while updating the user.",
+                    ErrorCode = "TechnicalError"
+                };
+            }
+        }
+
+        // Nuevo método para actualizar GymUserId
+        public async Task<ApplicationResponse<bool>> UpdateUserGymAsync(Guid userId, Guid gymId)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserByIdAsync(userId);
+                if (user == null)
+                {
+                    return new ApplicationResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "User not found.",
+                        ErrorCode = "NotFound"
+                    };
+                }
+                user.GymUserId = gymId;
+                var updated = await _userRepository.UpdateUserAsync(user);
+                if (updated)
+                {
+                    await _logChangeService.LogChangeAsync("User.GymUserId", user, user.Id);
+                    return new ApplicationResponse<bool>
+                    {
+                        Success = true,
+                        Data = true,
+                        Message = "GymUserId actualizado correctamente."
+                    };
+                }
+                else
+                {
+                    return new ApplicationResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "No se pudo actualizar el usuario.",
+                        ErrorCode = "UpdateFailed"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                await _logErrorService.LogErrorAsync(ex);
+                return new ApplicationResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Error técnico al actualizar GymUserId.",
                     ErrorCode = "TechnicalError"
                 };
             }
