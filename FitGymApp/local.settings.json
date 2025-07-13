@@ -1,0 +1,18 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "dotnet-isolated",
+    "ExchangeRateApiUrl": "https://api.exchangerate.host/latest?base=USD&symbols=COP",
+
+    "Jwt:SecretKey": "u7N$3pX9z!LgR4qW#Tb@8hMjY2sDfE0v",
+    "Jwt:Issuer": "http://localhost:7160",
+    "Jwt:Audience": "Gymmetry",
+
+    "BasicConfig:MinPasswordLength": "8",
+    "BasicConfig:MaxPasswordLength": "50"
+  },
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=.;Database=FitGymApp;Integrated Security=True;TrustServerCertificate=True;Encrypt=True;"
+  }
+}
