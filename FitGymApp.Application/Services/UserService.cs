@@ -27,13 +27,28 @@ namespace FitGymApp.Application.Services
 
         public async Task<ApplicationResponse<User>> CreateUserAsync(AddRequest request)
         {
+            // Validate password rules before creating user
+            if (_passwordService is FitGymApp.Application.Services.PasswordService passwordServiceImpl)
+            {
+                var passwordValidation = passwordServiceImpl.ValidatePassword(request.Password, request.Email);
+                if (!passwordValidation.Success)
+                {
+                    return new ApplicationResponse<User>
+                    {
+                        Success = false,
+                        Message = passwordValidation.Message,
+                        ErrorCode = passwordValidation.ErrorCode
+                    };
+                }
+            }
+
             var existingUsers = await _userRepository.FindUsersByFieldsAsync(new Dictionary<string, object> { { "Email", request.Email } });
             if (existingUsers != null && existingUsers.Any())
             {
                 return new ApplicationResponse<User>
                 {
                     Success = false,
-                    Message = "El correo ya está registrado.",
+                    Message = "The email is already registered.",
                     ErrorCode = "EmailExists"
                 };
             }
@@ -43,7 +58,7 @@ namespace FitGymApp.Application.Services
                 return new ApplicationResponse<User>
                 {
                     Success = false,
-                    Message = hashResult.Message ?? "Error técnico al hashear el password.",
+                    Message = hashResult.Message ?? "Technical error while hashing the password.",
                     ErrorCode = hashResult.ErrorCode ?? "HashError"
                 };
             }
@@ -58,7 +73,7 @@ namespace FitGymApp.Application.Services
                 return new ApplicationResponse<User>
                 {
                     Success = true,
-                    Message = "Usuario creado correctamente.",
+                    Message = "User created successfully.",
                     Data = created
                 };
             }
@@ -68,7 +83,7 @@ namespace FitGymApp.Application.Services
                 return new ApplicationResponse<User>
                 {
                     Success = false,
-                    Message = "Error técnico al crear el usuario.",
+                    Message = "Technical error while creating the user.",
                     ErrorCode = "TechnicalError"
                 };
             }
@@ -82,7 +97,7 @@ namespace FitGymApp.Application.Services
                 return new ApplicationResponse<User>
                 {
                     Success = false,
-                    Message = "Usuario no encontrado.",
+                    Message = "User not found.",
                     ErrorCode = "NotFound"
                 };
             }
@@ -108,6 +123,31 @@ namespace FitGymApp.Application.Services
             try
             {
                 var userBefore = await _userRepository.GetUserByIdAsync(request.Id);
+                if (userBefore == null)
+                {
+                    return new ApplicationResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "User not found.",
+                        ErrorCode = "NotFound"
+                    };
+                }
+
+                // RULE: If UpdateRequest model contains Password, reject the operation
+                var updateRequestType = request.GetType();
+                var passwordProp = updateRequestType.GetProperty("Password");
+                if (passwordProp != null)
+                {
+                    return new ApplicationResponse<bool>
+                    {
+                        Success = false,
+                        Data = false,
+                        Message = "Password update is not allowed from this method.",
+                        ErrorCode = "PasswordUpdateNotAllowed"
+                    };
+                }
+
                 var user = new User
                 {
                     Id = request.Id,
@@ -141,7 +181,7 @@ namespace FitGymApp.Application.Services
                     {
                         Success = true,
                         Data = true,
-                        Message = "Usuario actualizado correctamente."
+                        Message = "User updated successfully."
                     };
                 }
                 else
@@ -150,7 +190,7 @@ namespace FitGymApp.Application.Services
                     {
                         Success = false,
                         Data = false,
-                        Message = "No se pudo actualizar el usuario (no encontrado o inactivo).",
+                        Message = "Could not update the user (not found or inactive).",
                         ErrorCode = "NotFound"
                     };
                 }
@@ -162,7 +202,7 @@ namespace FitGymApp.Application.Services
                 {
                     Success = false,
                     Data = false,
-                    Message = "Error técnico al actualizar el usuario.",
+                    Message = "Technical error while updating the user.",
                     ErrorCode = "TechnicalError"
                 };
             }
@@ -179,7 +219,7 @@ namespace FitGymApp.Application.Services
                     {
                         Success = true,
                         Data = true,
-                        Message = "Usuario eliminado correctamente."
+                        Message = "User deleted successfully."
                     };
                 }
                 else
@@ -188,7 +228,7 @@ namespace FitGymApp.Application.Services
                     {
                         Success = false,
                         Data = false,
-                        Message = "Usuario no encontrado o ya eliminado.",
+                        Message = "User not found or already deleted.",
                         ErrorCode = "NotFound"
                     };
                 }
@@ -200,7 +240,7 @@ namespace FitGymApp.Application.Services
                 {
                     Success = false,
                     Data = false,
-                    Message = "Error técnico al eliminar el usuario.",
+                    Message = "Technical error while deleting the user.",
                     ErrorCode = "TechnicalError"
                 };
             }
@@ -214,6 +254,79 @@ namespace FitGymApp.Application.Services
                 Success = true,
                 Data = users
             };
+        }
+
+        public async Task<ApplicationResponse<bool>> UpdatePasswordAsync(PasswordUserRequest request)
+        {
+            // Validate user existence
+            var users = await _userRepository.FindUsersByFieldsAsync(new Dictionary<string, object> { { "Email", request.Email } });
+            var user = users?.FirstOrDefault();
+            if (user == null)
+            {
+                return new ApplicationResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "User not found.",
+                    ErrorCode = "NotFound"
+                };
+            }
+            // Validate token (replace with your real token validation logic)
+            if (string.IsNullOrWhiteSpace(request.Token) || request.Token != "valid-token")
+            {
+                return new ApplicationResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Invalid or expired token.",
+                    ErrorCode = "InvalidToken"
+                };
+            }
+            // Validate new password rules
+            var passwordValidation = _passwordService.ValidatePassword(request.NewPassword, request.Email);
+            if (!passwordValidation.Success)
+            {
+                return new ApplicationResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = passwordValidation.Message,
+                    ErrorCode = passwordValidation.ErrorCode
+                };
+            }
+            // Hash and update password
+            var hashResult = await _passwordService.HashPasswordAsync(request.NewPassword);
+            if (!hashResult.Success)
+            {
+                return new ApplicationResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = hashResult.Message,
+                    ErrorCode = hashResult.ErrorCode
+                };
+            }
+            user.Password = hashResult.Data;
+            var updated = await _userRepository.UpdateUserAsync(user);
+            if (updated)
+            {
+                return new ApplicationResponse<bool>
+                {
+                    Success = true,
+                    Data = true,
+                    Message = "Password updated successfully."
+                };
+            }
+            else
+            {
+                return new ApplicationResponse<bool>
+                {
+                    Success = false,
+                    Data = false,
+                    Message = "Could not update the password.",
+                    ErrorCode = "UpdateFailed"
+                };
+            }
         }
     }
 }

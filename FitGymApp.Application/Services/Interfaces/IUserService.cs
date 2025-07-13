@@ -15,5 +15,6 @@ namespace FitGymApp.Application.Services.Interfaces
         Task<ApplicationResponse<bool>> UpdateUserAsync(UpdateRequest request);
         Task<ApplicationResponse<bool>> DeleteUserAsync(Guid id);
         Task<ApplicationResponse<IEnumerable<User>>> FindUsersByFieldsAsync(Dictionary<string, object> filters);
+        Task<ApplicationResponse<bool>> UpdatePasswordAsync(PasswordUserRequest request);
     }
 }
