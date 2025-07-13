@@ -1,5 +1,8 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -22,51 +25,62 @@ namespace FitGymApp.Functions.GymPlanSelectedFunction
         }
 
         [Function("GymPlanSelected_DeleteGymPlanSelectedFunction")]
-        public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "gymplanselected/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<HttpResponseData> RunAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "gymplanselected/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("GymPlanSelected_DeleteGymPlanSelectedFunction");
+            logger.LogInformation($"Procesando solicitud de borrado para GymPlanSelected {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<Guid>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = false,
                     Message = error!,
                     Data = default,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-
-            _logger.LogInformation($"Procesando solicitud de borrado para GymPlanSelected {id}");
             try
             {
                 var result = await _service.DeleteGymPlanSelectedAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<Guid>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = default,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<Guid>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = id,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al eliminar GymPlanSelected.");
-                return new ApiResponse<Guid>
+                logger.LogError(ex, "Error al eliminar GymPlanSelected.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = default,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

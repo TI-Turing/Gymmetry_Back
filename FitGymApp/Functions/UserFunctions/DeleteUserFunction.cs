@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -10,7 +11,9 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net;
 using FitGymApp.Utils;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace FitGymApp.Functions.UserFunctions
 {
@@ -26,51 +29,62 @@ namespace FitGymApp.Functions.UserFunctions
         }
 
         [Function("User_DeleteUserFunction")]
-        public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "user/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<HttpResponseData> RunAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "user/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("User_DeleteUserFunction");
+            logger.LogInformation($"Procesando solicitud de borrado para usuario {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<Guid>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = false,
                     Message = error!,
                     Data = default,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-
-            _logger.LogInformation($"Procesando solicitud de borrado para usuario {id}");
             try
             {
-                var result = _userService.DeleteUser(id);
+                var result = await _userService.DeleteUserAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<Guid>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = default,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<Guid>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = id,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al eliminar usuario.");
-                return new ApiResponse<Guid>
+                logger.LogError(ex, "Error al eliminar usuario.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = default,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

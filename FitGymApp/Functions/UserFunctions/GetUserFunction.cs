@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -10,7 +10,10 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net;
 using FitGymApp.Utils;
+using Newtonsoft.Json;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace FitGymApp.Functions.UserFunctions
 {
@@ -26,138 +29,170 @@ namespace FitGymApp.Functions.UserFunctions
         }
 
         [Function("User_GetUserByIdFunction")]
-        public async Task<ApiResponse<User>> GetUserByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "user/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<HttpResponseData> GetUserByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "user/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("User_GetUserByIdFunction");
+            logger.LogInformation($"Consultando usuario por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<User>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<User>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando usuario por Id: {id}");
             try
             {
-                var result = _userService.GetUserById(id);
+                var result = await _userService.GetUserByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<User>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<User>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<User>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<User>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar usuario por Id.");
-                return new ApiResponse<User>
+                logger.LogError(ex, "Error al consultar usuario por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<User>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
         [Function("User_GetAllUsersFunction")]
-        public async Task<ApiResponse<IEnumerable<User>>> GetAllUsersAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "users")] HttpRequest req)
+        public async Task<HttpResponseData> GetAllUsersAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "users")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("User_GetAllUsersFunction");
+            logger.LogInformation("Consultando todos los usuarios activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<User>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<User>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los usuarios activos.");
             try
             {
-                var result = _userService.GetAllUsers();
-                return new ApiResponse<IEnumerable<User>>
+                var result = await _userService.GetAllUsersAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<User>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los usuarios.");
-                return new ApiResponse<IEnumerable<User>>
+                logger.LogError(ex, "Error al consultar todos los usuarios.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<User>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
         [Function("User_FindUsersByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<User>>> FindUsersByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "users/find")] HttpRequest req)
+        public async Task<HttpResponseData> FindUsersByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "users/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("User_FindUsersByFieldsFunction");
+            logger.LogInformation("Consultando usuarios por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<User>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<User>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando usuarios por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<User>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<User>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
-                var result = _userService.FindUsersByFields(filters);
-                return new ApiResponse<IEnumerable<User>>
+                var result = await _userService.FindUsersByFieldsAsync(filters);
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<User>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar usuarios por filtros.");
-                return new ApiResponse<IEnumerable<User>>
+                logger.LogError(ex, "Error al consultar usuarios por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<User>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

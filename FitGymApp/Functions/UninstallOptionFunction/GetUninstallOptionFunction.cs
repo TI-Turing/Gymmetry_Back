@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -10,7 +10,10 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net;
 using FitGymApp.Utils;
+using Newtonsoft.Json;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace FitGymApp.Functions.UninstallOptionFunction
 {
@@ -25,139 +28,171 @@ namespace FitGymApp.Functions.UninstallOptionFunction
             _service = service;
         }
 
-        [Function("GetUninstallOptionByIdFunction")]
-        public async Task<ApiResponse<UninstallOption>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "uninstalloption/{id:guid}")] HttpRequest req, Guid id)
+        [Function("UninstallOption_GetUninstallOptionFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "uninstalloption/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("UninstallOption_GetUninstallOptionFunction");
+            logger.LogInformation($"Consultando UninstallOption por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<UninstallOption>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<UninstallOption>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando UninstallOption por Id: {id}");
             try
             {
-                var result = _service.GetUninstallOptionById(id);
+                var result = await _service.GetUninstallOptionByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<UninstallOption>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<UninstallOption>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<UninstallOption>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<UninstallOption>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar UninstallOption por Id.");
-                return new ApiResponse<UninstallOption>
+                logger.LogError(ex, "Error al consultar UninstallOption por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<UninstallOption>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllUninstallOptionsFunction")]
-        public async Task<ApiResponse<IEnumerable<UninstallOption>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "uninstalloptions")] HttpRequest req)
+        [Function("UninstallOption_GetAllUninstallOptionsFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "uninstalloptions")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("UninstallOption_GetAllUninstallOptionsFunction");
+            logger.LogInformation("Consultando todos los UninstallOptions activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<UninstallOption>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<UninstallOption>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los UninstallOptions activos.");
             try
             {
-                var result = _service.GetAllUninstallOptions();
-                return new ApiResponse<IEnumerable<UninstallOption>>
+                var result = await _service.GetAllUninstallOptionsAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<UninstallOption>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los UninstallOptions.");
-                return new ApiResponse<IEnumerable<UninstallOption>>
+                logger.LogError(ex, "Error al consultar todos los UninstallOptions.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<UninstallOption>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindUninstallOptionsByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<UninstallOption>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "uninstalloptions/find")] HttpRequest req)
+        [Function("UninstallOption_FindUninstallOptionsByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "uninstalloptions/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("UninstallOption_FindUninstallOptionsByFieldsFunction");
+            logger.LogInformation("Consultando UninstallOptions por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<UninstallOption>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<UninstallOption>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando UninstallOptions por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<UninstallOption>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<UninstallOption>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
-                var result = _service.FindUninstallOptionsByFields(filters);
-                return new ApiResponse<IEnumerable<UninstallOption>>
+                var result = await _service.FindUninstallOptionsByFieldsAsync(filters);
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<UninstallOption>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar UninstallOptions por filtros.");
-                return new ApiResponse<IEnumerable<UninstallOption>>
+                logger.LogError(ex, "Error al consultar UninstallOptions por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<UninstallOption>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

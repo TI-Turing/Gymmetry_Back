@@ -1,5 +1,8 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
+using Newtonsoft.Json;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -25,139 +28,160 @@ namespace FitGymApp.Functions.GymPlanSelectedFunction
             _service = service;
         }
 
-        [Function("GetGymPlanSelectedByIdFunction")]
-        public async Task<ApiResponse<GymPlanSelected>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselected/{id:guid}")] HttpRequest req, Guid id)
+        [Function("GymPlanSelected_GetGymPlanSelectedByIdFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselected/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("GymPlanSelected_GetGymPlanSelectedByIdFunction");
+            logger.LogInformation($"Consultando GymPlanSelected por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<GymPlanSelected>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApplicationResponse<GymPlanSelected>
                 {
                     Success = false,
                     Message = error!,
-                    Data = null,
-                    StatusCode = StatusCodes.Status401Unauthorized
-                };
+                    Data = null
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando GymPlanSelected por Id: {id}");
             try
             {
-                var result = _service.GetGymPlanSelectedById(id);
+                var result = await _service.GetGymPlanSelectedByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<GymPlanSelected>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApplicationResponse<GymPlanSelected>
                     {
                         Success = false,
                         Message = result.Message,
-                        Data = null,
-                        StatusCode = StatusCodes.Status404NotFound
-                    };
+                        Data = null
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<GymPlanSelected>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApplicationResponse<GymPlanSelected>
                 {
                     Success = true,
                     Message = result.Message,
-                    Data = result.Data,
-                    StatusCode = StatusCodes.Status200OK
-                };
+                    Data = result.Data
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar GymPlanSelected por Id.");
-                return new ApiResponse<GymPlanSelected>
+                logger.LogError(ex, "Error al consultar GymPlanSelected por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApplicationResponse<GymPlanSelected>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
-                    Data = null,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
+                    Data = null
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllGymPlanSelectedsFunction")]
-        public async Task<ApiResponse<IEnumerable<GymPlanSelected>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselecteds")] HttpRequest req)
+        [Function("GymPlanSelected_GetAllGymPlanSelectedsFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselecteds")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("GymPlanSelected_GetAllGymPlanSelectedsFunction");
+            logger.LogInformation("Consultando todos los GymPlanSelecteds activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<GymPlanSelected>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<GymPlanSelected>>
                 {
                     Success = false,
                     Message = error!,
-                    Data = null,
-                    StatusCode = StatusCodes.Status401Unauthorized
-                };
+                    Data = null
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los GymPlanSelecteds activos.");
             try
             {
-                var result = _service.GetAllGymPlanSelecteds();
-                return new ApiResponse<IEnumerable<GymPlanSelected>>
+                var result = await _service.GetAllGymPlanSelectedsAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<GymPlanSelected>>
                 {
                     Success = result.Success,
                     Message = result.Message,
-                    Data = result.Data,
-                    StatusCode = StatusCodes.Status200OK
-                };
+                    Data = result.Data
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los GymPlanSelecteds.");
-                return new ApiResponse<IEnumerable<GymPlanSelected>>
+                logger.LogError(ex, "Error al consultar todos los GymPlanSelecteds.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<GymPlanSelected>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
-                    Data = null,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
+                    Data = null
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindGymPlanSelectedsByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<GymPlanSelected>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselecteds/find")] HttpRequest req)
+        [Function("GymPlanSelected_FindGymPlanSelectedsByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselecteds/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("GymPlanSelected_FindGymPlanSelectedsByFieldsFunction");
+            logger.LogInformation("Consultando GymPlanSelecteds por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<GymPlanSelected>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<GymPlanSelected>>
                 {
                     Success = false,
                     Message = error!,
-                    Data = null,
-                    StatusCode = StatusCodes.Status401Unauthorized
-                };
+                    Data = null
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando GymPlanSelecteds por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<GymPlanSelected>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<GymPlanSelected>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
-                        Data = null,
-                        StatusCode = StatusCodes.Status400BadRequest
-                    };
+                        Data = null
+                    });
+                    return badResponse;
                 }
-                var result = _service.FindGymPlanSelectedsByFields(filters);
-                return new ApiResponse<IEnumerable<GymPlanSelected>>
+                var result = await _service.FindGymPlanSelectedsByFieldsAsync(filters);
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<GymPlanSelected>>
                 {
                     Success = result.Success,
                     Message = result.Message,
-                    Data = result.Data,
-                    StatusCode = StatusCodes.Status200OK
-                };
+                    Data = result.Data
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar GymPlanSelecteds por filtros.");
-                return new ApiResponse<IEnumerable<GymPlanSelected>>
+                logger.LogError(ex, "Error al consultar GymPlanSelecteds por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<GymPlanSelected>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
-                    Data = null,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
+                    Data = null
+                });
+                return errorResponse;
             }
         }
     }

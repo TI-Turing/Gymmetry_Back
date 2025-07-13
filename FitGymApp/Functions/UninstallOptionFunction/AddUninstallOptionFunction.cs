@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Domain.DTO.UninstallOption.Request;
 using Newtonsoft.Json;
+using System.Net;
 using System.ComponentModel.DataAnnotations;
 using FitGymApp.Domain.DTO;
 using FitGymApp.Application.Services.Interfaces;
@@ -13,6 +14,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Linq;
 using FitGymApp.Utils;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace FitGymApp.Functions.UninstallOptionFunction;
 
@@ -27,81 +29,71 @@ public class AddUninstallOptionFunction
         _service = service;
     }
 
-    [Function("AddUninstallOptionFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "uninstalloption/add")] HttpRequest req)
+    [Function("UninstallOption_AddUninstallOptionFunction")]
+    public async Task<HttpResponseData> AddAsync(
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "uninstalloption/add")] HttpRequestData req,
+        FunctionContext executionContext)
     {
-        if (!JwtValidator.ValidateJwt(req, out var error))
-        {
-            return new ApiResponse<Guid>
-            {
-                Success = false,
-                Message = error!,
-                Data = default,
-                StatusCode = StatusCodes.Status401Unauthorized
-            };
-        }
-
-        _logger.LogInformation("Procesando solicitud para agregar un UninstallOption.");
+        var logger = executionContext.GetLogger("UninstallOption_AddUninstallOptionFunction");
+        logger.LogInformation("Procesando solicitud para agregar un UninstallOption.");
         try
         {
+            if (!JwtValidator.ValidateJwt(req, out var error))
+            {
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+                {
+                    Success = false,
+                    Message = error!,
+                    Data = default,
+                    StatusCode = StatusCodes.Status401Unauthorized
+                });
+                return unauthorizedResponse;
+            }
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<AddUninstallOptionRequest>(requestBody);
-
-            if (objRequest == null)
+            var validationResult = ModelValidator.ValidateModel<AddUninstallOptionRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
+            if (validationResult is not null)
             {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = "El cuerpo de la solicitud no coincide con la estructura esperada.",
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
+                var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await badResponse.WriteAsJsonAsync(validationResult);
+                return badResponse;
             }
-
-            var validationContext = new ValidationContext(objRequest, null, null);
-            var validationResults = new List<ValidationResult>();
-            bool isValid = Validator.TryValidateObject(objRequest, validationContext, validationResults, true);
-
-            if (!isValid)
-            {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = string.Join("; ", validationResults.Select(v => v.ErrorMessage)),
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
-            }
-
-            var result = _service.CreateUninstallOption(objRequest);
+            var result = await _service.CreateUninstallOptionAsync(objRequest);
             if (!result.Success)
             {
-                return new ApiResponse<Guid>
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = false,
                     Message = result.Message,
                     Data = default,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
-            return new ApiResponse<Guid>
+            var successResponse = req.CreateResponse(HttpStatusCode.OK);
+            await successResponse.WriteAsJsonAsync(new ApiResponse<Guid>
             {
                 Success = true,
                 Message = result.Message,
                 Data = result.Data != null ? result.Data.Id : default,
                 StatusCode = StatusCodes.Status200OK
-            };
+            });
+            return successResponse;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al agregar UninstallOption.");
-            return new ApiResponse<Guid>
+            logger.LogError(ex, "Error al agregar UninstallOption.");
+            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+            await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
             {
                 Success = false,
                 Message = "Ocurrió un error al procesar la solicitud.",
                 Data = default,
                 StatusCode = StatusCodes.Status400BadRequest
-            };
+            });
+            return errorResponse;
         }
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -11,6 +12,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using FitGymApp.Utils;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace FitGymApp.Functions.RoutineAssignedFunction
 {
@@ -25,139 +28,171 @@ namespace FitGymApp.Functions.RoutineAssignedFunction
             _service = service;
         }
 
-        [Function("GetRoutineAssignedByIdFunction")]
-        public async Task<ApiResponse<RoutineAssigned>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineassigned/{id:guid}")] HttpRequest req, Guid id)
+        [Function("RoutineAssigned_GetRoutineAssignedFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineassigned/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("RoutineAssigned_GetRoutineAssignedFunction");
+            logger.LogInformation($"Consultando RoutineAssigned por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<RoutineAssigned>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<RoutineAssigned>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando RoutineAssigned por Id: {id}");
             try
             {
                 var result = await _service.GetRoutineAssignedByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<RoutineAssigned>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<RoutineAssigned>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<RoutineAssigned>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<RoutineAssigned>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar RoutineAssigned por Id.");
-                return new ApiResponse<RoutineAssigned>
+                logger.LogError(ex, "Error al consultar RoutineAssigned por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<RoutineAssigned>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllRoutineAssignedsFunction")]
-        public async Task<ApiResponse<IEnumerable<RoutineAssigned>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineassigneds")] HttpRequest req)
+        [Function("RoutineAssigned_GetAllRoutineAssignedsFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineassigneds")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("RoutineAssigned_GetAllRoutineAssignedsFunction");
+            logger.LogInformation("Consultando todos los RoutineAssigneds activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<RoutineAssigned>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los RoutineAssigneds activos.");
             try
             {
                 var result = await _service.GetAllRoutineAssignedsAsync();
-                return new ApiResponse<IEnumerable<RoutineAssigned>>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los RoutineAssigneds.");
-                return new ApiResponse<IEnumerable<RoutineAssigned>>
+                logger.LogError(ex, "Error al consultar todos los RoutineAssigneds.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindRoutineAssignedsByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<RoutineAssigned>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineassigneds/find")] HttpRequest req)
+        [Function("RoutineAssigned_FindRoutineAssignedsByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineassigneds/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("RoutineAssigned_FindRoutineAssignedsByFieldsFunction");
+            logger.LogInformation("Consultando RoutineAssigneds por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<RoutineAssigned>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando RoutineAssigneds por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<RoutineAssigned>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
                 var result = await _service.FindRoutineAssignedsByFieldsAsync(filters);
-                return new ApiResponse<IEnumerable<RoutineAssigned>>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar RoutineAssigneds por filtros.");
-                return new ApiResponse<IEnumerable<RoutineAssigned>>
+                logger.LogError(ex, "Error al consultar RoutineAssigneds por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

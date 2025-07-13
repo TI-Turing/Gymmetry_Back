@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -11,6 +12,8 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using FitGymApp.Utils;
+using System.Net;
+using Newtonsoft.Json;
 
 namespace FitGymApp.Functions.RoutineTemplateFunction
 {
@@ -25,139 +28,171 @@ namespace FitGymApp.Functions.RoutineTemplateFunction
             _service = service;
         }
 
-        [Function("GetRoutineTemplateByIdFunction")]
-        public async Task<ApiResponse<RoutineTemplate>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "routinetemplate/{id:guid}")] HttpRequest req, Guid id)
+        [Function("RoutineTemplate_GetRoutineTemplateFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routinetemplate/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("RoutineTemplate_GetRoutineTemplateFunction");
+            logger.LogInformation($"Consultando RoutineTemplate por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<RoutineTemplate>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<RoutineTemplate>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando RoutineTemplate por Id: {id}");
             try
             {
-                var result = _service.GetRoutineTemplateById(id);
+                var result = await _service.GetRoutineTemplateByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<RoutineTemplate>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<RoutineTemplate>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<RoutineTemplate>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<RoutineTemplate>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar RoutineTemplate por Id.");
-                return new ApiResponse<RoutineTemplate>
+                logger.LogError(ex, "Error al consultar RoutineTemplate por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<RoutineTemplate>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllRoutineTemplatesFunction")]
-        public async Task<ApiResponse<IEnumerable<RoutineTemplate>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "routinetemplates")] HttpRequest req)
+        [Function("RoutineTemplate_GetAllRoutineTemplatesFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routinetemplates")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("RoutineTemplate_GetAllRoutineTemplatesFunction");
+            logger.LogInformation("Consultando todos los RoutineTemplates activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<RoutineTemplate>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineTemplate>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los RoutineTemplates activos.");
             try
             {
-                var result = _service.GetAllRoutineTemplates();
-                return new ApiResponse<IEnumerable<RoutineTemplate>>
+                var result = await _service.GetAllRoutineTemplatesAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineTemplate>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los RoutineTemplates.");
-                return new ApiResponse<IEnumerable<RoutineTemplate>>
+                logger.LogError(ex, "Error al consultar todos los RoutineTemplates.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineTemplate>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindRoutineTemplatesByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<RoutineTemplate>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "routinetemplates/find")] HttpRequest req)
+        [Function("RoutineTemplate_FindRoutineTemplatesByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routinetemplates/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("RoutineTemplate_FindRoutineTemplatesByFieldsFunction");
+            logger.LogInformation("Consultando RoutineTemplates por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<RoutineTemplate>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineTemplate>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando RoutineTemplates por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<RoutineTemplate>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineTemplate>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
-                var result = _service.FindRoutineTemplatesByFields(filters);
-                return new ApiResponse<IEnumerable<RoutineTemplate>>
+                var result = await _service.FindRoutineTemplatesByFieldsAsync(filters);
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineTemplate>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar RoutineTemplates por filtros.");
-                return new ApiResponse<IEnumerable<RoutineTemplate>>
+                logger.LogError(ex, "Error al consultar RoutineTemplates por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineTemplate>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

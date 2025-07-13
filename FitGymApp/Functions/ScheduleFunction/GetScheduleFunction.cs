@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -10,7 +11,9 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
+using System.Net;
 using FitGymApp.Utils;
+using Newtonsoft.Json;
 
 namespace FitGymApp.Functions.ScheduleFunction
 {
@@ -25,139 +28,171 @@ namespace FitGymApp.Functions.ScheduleFunction
             _service = service;
         }
 
-        [Function("GetScheduleByIdFunction")]
-        public async Task<ApiResponse<Schedule>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "schedule/{id:guid}")] HttpRequest req, Guid id)
+        [Function("Schedule_GetScheduleFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "schedule/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("Schedule_GetScheduleFunction");
+            logger.LogInformation($"Consultando Schedule por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<Schedule>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Schedule>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando Schedule por Id: {id}");
             try
             {
-                var result = _service.GetScheduleById(id);
+                var result = await _service.GetScheduleByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<Schedule>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<Schedule>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<Schedule>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<Schedule>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar Schedule por Id.");
-                return new ApiResponse<Schedule>
+                logger.LogError(ex, "Error al consultar Schedule por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<Schedule>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllSchedulesFunction")]
-        public async Task<ApiResponse<IEnumerable<Schedule>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "schedules")] HttpRequest req)
+        [Function("Schedule_GetAllSchedulesFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "schedules")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("Schedule_GetAllSchedulesFunction");
+            logger.LogInformation("Consultando todos los Schedules activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<Schedule>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Schedule>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los Schedules activos.");
             try
             {
-                var result = _service.GetAllSchedules();
-                return new ApiResponse<IEnumerable<Schedule>>
+                var result = await _service.GetAllSchedulesAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Schedule>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los Schedules.");
-                return new ApiResponse<IEnumerable<Schedule>>
+                logger.LogError(ex, "Error al consultar todos los Schedules.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Schedule>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindSchedulesByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<Schedule>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "schedules/find")] HttpRequest req)
+        [Function("Schedule_FindSchedulesByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "schedules/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("Schedule_FindSchedulesByFieldsFunction");
+            logger.LogInformation("Consultando Schedules por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<Schedule>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Schedule>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando Schedules por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<Schedule>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Schedule>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
-                var result = _service.FindSchedulesByFields(filters);
-                return new ApiResponse<IEnumerable<Schedule>>
+                var result = await _service.FindSchedulesByFieldsAsync(filters);
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Schedule>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar Schedules por filtros.");
-                return new ApiResponse<IEnumerable<Schedule>>
+                logger.LogError(ex, "Error al consultar Schedules por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Schedule>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

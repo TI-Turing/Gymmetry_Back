@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -11,6 +11,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using FitGymApp.Utils;
+using System.Net;
+using Newtonsoft.Json;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace FitGymApp.Functions.NotificationOptionFunction
 {
@@ -25,139 +28,171 @@ namespace FitGymApp.Functions.NotificationOptionFunction
             _service = service;
         }
 
-        [Function("GetNotificationOptionByIdFunction")]
-        public async Task<ApiResponse<NotificationOption>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "notificationoption/{id:guid}")] HttpRequest req, Guid id)
+        [Function("NotificationOption_GetNotificationOptionByIdFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notificationoption/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("NotificationOption_GetNotificationOptionByIdFunction");
+            logger.LogInformation($"Consultando NotificationOption por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<NotificationOption>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<NotificationOption>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando NotificationOption por Id: {id}");
             try
             {
-                var result = _service.GetNotificationOptionById(id);
+                var result = await _service.GetNotificationOptionByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<NotificationOption>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<NotificationOption>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<NotificationOption>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<NotificationOption>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar NotificationOption por Id.");
-                return new ApiResponse<NotificationOption>
+                logger.LogError(ex, "Error al consultar NotificationOption por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<NotificationOption>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllNotificationOptionsFunction")]
-        public async Task<ApiResponse<IEnumerable<NotificationOption>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "notificationoptions")] HttpRequest req)
+        [Function("NotificationOption_GetAllNotificationOptionsFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notificationoptions")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("NotificationOption_GetAllNotificationOptionsFunction");
+            logger.LogInformation("Consultando todos los NotificationOptions activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<NotificationOption>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<NotificationOption>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los NotificationOptions activos.");
             try
             {
-                var result = _service.GetAllNotificationOptions();
-                return new ApiResponse<IEnumerable<NotificationOption>>
+                var result = await _service.GetAllNotificationOptionsAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<NotificationOption>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los NotificationOptions.");
-                return new ApiResponse<IEnumerable<NotificationOption>>
+                logger.LogError(ex, "Error al consultar todos los NotificationOptions.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<NotificationOption>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindNotificationOptionsByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<NotificationOption>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "notificationoptions/find")] HttpRequest req)
+        [Function("NotificationOption_FindNotificationOptionsByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notificationoptions/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("NotificationOption_FindNotificationOptionsByFieldsFunction");
+            logger.LogInformation("Consultando NotificationOptions por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<NotificationOption>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<NotificationOption>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando NotificationOptions por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<NotificationOption>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<NotificationOption>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
-                var result = _service.FindNotificationOptionsByFields(filters);
-                return new ApiResponse<IEnumerable<NotificationOption>>
+                var result = await _service.FindNotificationOptionsByFieldsAsync(filters);
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<NotificationOption>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar NotificationOptions por filtros.");
-                return new ApiResponse<IEnumerable<NotificationOption>>
+                logger.LogError(ex, "Error al consultar NotificationOptions por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<NotificationOption>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -11,6 +11,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using FitGymApp.Utils;
+using System.Net;
+using Newtonsoft.Json;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace FitGymApp.Functions.RoutineExerciseFunction
 {
@@ -25,139 +28,171 @@ namespace FitGymApp.Functions.RoutineExerciseFunction
             _service = service;
         }
 
-        [Function("GetRoutineExerciseByIdFunction")]
-        public async Task<ApiResponse<RoutineExercise>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineexercise/{id:guid}")] HttpRequest req, Guid id)
+        [Function("RoutineExercise_GetRoutineExerciseFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineexercise/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("RoutineExercise_GetRoutineExerciseFunction");
+            logger.LogInformation($"Consultando RoutineExercise por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<RoutineExercise>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<RoutineExercise>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando RoutineExercise por Id: {id}");
             try
             {
-                var result = _service.GetRoutineExerciseById(id);
+                var result = await _service.GetRoutineExerciseByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<RoutineExercise>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<RoutineExercise>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<RoutineExercise>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<RoutineExercise>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar RoutineExercise por Id.");
-                return new ApiResponse<RoutineExercise>
+                logger.LogError(ex, "Error al consultar RoutineExercise por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<RoutineExercise>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllRoutineExercisesFunction")]
-        public async Task<ApiResponse<IEnumerable<RoutineExercise>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineexercises")] HttpRequest req)
+        [Function("RoutineExercise_GetAllRoutineExercisesFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineexercises")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("RoutineExercise_GetAllRoutineExercisesFunction");
+            logger.LogInformation("Consultando todos los RoutineExercises activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<RoutineExercise>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineExercise>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los RoutineExercises activos.");
             try
             {
-                var result = _service.GetAllRoutineExercises();
-                return new ApiResponse<IEnumerable<RoutineExercise>>
+                var result = await _service.GetAllRoutineExercisesAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineExercise>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los RoutineExercises.");
-                return new ApiResponse<IEnumerable<RoutineExercise>>
+                logger.LogError(ex, "Error al consultar todos los RoutineExercises.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineExercise>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindRoutineExercisesByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<RoutineExercise>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineexercises/find")] HttpRequest req)
+        [Function("RoutineExercise_FindRoutineExercisesByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineexercises/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("RoutineExercise_FindRoutineExercisesByFieldsFunction");
+            logger.LogInformation("Consultando RoutineExercises por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<RoutineExercise>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineExercise>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando RoutineExercises por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<RoutineExercise>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineExercise>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
                 var result = await _service.FindRoutineExercisesByFieldsAsync(filters);
-                return new ApiResponse<IEnumerable<RoutineExercise>>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineExercise>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar RoutineExercises por filtros.");
-                return new ApiResponse<IEnumerable<RoutineExercise>>
+                logger.LogError(ex, "Error al consultar RoutineExercises por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineExercise>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

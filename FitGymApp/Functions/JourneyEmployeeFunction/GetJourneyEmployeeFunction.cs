@@ -1,5 +1,5 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using FitGymApp.Application.Services.Interfaces;
 using FitGymApp.Domain.DTO;
@@ -11,6 +11,9 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Linq;
 using FitGymApp.Utils;
+using System.Net;
+using Newtonsoft.Json;
+using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
 
 namespace FitGymApp.Functions.JourneyEmployeeFunction
 {
@@ -25,139 +28,171 @@ namespace FitGymApp.Functions.JourneyEmployeeFunction
             _service = service;
         }
 
-        [Function("GetJourneyEmployeeByIdFunction")]
-        public async Task<ApiResponse<JourneyEmployee>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "journeyemployee/{id:guid}")] HttpRequest req, Guid id)
+        [Function("JourneyEmployee_GetJourneyEmployeeByIdFunction")]
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "journeyemployee/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("JourneyEmployee_GetJourneyEmployeeByIdFunction");
+            logger.LogInformation($"Consultando JourneyEmployee por Id: {id}");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<JourneyEmployee>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<JourneyEmployee>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando JourneyEmployee por Id: {id}");
             try
             {
-                var result = _service.GetJourneyEmployeeById(id);
+                var result = await _service.GetJourneyEmployeeByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<JourneyEmployee>
+                    var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<JourneyEmployee>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<JourneyEmployee>
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<JourneyEmployee>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar JourneyEmployee por Id.");
-                return new ApiResponse<JourneyEmployee>
+                logger.LogError(ex, "Error al consultar JourneyEmployee por Id.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<JourneyEmployee>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("GetAllJourneyEmployeesFunction")]
-        public async Task<ApiResponse<IEnumerable<JourneyEmployee>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "journeyemployees")] HttpRequest req)
+        [Function("JourneyEmployee_GetAllJourneyEmployeesFunction")]
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "journeyemployees")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("JourneyEmployee_GetAllJourneyEmployeesFunction");
+            logger.LogInformation("Consultando todos los JourneyEmployees activos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<JourneyEmployee>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<JourneyEmployee>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los JourneyEmployees activos.");
             try
             {
-                var result = _service.GetAllJourneyEmployees();
-                return new ApiResponse<IEnumerable<JourneyEmployee>>
+                var result = await _service.GetAllJourneyEmployeesAsync();
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<JourneyEmployee>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los JourneyEmployees.");
-                return new ApiResponse<IEnumerable<JourneyEmployee>>
+                logger.LogError(ex, "Error al consultar todos los JourneyEmployees.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<JourneyEmployee>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
-        [Function("FindJourneyEmployeesByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<JourneyEmployee>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "journeyemployees/find")] HttpRequest req)
+        [Function("JourneyEmployee_FindJourneyEmployeesByFieldsFunction")]
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "journeyemployees/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("JourneyEmployee_FindJourneyEmployeesByFieldsFunction");
+            logger.LogInformation("Consultando JourneyEmployees por filtros dinámicos.");
             if (!JwtValidator.ValidateJwt(req, out var error))
             {
-                return new ApiResponse<IEnumerable<JourneyEmployee>>
+                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<JourneyEmployee>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando JourneyEmployees por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<JourneyEmployee>>
+                    var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<JourneyEmployee>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
-                var result = _service.FindJourneyEmployeesByFields(filters);
-                return new ApiResponse<IEnumerable<JourneyEmployee>>
+                var result = await _service.FindJourneyEmployeesByFieldsAsync(filters);
+                var successResponse = req.CreateResponse(HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<JourneyEmployee>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar JourneyEmployees por filtros.");
-                return new ApiResponse<IEnumerable<JourneyEmployee>>
+                logger.LogError(ex, "Error al consultar JourneyEmployees por filtros.");
+                var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<JourneyEmployee>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

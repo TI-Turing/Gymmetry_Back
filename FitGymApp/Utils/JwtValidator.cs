@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Http;
+using Microsoft.Azure.Functions.Worker.Http;
 using System;
 using FitGymApp.Application.Services;
 
@@ -15,7 +16,31 @@ namespace FitGymApp.Utils
                 return false;
             }
             var token = authHeader.ToString().Replace("Bearer ", "", StringComparison.OrdinalIgnoreCase);
-            var principal = JwtTokenGenerator.ValidateToken(token);
+            var principal = JwtTokenGenerator.ValidateTokenAsync(token);
+            if (principal == null)
+            {
+                error = "Token inválido o expirado.";
+                return false;
+            }
+            return true;
+        }
+
+        public static bool ValidateJwt(HttpRequestData req, out string? error)
+        {
+            error = null;
+            if (!req.Headers.TryGetValues("Authorization", out var authHeaders))
+            {
+                error = "Token no proporcionado.";
+                return false;
+            }
+            var authHeader = string.Join("", authHeaders);
+            if (string.IsNullOrWhiteSpace(authHeader))
+            {
+                error = "Token no proporcionado.";
+                return false;
+            }
+            var token = authHeader.Replace("Bearer ", string.Empty, StringComparison.OrdinalIgnoreCase);
+            var principal = JwtTokenGenerator.ValidateTokenAsync(token);
             if (principal == null)
             {
                 error = "Token inválido o expirado.";
