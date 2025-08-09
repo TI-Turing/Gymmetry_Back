@@ -39,4 +39,5 @@ public partial class Exercise
     public virtual Machine? Machine { get; set; } // Relación uno a muchos, Machine puede ser null
 
     public virtual ICollection<RoutineDay> RoutineDays { get; set; } = new List<RoutineDay>(); // Relación uno a muchos
+    public string? TagsMuscle { get; set; } // Nuevo campo nvarchar(max)
 }
