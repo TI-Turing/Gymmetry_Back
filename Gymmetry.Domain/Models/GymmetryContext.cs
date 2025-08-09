@@ -436,6 +436,7 @@ public partial class GymmetryContext : DbContext
             entity.Property(e => e.RequiresEquipment);
             entity.Property(e => e.UrlImage).HasMaxLength(255).IsRequired(false); // Nuevo campo
             entity.Property(e => e.Description).HasMaxLength(500).IsRequired(false); // Nueva propiedad
+            entity.Property(e => e.TagsMuscle).HasColumnType("nvarchar(max)"); // Nuevo campo
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
             entity.HasOne(d => d.CategoryExercise).WithMany(p => p.Exercises)

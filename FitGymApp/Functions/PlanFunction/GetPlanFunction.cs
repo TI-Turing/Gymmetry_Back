@@ -83,7 +83,7 @@ namespace Gymmetry.Functions.PlanFunction
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
-                    StatusCode = StatusCodes.Status400BadRequest
+                    StatusCode = StatusCodes.Status500InternalServerError
                 });
                 return errorResponse;
             }
@@ -130,7 +130,7 @@ namespace Gymmetry.Functions.PlanFunction
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
-                    StatusCode = StatusCodes.Status400BadRequest
+                    StatusCode = StatusCodes.Status500InternalServerError
                 });
                 return errorResponse;
             }
@@ -191,7 +191,7 @@ namespace Gymmetry.Functions.PlanFunction
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
-                    StatusCode = StatusCodes.Status400BadRequest
+                    StatusCode = StatusCodes.Status500InternalServerError
                 });
                 return errorResponse;
             }

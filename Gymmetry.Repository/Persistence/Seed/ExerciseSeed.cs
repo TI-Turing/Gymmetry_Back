@@ -4,7 +4,7 @@ public static class ExerciseSeed
 {
     public static async Task SeedAsync(GymmetryContext context)
     {
-        // Nueva relación de categorías según el mapeo proporcionado
+        // CategoryId
         // 642FC19F-500F-47AE-A81B-1303AC978D9D   Estiramiento
         // D9507CD0-1EDA-4D4D-A408-13FF76C14D88   Cardio
         // 9F9F94D0-7CD1-48E9-81A7-86AA503CA685   Aislado (focalizado)
@@ -21,6 +21,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.7, ""Serrato anterior"": 0.4, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.5, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.9, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pecho"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""espalda"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -30,6 +31,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.6, ""Serrato anterior"": 0.5, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.6, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.8, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pecho"": 0.7, ""hombro"": 0.2, ""brazo"": 0.1, ""espalda"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0, ""core"": 0.0}"
             },
             new Exercise {
@@ -39,6 +41,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.6, ""Serrato anterior"": 0.3, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.4, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.9, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pecho"": 0.8, ""brazo"": 0.1, ""core"": 0.1, ""espalda"": 0.0, ""hombro"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -48,6 +51,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.6, ""Serrato anterior"": 0.5, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.6, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.8, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pecho"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""espalda"": 0.0, ""hombro"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -57,6 +61,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.6, ""Serrato anterior"": 0.5, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.7, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.8, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pecho"": 0.7, ""brazo"": 0.2, ""hombro"": 0.1, ""espalda"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0, ""core"": 0.0}"
             },
             new Exercise {
@@ -66,6 +71,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.6, ""Serrato anterior"": 0.5, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.5, ""Dorsales"": 0.1, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.7, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pecho"": 0.6, ""brazo"": 0.2, ""hombro"": 0.2, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -75,6 +81,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.8, ""Serrato anterior"": 0.4, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.6, ""Dorsales"": 0.1, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.7, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""brazo"": 0.5, ""pecho"": 0.3, ""hombro"": 0.2, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -84,6 +91,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.8, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.5, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.6, ""Cuádriceps"": 0.1, ""Deltoides"": 0.3, ""Dorsales"": 0.8, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""espalda"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -93,6 +101,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.8, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.4, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.7, ""Cuádriceps"": 0.1, ""Deltoides"": 0.3, ""Dorsales"": 0.8, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""espalda"": 0.6, ""brazo"": 0.3, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -102,6 +111,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.8, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.4, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.6, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.8, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""espalda"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -111,6 +121,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.7, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.4, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.6, ""Cuádriceps"": 0.0, ""Deltoides"": 0.4, ""Dorsales"": 0.7, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""espalda"": 0.5, ""brazo"": 0.3, ""core"": 0.1, ""hombro"": 0.1, ""pecho"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -120,6 +131,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.8, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.4, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.6, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.8, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""espalda"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -129,6 +141,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.8, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.3, ""Tríceps"": 0.1, ""Serrato anterior"": 0.3, ""Bíceps"": 0.6, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.8, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""espalda"": 0.7, ""brazo"": 0.2, ""hombro"": 0.1, ""pecho"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0, ""core"": 0.0}"
             },
             new Exercise {
@@ -138,6 +151,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.7, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.3, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.6, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.7, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""espalda"": 0.6, ""brazo"": 0.3, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -147,6 +161,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+                TagsMuscle = @"{""Dorsal"": 0.8, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.5, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.5, ""Cuádriceps"": 0.1, ""Deltoides"": 0.3, ""Dorsales"": 0.8, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""espalda"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""pierna"": 0.0, ""gluteo"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -156,6 +171,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.2, ""Tríceps"": 0.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.8, ""Deltoides"": 0.2, ""Dorsales"": 0.1, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pierna"": 0.5, ""core"": 0.2, ""gluteo"": 0.2, ""espalda"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""brazo"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -165,6 +181,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.7, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pierna"": 0.6, ""gluteo"": 0.3, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -174,6 +191,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.1, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.7, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pierna"": 0.6, ""gluteo"": 0.2, ""core"": 0.2, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""abdomen"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -183,6 +201,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.4, ""Sóleo"": 0.4, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.6, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pierna"": 0.5, ""gluteo"": 0.3, ""core"": 0.2, ""abdomen"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -192,7 +211,8 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pierna"": 0.5, ""gluteo"": 0.3, ""core"": 0.2, ""abdomen"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.1, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.6, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
+                TagsObjectives = @"{""pierna"": 0.5, ""gluteo"": 0.3, ""core"": 0.2, ""abdomen"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
                 Name = "Dominadas",
@@ -201,6 +221,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.9, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.3, ""Tríceps"": 0.1, ""Serrato anterior"": 0.4, ""Bíceps"": 0.6, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.9, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""espalda"": 0.5, ""brazo"": 0.3, ""core"": 0.1, ""hombro"": 0.1, ""pecho"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -210,6 +231,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.9, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.3, ""Tríceps"": 0.1, ""Serrato anterior"": 0.4, ""Bíceps"": 0.6, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.9, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""espalda"": 0.5, ""brazo"": 0.3, ""core"": 0.1, ""hombro"": 0.1, ""pecho"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -219,6 +241,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.4, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.4, ""Sóleo"": 0.4, ""Trapecio"": 0.6, ""Tríceps"": 0.6, ""Serrato anterior"": 0.4, ""Bíceps"": 0.3, ""Cuádriceps"": 0.6, ""Deltoides"": 0.8, ""Dorsales"": 0.4, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.4}",
                 TagsObjectives = @"{""pierna"": 0.3, ""espalda"": 0.2, ""hombro"": 0.2, ""core"": 0.1, ""brazo"": 0.1, ""pecho"": 0.1, ""gluteo"": 0.1, ""trapecio"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -228,6 +251,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.3, ""Tríceps"": 0.5, ""Serrato anterior"": 0.4, ""Bíceps"": 0.1, ""Cuádriceps"": 0.7, ""Deltoides"": 0.7, ""Dorsales"": 0.3, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.3, ""Recto abdominal"": 0.4}",
                 TagsObjectives = @"{""pierna"": 0.3, ""hombro"": 0.2, ""core"": 0.2, ""espalda"": 0.1, ""gluteo"": 0.1, ""pecho"": 0.1, ""brazo"": 0.1, ""trapecio"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -237,6 +261,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.4, ""Glúteos"": 0.8, ""Isquiotibiales"": 0.8, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.4, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.1, ""Cuádriceps"": 0.3, ""Deltoides"": 0.1, ""Dorsales"": 0.4, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""espalda"": 0.6, ""pierna"": 0.2, ""gluteo"": 0.2, ""pecho"": 0.0, ""brazo"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0, ""core"": 0.0, ""hombro"": 0.0}"
             },
             new Exercise {
@@ -246,6 +271,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.8, ""Isquiotibiales"": 0.7, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.3, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.1, ""Cuádriceps"": 0.4, ""Deltoides"": 0.1, ""Dorsales"": 0.3, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pierna"": 0.4, ""gluteo"": 0.3, ""espalda"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -255,6 +281,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.7, ""Isquiotibiales"": 0.9, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.3, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.1, ""Deltoides"": 0.1, ""Dorsales"": 0.2, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""pierna"": 0.4, ""gluteo"": 0.3, ""espalda"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""hombro"": 0.0, ""brazo"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -264,6 +291,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.4, ""Tríceps"": 0.7, ""Serrato anterior"": 0.6, ""Bíceps"": 0.0, ""Cuádriceps"": 0.1, ""Deltoides"": 0.9, ""Dorsales"": 0.1, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""hombro"": 0.5, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.1, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.1, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -273,6 +301,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.3, ""Tríceps"": 0.6, ""Serrato anterior"": 0.4, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.9, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""hombro"": 0.6, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.1, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
 
@@ -284,6 +313,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.9, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""brazo"": 0.7, ""hombro"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -293,6 +323,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.8, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""brazo"": 0.8, ""core"": 0.1, ""hombro"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -302,6 +333,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 1.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""brazo"": 0.9, ""core"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -311,6 +343,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 1.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""brazo"": 0.9, ""core"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -320,6 +353,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 1.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""brazo"": 0.9, ""core"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -329,6 +363,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.9, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""brazo"": 0.8, ""core"": 0.1, ""hombro"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -338,6 +373,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 1.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""brazo"": 0.9, ""hombro"": 0.1, ""core"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -347,6 +383,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 1.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""brazo"": 0.9, ""hombro"": 0.1, ""core"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -356,6 +393,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.9, ""Serrato anterior"": 0.2, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.4, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.3, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""brazo"": 0.8, ""hombro"": 0.2, ""core"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -365,6 +403,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.3, ""Tríceps"": 0.0, ""Serrato anterior"": 0.2, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 1.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""hombro"": 0.7, ""trapecio"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0}"
             },
             new Exercise {
@@ -374,6 +413,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.0, ""Serrato anterior"": 0.3, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.9, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""hombro"": 0.7, ""core"": 0.1, ""trapecio"": 0.1, ""brazo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -383,6 +423,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 1.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""hombro"": 0.9, ""core"": 0.1, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -392,6 +433,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.7, ""Tríceps"": 0.1, ""Serrato anterior"": 0.3, ""Bíceps"": 0.2, ""Cuádriceps"": 0.0, ""Deltoides"": 0.7, ""Dorsales"": 0.3, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""hombro"": 0.5, ""espalda"": 0.2, ""trapecio"": 0.2, ""core"": 0.1, ""brazo"": 0.0, ""pecho"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0}"
             },
             new Exercise {
@@ -401,6 +443,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 1.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""trapecio"": 0.7, ""hombro"": 0.2, ""brazo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""core"": 0.0}"
             },
             new Exercise {
@@ -410,6 +453,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.0, ""Serrato anterior"": 0.2, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.9, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""hombro"": 0.8, ""core"": 0.1, ""brazo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -419,6 +463,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.1, ""Serrato anterior"": 0.0, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""brazo"": 0.9, ""core"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -428,6 +473,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 1.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pierna"": 0.9, ""core"": 0.1, ""gluteo"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0, ""brazo"": 0.0}"
             },
             new Exercise {
@@ -437,6 +483,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 1.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pierna"": 0.9, ""core"": 0.1, ""gluteo"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -446,6 +493,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.2, ""Isquiotibiales"": 1.0, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""pierna"": 0.8, ""gluteo"": 0.2, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -455,6 +503,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.2, ""Isquiotibiales"": 1.0, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""pierna"": 0.9, ""gluteo"": 0.1, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -464,6 +513,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 1.0, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.1, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""gluteo"": 0.8, ""pierna"": 0.2, ""core"": 0.0, ""abdomen"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -473,6 +523,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.7, ""Sóleo"": 1.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
                 TagsObjectives = @"{""pierna"": 0.9, ""gluteo"": 0.1, ""core"": 0.0, ""abdomen"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             // ------------------ Funcional -------------------------
@@ -483,6 +534,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.6, ""Sóleo"": 0.6, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.4, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pierna"": 0.4, ""core"": 0.3, ""abdomen"": 0.2, ""gluteo"": 0.1, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -492,6 +544,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.4, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.4, ""Sóleo"": 0.4, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.7, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""pierna"": 0.6, ""core"": 0.2, ""gluteo"": 0.2, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -501,6 +554,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.4, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.4, ""Sóleo"": 0.4, ""Trapecio"": 0.2, ""Tríceps"": 0.2, ""Serrato anterior"": 0.2, ""Bíceps"": 0.2, ""Cuádriceps"": 0.5, ""Deltoides"": 0.3, ""Dorsales"": 0.2, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""pierna"": 0.5, ""core"": 0.2, ""brazo"": 0.1, ""gluteo"": 0.2, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -510,6 +564,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.9, ""Sóleo"": 0.9, ""Trapecio"": 0.0, ""Tríceps"": 0.1, ""Serrato anterior"": 0.1, ""Bíceps"": 0.1, ""Cuádriceps"": 0.3, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""pierna"": 0.5, ""core"": 0.3, ""abdomen"": 0.1, ""gluteo"": 0.1, ""brazo"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -519,6 +574,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.4, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.4, ""Sóleo"": 0.4, ""Trapecio"": 0.2, ""Tríceps"": 0.3, ""Serrato anterior"": 0.2, ""Bíceps"": 0.3, ""Cuádriceps"": 0.5, ""Deltoides"": 0.4, ""Dorsales"": 0.2, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.5}",
                 TagsObjectives = @"{""pierna"": 0.3, ""core"": 0.3, ""abdomen"": 0.2, ""gluteo"": 0.1, ""brazo"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -528,6 +584,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.6, ""Sóleo"": 0.6, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.7, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""pierna"": 0.7, ""gluteo"": 0.2, ""core"": 0.1, ""abdomen"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -537,6 +594,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.5, ""Tríceps"": 0.6, ""Serrato anterior"": 0.3, ""Bíceps"": 0.5, ""Cuádriceps"": 0.3, ""Deltoides"": 0.8, ""Dorsales"": 0.2, ""Oblicuos"": 0.4, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.4}",
                 TagsObjectives = @"{""brazo"": 0.4, ""core"": 0.2, ""hombro"": 0.2, ""pierna"": 0.1, ""gluteo"": 0.1, ""espalda"": 0.0, ""pecho"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -546,6 +604,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.6, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.5, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.3, ""Tríceps"": 0.2, ""Serrato anterior"": 0.2, ""Bíceps"": 0.5, ""Cuádriceps"": 0.5, ""Deltoides"": 0.3, ""Dorsales"": 0.6, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""espalda"": 0.3, ""pierna"": 0.3, ""core"": 0.2, ""brazo"": 0.2, ""gluteo"": 0.1, ""abdomen"": 0.0, ""pecho"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -555,6 +614,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.3, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
                 TagsObjectives = @"{""pierna"": 0.5, ""core"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""brazo"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -564,6 +624,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+                TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.4, ""Sóleo"": 0.4, ""Trapecio"": 0.2, ""Tríceps"": 0.5, ""Serrato anterior"": 0.5, ""Bíceps"": 0.4, ""Cuádriceps"": 0.3, ""Deltoides"": 0.7, ""Dorsales"": 0.2, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.3}",
                 TagsObjectives = @"{""brazo"": 0.4, ""core"": 0.2, ""pierna"": 0.2, ""hombro"": 0.2, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
             },
 
@@ -575,6 +636,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+                TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.8, ""Isquiotibiales"": 0.8, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.3, ""Tríceps"": 0.1, ""Serrato anterior"": 0.2, ""Bíceps"": 0.1, ""Cuádriceps"": 0.3, ""Deltoides"": 0.3, ""Dorsales"": 0.2, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.4}",
                 TagsObjectives = @"{""core"": 0.3, ""pierna"": 0.3, ""gluteo"": 0.2, ""hombro"": 0.2, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0, ""brazo"": 0.0}"
             },
             new Exercise {
@@ -584,6 +646,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+                TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.3, ""Tríceps"": 0.4, ""Serrato anterior"": 0.4, ""Bíceps"": 0.2, ""Cuádriceps"": 0.7, ""Deltoides"": 0.7, ""Dorsales"": 0.2, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.3, ""Recto abdominal"": 0.4}",
                 TagsObjectives = @"{""core"": 0.2, ""pierna"": 0.3, ""brazo"": 0.2, ""hombro"": 0.3, ""gluteo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -593,6 +656,7 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+                TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.6, ""Sóleo"": 0.6, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.7, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
                 TagsObjectives = @"{""pierna"": 0.5, ""core"": 0.2, ""gluteo"": 0.2, ""abdomen"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
@@ -602,440 +666,488 @@ public static class ExerciseSeed
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+                TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.6, ""Tríceps"": 0.7, ""Serrato anterior"": 0.7, ""Bíceps"": 0.1, ""Cuádriceps"": 0.2, ""Deltoides"": 0.9, ""Dorsales"": 0.3, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.6}",
                 TagsObjectives = @"{""core"": 0.3, ""hombro"": 0.3, ""brazo"": 0.2, ""pierna"": 0.1, ""abdomen"": 0.1, ""espalda"": 0.0, ""pecho"": 0.0, ""gluteo"": 0.0, ""trapecio"": 0.0}"
             },
             new Exercise {
-                Name = "Turkish Get Up",
-                Description = "Levantamiento turco con kettlebell, ejercicio funcional y completo para fuerza, movilidad y estabilidad de todo el cuerpo.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
-                TagsObjectives = @"{""core"": 0.3, ""pierna"": 0.2, ""hombro"": 0.2, ""brazo"": 0.2, ""gluteo"": 0.1, ""abdomen"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Bear Crawl",
-                Description = "Desplazamiento a cuatro apoyos, excelente para fortalecer core, hombros y mejorar la coordinación.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
-                TagsObjectives = @"{""core"": 0.2, ""pierna"": 0.2, ""hombro"": 0.2, ""brazo"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pecho"": 0.1, ""espalda"": 0.1, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Farmer Walk",
-                Description = "Caminata cargando peso en cada mano, ideal para fortalecer agarre, core, espalda y trapecio.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
-                TagsObjectives = @"{""core"": 0.2, ""pierna"": 0.2, ""brazo"": 0.2, ""hombro"": 0.2, ""gluteo"": 0.1, ""abdomen"": 0.1, ""pecho"": 0.0, ""espalda"": 0.1, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Slam ball",
-                Description = "Lanzamiento explosivo de balón medicinal al suelo, útil para trabajar potencia, core y brazos.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
-                TagsObjectives = @"{""core"": 0.2, ""hombro"": 0.2, ""brazo"": 0.2, ""pierna"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pecho"": 0.1, ""espalda"": 0.1, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Lunge twist",
-                Description = "Zancada con giro de torso, excelente para core, glúteos y piernas, además de trabajar estabilidad.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
-                TagsObjectives = @"{""pierna"": 0.4, ""core"": 0.3, ""gluteo"": 0.2, ""abdomen"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Plancha lateral con rotación",
-                Description = "Plancha lateral sobre un antebrazo, rotando el torso. Trabaja oblicuos, core y estabilidad de hombro.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
-                TagsObjectives = @"{""core"": 0.4, ""abdomen"": 0.2, ""hombro"": 0.1, ""brazo"": 0.1, ""pierna"": 0.1, ""gluteo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
-            },
+    Name = "Turkish Get Up",
+    Description = "Levantamiento turco con kettlebell, ejercicio funcional y completo para fuerza, movilidad y estabilidad de todo el cuerpo.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+    TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.3, ""Tríceps"": 0.5, ""Serrato anterior"": 0.4, ""Bíceps"": 0.3, ""Cuádriceps"": 0.3, ""Deltoides"": 0.8, ""Dorsales"": 0.3, ""Oblicuos"": 0.7, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.5}",
+    TagsObjectives = @"{""core"": 0.3, ""pierna"": 0.2, ""hombro"": 0.2, ""brazo"": 0.2, ""gluteo"": 0.1, ""abdomen"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Bear Crawl",
+    Description = "Desplazamiento a cuatro apoyos, excelente para fortalecer core, hombros y mejorar la coordinación.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+    TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.3, ""Tríceps"": 0.5, ""Serrato anterior"": 0.6, ""Bíceps"": 0.2, ""Cuádriceps"": 0.3, ""Deltoides"": 0.6, ""Dorsales"": 0.2, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.4}",
+    TagsObjectives = @"{""core"": 0.2, ""pierna"": 0.2, ""hombro"": 0.2, ""brazo"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pecho"": 0.1, ""espalda"": 0.1, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Farmer Walk",
+    Description = "Caminata cargando peso en cada mano, ideal para fortalecer agarre, core, espalda y trapecio.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+    TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.8, ""Tríceps"": 0.3, ""Serrato anterior"": 0.2, ""Bíceps"": 0.3, ""Cuádriceps"": 0.2, ""Deltoides"": 0.5, ""Dorsales"": 0.3, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.4}",
+    TagsObjectives = @"{""core"": 0.2, ""pierna"": 0.2, ""brazo"": 0.2, ""hombro"": 0.2, ""gluteo"": 0.1, ""abdomen"": 0.1, ""pecho"": 0.0, ""espalda"": 0.1, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Slam ball",
+    Description = "Lanzamiento explosivo de balón medicinal al suelo, útil para trabajar potencia, core y brazos.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+    TagsMuscle = @"{""Dorsal"": 0.4, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.5, ""Tríceps"": 0.6, ""Serrato anterior"": 0.5, ""Bíceps"": 0.2, ""Cuádriceps"": 0.3, ""Deltoides"": 0.7, ""Dorsales"": 0.4, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.4, ""Recto abdominal"": 0.4}",
+    TagsObjectives = @"{""core"": 0.2, ""hombro"": 0.2, ""brazo"": 0.2, ""pierna"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pecho"": 0.1, ""espalda"": 0.1, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Lunge twist",
+    Description = "Zancada con giro de torso, excelente para core, glúteos y piernas, además de trabajar estabilidad.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.6, ""Deltoides"": 0.1, ""Dorsales"": 0.1, ""Oblicuos"": 0.6, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
+    TagsObjectives = @"{""pierna"": 0.4, ""core"": 0.3, ""gluteo"": 0.2, ""abdomen"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Plancha lateral con rotación",
+    Description = "Plancha lateral sobre un antebrazo, rotando el torso. Trabaja oblicuos, core y estabilidad de hombro.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.2, ""Tríceps"": 0.3, ""Serrato anterior"": 0.3, ""Bíceps"": 0.1, ""Cuádriceps"": 0.2, ""Deltoides"": 0.4, ""Dorsales"": 0.1, ""Oblicuos"": 0.9, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.5}",
+    TagsObjectives = @"{""core"": 0.4, ""abdomen"": 0.2, ""hombro"": 0.1, ""brazo"": 0.1, ""pierna"": 0.1, ""gluteo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
+},
 
-            // === CALENTAMIENTO ===
-            new Exercise {
-                Name = "Rotación de brazos",
-                Description = "Movimiento circular de brazos extendidos para calentar y movilizar hombros y trapecio.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""hombro"": 0.5, ""brazo"": 0.3, ""trapecio"": 0.2, ""pecho"": 0.0, ""espalda"": 0.0, ""pierna"": 0.0, ""gluteo"": 0.0, ""core"": 0.0, ""abdomen"": 0.0}"
-            },
-            new Exercise {
-                Name = "Jumping jacks",
-                Description = "Salto abriendo y cerrando piernas y brazos. Ejercicio de calentamiento y cardio para todo el cuerpo.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""pierna"": 0.4, ""brazo"": 0.2, ""core"": 0.2, ""hombro"": 0.2, ""abdomen"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Rotación de cadera",
-                Description = "Movimiento circular de caderas para calentar y mejorar movilidad en la articulación de la cadera.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""core"": 0.2, ""pierna"": 0.2, ""abdomen"": 0.2, ""gluteo"": 0.2, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.2, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Movilidad articular de tobillos",
-                Description = "Ejercicios de movilidad para los tobillos, ideal para calentar y prevenir lesiones en actividades de impacto.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""pierna"": 0.5, ""core"": 0.1, ""abdomen"": 0.1, ""gluteo"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.1, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Skipping bajo",
-                Description = "Trote elevando ligeramente las rodillas, útil para calentar y activar el tren inferior.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""pierna"": 0.4, ""core"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Jump rope lento",
-                Description = "Salto de cuerda a baja intensidad, perfecto para calentar y mejorar la coordinación.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""pierna"": 0.4, ""core"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Movilidad escapular (bandas)",
-                Description = "Movilizaciones con bandas elásticas para activar y calentar la cintura escapular y hombros.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""hombro"": 0.3, ""core"": 0.1, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pierna"": 0.1, ""brazo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.1, ""trapecio"": 0.2}"
-            },
-            new Exercise {
-                Name = "Rotaciones de columna",
-                Description = "Rotación controlada del tronco para mejorar movilidad y flexibilidad de la columna.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
-                TagsObjectives = @"{""espalda"": 0.5, ""core"": 0.3, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pierna"": 0.0, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
-            },
+// === CALENTAMIENTO ===
+new Exercise {
+    Name = "Rotación de brazos",
+    Description = "Movimiento circular de brazos extendidos para calentar y movilizar hombros y trapecio.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.6, ""Tríceps"": 0.2, ""Serrato anterior"": 0.3, ""Bíceps"": 0.2, ""Cuádriceps"": 0.0, ""Deltoides"": 0.8, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
+    TagsObjectives = @"{""hombro"": 0.5, ""brazo"": 0.3, ""trapecio"": 0.2, ""pecho"": 0.0, ""espalda"": 0.0, ""pierna"": 0.0, ""gluteo"": 0.0, ""core"": 0.0, ""abdomen"": 0.0}"
+},
+new Exercise {
+    Name = "Jumping jacks",
+    Description = "Salto abriendo y cerrando piernas y brazos. Ejercicio de calentamiento y cardio para todo el cuerpo.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.7, ""Sóleo"": 0.7, ""Trapecio"": 0.2, ""Tríceps"": 0.2, ""Serrato anterior"": 0.3, ""Bíceps"": 0.2, ""Cuádriceps"": 0.6, ""Deltoides"": 0.5, ""Dorsales"": 0.1, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""pierna"": 0.4, ""brazo"": 0.2, ""core"": 0.2, ""hombro"": 0.2, ""abdomen"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Rotación de cadera",
+    Description = "Movimiento circular de caderas para calentar y mejorar movilidad en la articulación de la cadera.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.4, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.2, ""Deltoides"": 0.0, ""Dorsales"": 0.1, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""core"": 0.2, ""pierna"": 0.2, ""abdomen"": 0.2, ""gluteo"": 0.2, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.2, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Movilidad articular de tobillos",
+    Description = "Ejercicios de movilidad para los tobillos, ideal para calentar y prevenir lesiones en actividades de impacto.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.8, ""Sóleo"": 0.8, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.2, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pierna"": 0.5, ""core"": 0.1, ""abdomen"": 0.1, ""gluteo"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.1, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Skipping bajo",
+    Description = "Trote elevando ligeramente las rodillas, útil para calentar y activar el tren inferior.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.7, ""Sóleo"": 0.7, ""Trapecio"": 0.0, ""Tríceps"": 0.1, ""Serrato anterior"": 0.1, ""Bíceps"": 0.1, ""Cuádriceps"": 0.5, ""Deltoides"": 0.1, ""Dorsales"": 0.1, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""pierna"": 0.4, ""core"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Jump rope lento",
+    Description = "Salto de cuerda a baja intensidad, perfecto para calentar y mejorar la coordinación.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.8, ""Sóleo"": 0.8, ""Trapecio"": 0.0, ""Tríceps"": 0.1, ""Serrato anterior"": 0.1, ""Bíceps"": 0.1, ""Cuádriceps"": 0.3, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""pierna"": 0.4, ""core"": 0.2, ""abdomen"": 0.1, ""gluteo"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Movilidad escapular (bandas)",
+    Description = "Movilizaciones con bandas elásticas para activar y calentar la cintura escapular y hombros.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.7, ""Tríceps"": 0.2, ""Serrato anterior"": 0.6, ""Bíceps"": 0.2, ""Cuádriceps"": 0.0, ""Deltoides"": 0.5, ""Dorsales"": 0.3, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""hombro"": 0.3, ""core"": 0.1, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pierna"": 0.1, ""brazo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.1, ""trapecio"": 0.2}"
+},
+new Exercise {
+    Name = "Rotaciones de columna",
+    Description = "Rotación controlada del tronco para mejorar movilidad y flexibilidad de la columna.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("E779339F-36BB-4EF8-9135-CF36BE4C4B07"),
+    TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.2, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.1, ""Deltoides"": 0.1, ""Dorsales"": 0.3, ""Oblicuos"": 0.8, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.3}",
+    TagsObjectives = @"{""espalda"": 0.5, ""core"": 0.3, ""abdomen"": 0.1, ""gluteo"": 0.1, ""pierna"": 0.0, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
+},
 
-            // === ESTIRAMIENTO ===
-            new Exercise {
-                Name = "Estiramiento de cuádriceps",
-                Description = "Estiramiento de la parte anterior del muslo, ideal para después de entrenar piernas.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""pierna"": 0.8, ""gluteo"": 0.1, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Estiramiento de hombros cruzado",
-                Description = "Estiramiento estático llevando un brazo por delante del cuerpo y empujando con el otro, ideal para hombros y trapecio.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""hombro"": 0.6, ""brazo"": 0.3, ""trapecio"": 0.1, ""pierna"": 0.0, ""gluteo"": 0.0, ""core"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0}"
-            },
-            new Exercise {
-                Name = "Estiramiento de psoas",
-                Description = "Estiramiento profundo del flexor de cadera, muy útil tras entrenar piernas o correr.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""pierna"": 0.8, ""gluteo"": 0.1, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Estiramiento de glúteo piriforme",
-                Description = "Estiramiento para aliviar tensión en glúteo mayor y piriforme, recomendado para evitar molestias lumbares.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""gluteo"": 0.8, ""pierna"": 0.1, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Estiramiento de cadena posterior",
-                Description = "Estiramiento global del tren posterior: isquiotibiales, glúteos y espalda baja.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""pierna"": 0.5, ""espalda"": 0.2, ""gluteo"": 0.1, ""core"": 0.1, ""abdomen"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Estiramiento de tríceps",
-                Description = "Estiramiento del tríceps llevando el codo por detrás de la cabeza y empujando suavemente con la otra mano.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""brazo"": 0.7, ""hombro"": 0.2, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Estiramiento de dorsal",
-                Description = "Estiramiento de la espalda alta, ideal para después de entrenar dorsales y hombros.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""espalda"": 0.7, ""core"": 0.2, ""brazo"": 0.1, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Estiramiento de cuello lateral",
-                Description = "Inclinación de la cabeza hacia un lado para estirar trapecio y cuello, útil para aliviar tensión cervical.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""trapecio"": 0.6, ""core"": 0.2, ""hombro"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""pecho"": 0.0, ""brazo"": 0.1}"
-            },
-            new Exercise {
-                Name = "Estiramiento de aductores (mariposa)",
-                Description = "Estiramiento de la parte interna de los muslos, ideal para mejorar la flexibilidad de la cadera.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""pierna"": 0.7, ""core"": 0.2, ""gluteo"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Postura del niño (yoga)",
-                Description = "Postura de yoga que relaja la espalda, hombros y caderas; excelente para finalizar la rutina.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""espalda"": 0.4, ""core"": 0.2, ""gluteo"": 0.1, ""pierna"": 0.1, ""abdomen"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.1}"
-            },
-            new Exercise {
-                Name = "Estiramiento de pecho en pared",
-                Description = "Estiramiento del pectoral mayor apoyando el brazo en la pared y girando el cuerpo.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
-                TagsObjectives = @"{""pecho"": 0.8, ""core"": 0.1, ""brazo"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Crunch abdominal",
-                Description = "Ejercicio básico para fortalecer el recto abdominal. Se realiza tumbado, flexionando el torso hacia las piernas.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
-                TagsObjectives = @"{""abdomen"": 0.7, ""core"": 0.2, ""gluteo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Plancha abdominal",
-                Description = "Ejercicio isométrico que fortalece el core y el abdomen, manteniendo el cuerpo recto y sostenido sobre antebrazos y puntas de pies.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
-                TagsObjectives = @"{""abdomen"": 0.6, ""core"": 0.3, ""gluteo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Elevaciones de piernas colgado",
-                Description = "Ejercicio avanzado de calistenia para el abdomen inferior. Se realiza colgado de una barra, elevando las piernas rectas.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
-                TagsObjectives = @"{""abdomen"": 0.8, ""core"": 0.2, ""gluteo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Mountain climbers",
-                Description = "Ejercicio de calistenia y cardio. Desde posición de plancha, alternar rodillas al frente rápidamente, involucrando abdomen, core y piernas.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
-                TagsObjectives = @"{""abdomen"": 0.3, ""core"": 0.3, ""pierna"": 0.2, ""gluteo"": 0.1, ""pecho"": 0.1, ""brazo"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Burpees",
-                Description = "Ejercicio global que combina sentadilla, flexión y salto. Mejora fuerza, resistencia y potencia en todo el cuerpo.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
-                TagsObjectives = @"{""pierna"": 0.3, ""core"": 0.2, ""abdomen"": 0.2, ""brazo"": 0.1, ""pecho"": 0.1, ""gluteo"": 0.1, ""espalda"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
+// === ESTIRAMIENTO ===
+new Exercise {
+    Name = "Estiramiento de cuádriceps",
+    Description = "Estiramiento de la parte anterior del muslo, ideal para después de entrenar piernas.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 1.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
+    TagsObjectives = @"{""pierna"": 0.8, ""gluteo"": 0.1, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Estiramiento de hombros cruzado",
+    Description = "Estiramiento estático llevando un brazo por delante del cuerpo y empujando con el otro, ideal para hombros y trapecio.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.4, ""Tríceps"": 0.3, ""Serrato anterior"": 0.2, ""Bíceps"": 0.2, ""Cuádriceps"": 0.0, ""Deltoides"": 0.7, ""Dorsales"": 0.1, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
+    TagsObjectives = @"{""hombro"": 0.6, ""brazo"": 0.3, ""trapecio"": 0.1, ""pierna"": 0.0, ""gluteo"": 0.0, ""core"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0}"
+},
+new Exercise {
+    Name = "Estiramiento de psoas",
+    Description = "Estiramiento profundo del flexor de cadera, muy útil tras entrenar piernas o correr.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.6, ""Deltoides"": 0.0, ""Dorsales"": 0.1, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""pierna"": 0.8, ""gluteo"": 0.1, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Estiramiento de glúteo piriforme",
+    Description = "Estiramiento para aliviar tensión en glúteo mayor y piriforme, recomendado para evitar molestias lumbares.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 1.0, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.0, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
+    TagsObjectives = @"{""gluteo"": 0.8, ""pierna"": 0.1, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Estiramiento de cadena posterior",
+    Description = "Estiramiento global del tren posterior: isquiotibiales, glúteos y espalda baja.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.4, ""Isquiotibiales"": 0.8, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.1, ""Deltoides"": 0.0, ""Dorsales"": 0.3, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pierna"": 0.5, ""espalda"": 0.2, ""gluteo"": 0.1, ""core"": 0.1, ""abdomen"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Estiramiento de tríceps",
+    Description = "Estiramiento del tríceps llevando el codo por detrás de la cabeza y empujando suavemente con la otra mano.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 1.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""brazo"": 0.7, ""hombro"": 0.2, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Estiramiento de dorsal",
+    Description = "Estiramiento de la espalda alta, ideal para después de entrenar dorsales y hombros.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.9, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.0, ""Serrato anterior"": 0.3, ""Bíceps"": 0.2, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.9, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""espalda"": 0.7, ""core"": 0.2, ""brazo"": 0.1, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Estiramiento de cuello lateral",
+    Description = "Inclinación de la cabeza hacia un lado para estirar trapecio y cuello, útil para aliviar tensión cervical.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 1.0, ""Tríceps"": 0.1, ""Serrato anterior"": 0.0, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""trapecio"": 0.6, ""core"": 0.2, ""hombro"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""pecho"": 0.0, ""brazo"": 0.1}"
+},
+new Exercise {
+    Name = "Estiramiento de aductores (mariposa)",
+    Description = "Estiramiento de la parte interna de los muslos, ideal para mejorar la flexibilidad de la cadera.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.2, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
+    TagsObjectives = @"{""pierna"": 0.7, ""core"": 0.2, ""gluteo"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Postura del niño (yoga)",
+    Description = "Postura de yoga que relaja la espalda, hombros y caderas; excelente para finalizar la rutina.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.6, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.3, ""Tríceps"": 0.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.1, ""Deltoides"": 0.2, ""Dorsales"": 0.6, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""espalda"": 0.4, ""core"": 0.2, ""gluteo"": 0.1, ""pierna"": 0.1, ""abdomen"": 0.1, ""hombro"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""trapecio"": 0.1}"
+},
+new Exercise {
+    Name = "Estiramiento de pecho en pared",
+    Description = "Estiramiento del pectoral mayor apoyando el brazo en la pared y girando el cuerpo.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("642FC19F-500F-47AE-A81B-1303AC978D9D"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.1, ""Serrato anterior"": 0.3, ""Bíceps"": 0.3, ""Cuádriceps"": 0.0, ""Deltoides"": 0.5, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 1.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pecho"": 0.8, ""core"": 0.1, ""brazo"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Crunch abdominal",
+    Description = "Ejercicio básico para fortalecer el recto abdominal. Se realiza tumbado, flexionando el torso hacia las piernas.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.2, ""Bíceps"": 0.0, ""Cuádriceps"": 0.2, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 1.0}",
+    TagsObjectives = @"{""abdomen"": 0.7, ""core"": 0.2, ""gluteo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Plancha abdominal",
+    Description = "Ejercicio isométrico que fortalece el core y el abdomen, manteniendo el cuerpo recto y sostenido sobre antebrazos y puntas de pies.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.1, ""Tríceps"": 0.3, ""Serrato anterior"": 0.2, ""Bíceps"": 0.0, ""Cuádriceps"": 0.2, ""Deltoides"": 0.3, ""Dorsales"": 0.1, ""Oblicuos"": 0.6, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.7}",
+    TagsObjectives = @"{""abdomen"": 0.6, ""core"": 0.3, ""gluteo"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Elevaciones de piernas colgado",
+    Description = "Ejercicio avanzado de calistenia para el abdomen inferior. Se realiza colgado de una barra, elevando las piernas rectas.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+    TagsMuscle = @"{""Dorsal"": 0.5, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.3, ""Tríceps"": 0.2, ""Serrato anterior"": 0.4, ""Bíceps"": 0.3, ""Cuádriceps"": 0.4, ""Deltoides"": 0.4, ""Dorsales"": 0.5, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.9}",
+    TagsObjectives = @"{""abdomen"": 0.8, ""core"": 0.2, ""gluteo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""pierna"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Mountain climbers",
+    Description = "Ejercicio de calistenia y cardio. Desde posición de plancha, alternar rodillas al frente rápidamente, involucrando abdomen, core y piernas.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+    TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.2, ""Tríceps"": 0.3, ""Serrato anterior"": 0.3, ""Bíceps"": 0.2, ""Cuádriceps"": 0.5, ""Deltoides"": 0.4, ""Dorsales"": 0.2, ""Oblicuos"": 0.6, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.6}",
+    TagsObjectives = @"{""abdomen"": 0.3, ""core"": 0.3, ""pierna"": 0.2, ""gluteo"": 0.1, ""pecho"": 0.1, ""brazo"": 0.0, ""espalda"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Burpees",
+    Description = "Ejercicio global que combina sentadilla, flexión y salto. Mejora fuerza, resistencia y potencia en todo el cuerpo.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"),
+    TagsMuscle = @"{""Dorsal"": 0.3, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.5, ""Sóleo"": 0.5, ""Trapecio"": 0.3, ""Tríceps"": 0.5, ""Serrato anterior"": 0.4, ""Bíceps"": 0.2, ""Cuádriceps"": 0.6, ""Deltoides"": 0.6, ""Dorsales"": 0.3, ""Oblicuos"": 0.5, ""Pectoral mayor"": 0.6, ""Recto abdominal"": 0.5}",
+    TagsObjectives = @"{""pierna"": 0.3, ""core"": 0.2, ""abdomen"": 0.2, ""brazo"": 0.1, ""pecho"": 0.1, ""gluteo"": 0.1, ""espalda"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
 
-            // === EJERCICIOS ADICIONALES MULTIPROPÓSITO (HOME Y GYM) ===
-            new Exercise {
-                Name = "Flexiones diamante",
-                Description = "Variante de flexión donde las manos se colocan juntas formando un diamante. Mayor énfasis en tríceps y pectoral interno.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pecho"": 0.4, ""brazo"": 0.3, ""hombro"": 0.2, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Sentadilla goblet",
-                Description = "Sentadilla sosteniendo una mancuerna o kettlebell frente al pecho. Facilita la técnica y activa core y piernas.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pierna"": 0.6, ""core"": 0.2, ""gluteo"": 0.2, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Desplante lateral",
-                Description = "Zancada lateral que enfatiza abductores, glúteo medio y cuádriceps. Útil para movilidad y fuerza lateral.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
-                TagsObjectives = @"{""pierna"": 0.4, ""gluteo"": 0.2, ""core"": 0.2, ""abdomen"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Superman",
-                Description = "Ejercicio en el suelo para fortalecer la espalda baja, glúteos y hombros, imitando la postura de Superman volando.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
-                TagsObjectives = @"{""espalda"": 0.7, ""core"": 0.1, ""gluteo"": 0.2, ""pierna"": 0.0, ""abdomen"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Plancha lateral",
-                Description = "Plancha sostenida de lado, apoyando un antebrazo y el lateral del pie. Trabaja oblicuos, core y glúteo medio.",
-                RequiresEquipment = false,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
-                TagsObjectives = @"{""core"": 0.4, ""abdomen"": 0.3, ""gluteo"": 0.2, ""pierna"": 0.1, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Fondos de pecho en paralelas",
-                Description = "Ejercicio en paralelas para pectoral mayor, tríceps y deltoides anterior. Puede hacerse en gimnasio o parque.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pecho"": 0.4, ""brazo"": 0.3, ""hombro"": 0.2, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
-            },
+// === EJERCICIOS ADICIONALES MULTIPROPÓSITO (HOME Y GYM) ===
+new Exercise {
+    Name = "Flexiones diamante",
+    Description = "Variante de flexión donde las manos se colocan juntas formando un diamante. Mayor énfasis en tríceps y pectoral interno.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.1, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.9, ""Serrato anterior"": 0.5, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.6, ""Dorsales"": 0.1, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.7, ""Recto abdominal"": 0.3}",
+    TagsObjectives = @"{""pecho"": 0.4, ""brazo"": 0.3, ""hombro"": 0.2, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Sentadilla goblet",
+    Description = "Sentadilla sosteniendo una mancuerna o kettlebell frente al pecho. Facilita la técnica y activa core y piernas.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.2, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.2, ""Tríceps"": 0.1, ""Serrato anterior"": 0.1, ""Bíceps"": 0.2, ""Cuádriceps"": 0.8, ""Deltoides"": 0.3, ""Dorsales"": 0.2, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.1, ""Recto abdominal"": 0.3}",
+    TagsObjectives = @"{""pierna"": 0.6, ""core"": 0.2, ""gluteo"": 0.2, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Desplante lateral",
+    Description = "Zancada lateral que enfatiza abductores, glúteo medio y cuádriceps. Útil para movilidad y fuerza lateral.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("6C60B74C-F83A-4AF9-ABD3-BB929D9FAE6A"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.4, ""Pantorrillas"": 0.3, ""Sóleo"": 0.3, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.6, ""Deltoides"": 0.1, ""Dorsales"": 0.0, ""Oblicuos"": 0.3, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""pierna"": 0.4, ""gluteo"": 0.2, ""core"": 0.2, ""abdomen"": 0.1, ""hombro"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Superman",
+    Description = "Ejercicio en el suelo para fortalecer la espalda baja, glúteos y hombros, imitando la postura de Superman volando.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+    TagsMuscle = @"{""Dorsal"": 0.6, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.0, ""Serrato anterior"": 0.1, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.2, ""Dorsales"": 0.6, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""espalda"": 0.7, ""core"": 0.1, ""gluteo"": 0.2, ""pierna"": 0.0, ""abdomen"": 0.0, ""brazo"": 0.0, ""pecho"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Plancha lateral",
+    Description = "Plancha sostenida de lado, apoyando un antebrazo y el lateral del pie. Trabaja oblicuos, core y glúteo medio.",
+    RequiresEquipment = false,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.3, ""Isquiotibiales"": 0.1, ""Pantorrillas"": 0.1, ""Sóleo"": 0.1, ""Trapecio"": 0.1, ""Tríceps"": 0.2, ""Serrato anterior"": 0.2, ""Bíceps"": 0.0, ""Cuádriceps"": 0.1, ""Deltoides"": 0.2, ""Dorsales"": 0.1, ""Oblicuos"": 0.8, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.4}",
+    TagsObjectives = @"{""core"": 0.4, ""abdomen"": 0.3, ""gluteo"": 0.2, ""pierna"": 0.1, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Fondos de pecho en paralelas",
+    Description = "Ejercicio en paralelas para pectoral mayor, tríceps y deltoides anterior. Puede hacerse en gimnasio o parque.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.8, ""Serrato anterior"": 0.4, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.6, ""Dorsales"": 0.1, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.7, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""pecho"": 0.4, ""brazo"": 0.3, ""hombro"": 0.2, ""core"": 0.1, ""abdomen"": 0.0, ""espalda"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
+},
 
-            // === EJERCICIOS DE GIMNASIO ADICIONALES ===
-            new Exercise {
-                Name = "Press de piernas en máquina",
-                Description = "Ejercicio para el desarrollo de fuerza y masa muscular en las piernas, especialmente cuádriceps y glúteos, realizado en máquina de press horizontal o inclinada.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pierna"": 0.8, ""gluteo"": 0.2, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Curl femoral sentado en máquina",
-                Description = "Aislamiento de isquiotibiales flexionando rodillas en máquina sentado.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
-                TagsObjectives = @"{""pierna"": 0.9, ""gluteo"": 0.1, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Prensa de piernas vertical",
-                Description = "Variante de prensa de piernas donde el movimiento es vertical, enfatizando cuádriceps y glúteos.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pierna"": 0.7, ""gluteo"": 0.3, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Gemelos de pie en máquina",
-                Description = "Elevaciones de talón de pie en máquina, para fortalecer gemelos y sóleo.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
-                TagsObjectives = @"{""pierna"": 0.9, ""gluteo"": 0.1, ""core"": 0.0, ""abdomen"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Aperturas con mancuernas",
-                Description = "Ejercicio de aislamiento para el pectoral, se realiza acostado abriendo y cerrando los brazos con mancuernas.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pecho"": 0.7, ""hombro"": 0.2, ""core"": 0.1, ""espalda"": 0.0, ""brazo"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Crossover en polea",
-                Description = "Ejercicio de aislamiento para trabajar el pectoral mayor desde distintos ángulos usando poleas.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pecho"": 0.7, ""brazo"": 0.1, ""core"": 0.2, ""espalda"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Press en máquina de pecho",
-                Description = "Press horizontal en máquina para pectoral, facilita la ejecución y es ideal para principiantes.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""pecho"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""espalda"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise {
-                Name = "Press Arnold",
-                Description = "Variante de press de hombros con mancuernas, girando las palmas durante el movimiento. Trabaja deltoides y core.",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
-                TagsObjectives = @"{""hombro"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
-            },
-            new Exercise
-            {
-                Name = "Hip Thrust con barra",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"), // Aislado (focalizado)
-                TagsObjectives = "{\"gluteo\": 0.6, \"pierna\": 0.2, \"core\": 0.1, \"espalda\": 0.1, \"pecho\": 0.0, \"hombro\": 0.0, \"brazo\": 0.0, \"abdomen\": 0.0, \"trapecio\": 0.0}"
-            },
-            new Exercise
-            {
-                Name = "Peso muerto rumano con mancuernas",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"), // Ejercicio principal (compuesto)
-                TagsObjectives = "{\"pierna\": 0.3, \"gluteo\": 0.4, \"espalda\": 0.2, \"core\": 0.1, \"pecho\": 0.0, \"hombro\": 0.0, \"brazo\": 0.0, \"abdomen\": 0.0, \"trapecio\": 0.0}"
-            },
-            new Exercise
-            {
-    
-                Name = "Jump rope rápido",
-                RequiresEquipment = true,
-                CreatedAt = DateTime.UtcNow,
-                IsActive = true,
-                CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"), // Cardio
-                TagsObjectives = "{\"resistencia_fisica\": 0.3, \"salud_cardiovascular\": 0.4, \"pierna\": 0.2, \"coordinacion\": 0.1, \"gluteo\": 0.0, \"abdomen\": 0.0, \"brazo\": 0.0, \"hombro\": 0.0, \"core\": 0.0, \"espalda\": 0.0, \"trapecio\": 0.0, \"pecho\": 0.0}"
-            }
+// === EJERCICIOS DE GIMNASIO ADICIONALES ===
+new Exercise {
+    Name = "Press de piernas en máquina",
+    Description = "Ejercicio para el desarrollo de fuerza y masa muscular en las piernas, especialmente cuádriceps y glúteos, realizado en máquina de press horizontal o inclinada.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.5, ""Isquiotibiales"": 0.2, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.9, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pierna"": 0.8, ""gluteo"": 0.2, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Curl femoral sentado en máquina",
+    Description = "Aislamiento de isquiotibiales flexionando rodillas en máquina sentado.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.2, ""Isquiotibiales"": 1.0, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
+    TagsObjectives = @"{""pierna"": 0.9, ""gluteo"": 0.1, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Prensa de piernas vertical",
+    Description = "Variante de prensa de piernas donde el movimiento es vertical, enfatizando cuádriceps y glúteos.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.6, ""Isquiotibiales"": 0.3, ""Pantorrillas"": 0.2, ""Sóleo"": 0.2, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.9, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pierna"": 0.7, ""gluteo"": 0.3, ""core"": 0.0, ""abdomen"": 0.0, ""espalda"": 0.0, ""pecho"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Gemelos de pie en máquina",
+    Description = "Elevaciones de talón de pie en máquina, para fortalecer gemelos y sóleo.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"),
+    TagsMuscle = @"{""Dorsal"": 0.0, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 1.0, ""Sóleo"": 0.6, ""Trapecio"": 0.0, ""Tríceps"": 0.0, ""Serrato anterior"": 0.0, ""Bíceps"": 0.0, ""Cuádriceps"": 0.0, ""Deltoides"": 0.0, ""Dorsales"": 0.0, ""Oblicuos"": 0.0, ""Pectoral mayor"": 0.0, ""Recto abdominal"": 0.0}",
+    TagsObjectives = @"{""pierna"": 0.9, ""gluteo"": 0.1, ""core"": 0.0, ""abdomen"": 0.0, ""pecho"": 0.0, ""espalda"": 0.0, ""brazo"": 0.0, ""hombro"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Aperturas con mancuernas",
+    Description = "Ejercicio de aislamiento para el pectoral, se realiza acostado abriendo y cerrando los brazos con mancuernas.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.2, ""Tríceps"": 0.1, ""Serrato anterior"": 0.3, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.4, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.9, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pecho"": 0.7, ""hombro"": 0.2, ""core"": 0.1, ""espalda"": 0.0, ""brazo"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Crossover en polea",
+    Description = "Ejercicio de aislamiento para trabajar el pectoral mayor desde distintos ángulos usando poleas.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.1, ""Serrato anterior"": 0.3, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.3, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.9, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pecho"": 0.7, ""brazo"": 0.1, ""core"": 0.2, ""espalda"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Press en máquina de pecho",
+    Description = "Press horizontal en máquina para pectoral, facilita la ejecución y es ideal para principiantes.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.1, ""Tríceps"": 0.6, ""Serrato anterior"": 0.4, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.5, ""Dorsales"": 0.1, ""Oblicuos"": 0.1, ""Pectoral mayor"": 0.8, ""Recto abdominal"": 0.1}",
+    TagsObjectives = @"{""pecho"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""espalda"": 0.0, ""hombro"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise {
+    Name = "Press Arnold",
+    Description = "Variante de press de hombros con mancuernas, girando las palmas durante el movimiento. Trabaja deltoides y core.",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"),
+    TagsMuscle = @"{""Dorsal"": 0.1, ""Glúteos"": 0.0, ""Isquiotibiales"": 0.0, ""Pantorrillas"": 0.0, ""Sóleo"": 0.0, ""Trapecio"": 0.3, ""Tríceps"": 0.6, ""Serrato anterior"": 0.5, ""Bíceps"": 0.1, ""Cuádriceps"": 0.0, ""Deltoides"": 0.9, ""Dorsales"": 0.1, ""Oblicuos"": 0.2, ""Pectoral mayor"": 0.2, ""Recto abdominal"": 0.2}",
+    TagsObjectives = @"{""hombro"": 0.7, ""brazo"": 0.2, ""core"": 0.1, ""pecho"": 0.0, ""espalda"": 0.0, ""abdomen"": 0.0, ""gluteo"": 0.0, ""pierna"": 0.0, ""trapecio"": 0.0}"
+},
+new Exercise
+{
+    Name = "Hip Thrust con barra",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("9F9F94D0-7CD1-48E9-81A7-86AA503CA685"), // Aislado (focalizado)
+    TagsMuscle = "{\"Dorsal\": 0.1, \"Glúteos\": 1.0, \"Isquiotibiales\": 0.4, \"Pantorrillas\": 0.1, \"Sóleo\": 0.1, \"Trapecio\": 0.0, \"Tríceps\": 0.0, \"Serrato anterior\": 0.0, \"Bíceps\": 0.0, \"Cuádriceps\": 0.2, \"Deltoides\": 0.0, \"Dorsales\": 0.1, \"Oblicuos\": 0.2, \"Pectoral mayor\": 0.0, \"Recto abdominal\": 0.2}",
+    TagsObjectives = "{\"gluteo\": 0.6, \"pierna\": 0.2, \"core\": 0.1, \"espalda\": 0.1, \"pecho\": 0.0, \"hombro\": 0.0, \"brazo\": 0.0, \"abdomen\": 0.0, \"trapecio\": 0.0}"
+},
+new Exercise
+{
+    Name = "Peso muerto rumano con mancuernas",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("BC9D888F-4612-4BBB-ABEC-FF1EE76D129A"), // Ejercicio principal (compuesto)
+    TagsMuscle = "{\"Dorsal\": 0.3, \"Glúteos\": 0.7, \"Isquiotibiales\": 0.9, \"Pantorrillas\": 0.1, \"Sóleo\": 0.1, \"Trapecio\": 0.3, \"Tríceps\": 0.0, \"Serrato anterior\": 0.0, \"Bíceps\": 0.0, \"Cuádriceps\": 0.1, \"Deltoides\": 0.1, \"Dorsales\": 0.3, \"Oblicuos\": 0.2, \"Pectoral mayor\": 0.0, \"Recto abdominal\": 0.2}",
+    TagsObjectives = "{\"pierna\": 0.3, \"gluteo\": 0.4, \"espalda\": 0.2, \"core\": 0.1, \"pecho\": 0.0, \"hombro\": 0.0, \"brazo\": 0.0, \"abdomen\": 0.0, \"trapecio\": 0.0}"
+},
+new Exercise
+{
+
+    Name = "Jump rope rápido",
+    RequiresEquipment = true,
+    CreatedAt = DateTime.UtcNow,
+    IsActive = true,
+    CategoryExerciseId = Guid.Parse("D9507CD0-1EDA-4D4D-A408-13FF76C14D88"), // Cardio
+    TagsMuscle = "{\"Dorsal\": 0.0, \"Glúteos\": 0.1, \"Isquiotibiales\": 0.2, \"Pantorrillas\": 1.0, \"Sóleo\": 0.9, \"Trapecio\": 0.0, \"Tríceps\": 0.1, \"Serrato anterior\": 0.1, \"Bíceps\": 0.1, \"Cuádriceps\": 0.4, \"Deltoides\": 0.2, \"Dorsales\": 0.0, \"Oblicuos\": 0.2, \"Pectoral mayor\": 0.0, \"Recto abdominal\": 0.2}",
+    TagsObjectives = "{\"resistencia_fisica\": 0.3, \"salud_cardiovascular\": 0.4, \"pierna\": 0.2, \"coordinacion\": 0.1, \"gluteo\": 0.0, \"abdomen\": 0.0, \"brazo\": 0.0, \"hombro\": 0.0, \"core\": 0.0, \"espalda\": 0.0, \"trapecio\": 0.0, \"pecho\": 0.0}"
+}
 
         };
 
