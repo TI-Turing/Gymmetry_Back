@@ -23,8 +23,6 @@ public partial class RoutineTemplate
 
     public Guid? GymId { get; set; }
 
-    public Guid? RoutineUserRoutineId { get; set; }
-
     public Guid? RoutineAssignedId { get; set; }
 
     public bool IsDefault { get; set; }
@@ -39,16 +37,17 @@ public partial class RoutineTemplate
 
     public bool IsCalisthenic { get; set; }
 
-    public Guid? Author_UserId { get; set; }
-    public virtual User? AuthorUser { get; set; }
+    public Guid? Author_UserId { get; set; } // FK al usuario autor
+
+    public virtual User? AuthorUser { get; set; } // Usuario autor
 
     public virtual Gym Gym { get; set; } = null!;
 
     public virtual RoutineAssigned RoutineAssigned { get; set; } = null!;
 
+    public virtual ICollection<RoutineAssigned> RoutineAssigneds { get; set; } = new List<RoutineAssigned>();
+
     public virtual ICollection<RoutineDay> RoutineDays { get; set; } = new List<RoutineDay>();
 
     public virtual ICollection<RoutineExercise> RoutineExercises { get; set; } = new List<RoutineExercise>();
-
-    public virtual User RoutineUserRoutine { get; set; } = null!;
 }

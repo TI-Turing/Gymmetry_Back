@@ -314,8 +314,6 @@ public partial class GymmetryContext : DbContext
 
             entity.HasIndex(e => e.RoutineExerciseId, "IX_FK_RoutineExerciseDailyHistory");
 
-            entity.HasIndex(e => e.UserId, "IX_FK_UserDailyHistory");
-
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
@@ -924,6 +922,8 @@ public partial class GymmetryContext : DbContext
 
             entity.HasIndex(e => e.UserId, "IX_FK_UserRoutineAssigned");
 
+            entity.HasIndex(e => e.RoutineTemplateId, "IX_FK_RoutineTemplateRoutineAssigned"); // Índice para FK
+
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Comments).HasMaxLength(500);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -935,6 +935,12 @@ public partial class GymmetryContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserRoutineAssigned");
+
+            entity.HasOne(d => d.RoutineTemplate)
+                .WithMany(p => p.RoutineAssigneds)
+                .HasForeignKey(d => d.RoutineTemplateId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_RoutineTemplateRoutineAssigned");
         });
 
         modelBuilder.Entity<RoutineExercise>(entity =>
@@ -972,9 +978,7 @@ public partial class GymmetryContext : DbContext
 
             entity.HasIndex(e => e.RoutineAssignedId, "IX_FK_RoutineAssignedRoutine");
 
-            entity.HasIndex(e => e.RoutineUserRoutineId, "IX_FK_RoutineUser");
-            // Nueva relación: Author_UserId como FK a User
-            entity.HasIndex(e => e.Author_UserId, "IX_FK_AuthorUserRoutineTemplate");
+            entity.HasIndex(e => e.Author_UserId, "IX_FK_AuthorUserRoutineTemplate"); // Índice para FK autor
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.Comments).HasMaxLength(500);
@@ -982,7 +986,6 @@ public partial class GymmetryContext : DbContext
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Ip).HasMaxLength(45);
             entity.Property(e => e.Name).HasMaxLength(100);
-            entity.Property(e => e.RoutineUserRoutineId).HasColumnName("RoutineUser_RoutineId").IsRequired(false);
             entity.Property(e => e.GymId).IsRequired(false);
             entity.Property(e => e.RoutineAssignedId).IsRequired(false);
             entity.Property(e => e.Author_UserId).IsRequired(false);
@@ -995,19 +998,14 @@ public partial class GymmetryContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_GymRoutine");
 
-            entity.HasOne(d => d.RoutineAssigned).WithMany(p => p.RoutineTemplates)
+            entity.HasOne(d => d.RoutineAssigned).WithMany()
                 .HasForeignKey(d => d.RoutineAssignedId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_RoutineAssignedRoutine");
 
-            entity.HasOne(d => d.RoutineUserRoutine).WithMany(p => p.RoutineTemplates)
-                .HasForeignKey(d => d.RoutineUserRoutineId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_RoutineUser");
-
             // Relación Author_UserId -> User.Id
-            entity.HasOne<User>()
-                .WithMany()
+            entity.HasOne(d => d.AuthorUser)
+                .WithMany(p => p.RoutineTemplates)
                 .HasForeignKey(d => d.Author_UserId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("FK_AuthorUserRoutineTemplate");

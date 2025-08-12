@@ -150,7 +150,6 @@ namespace Gymmetry.Application.Services
                     Ip = request.Ip,
                     IsActive = request.IsActive,
                     GymId = request.GymId,
-                    RoutineUserRoutineId = request.RoutineUserRoutineId,
                     RoutineAssignedId = request.RoutineAssignedId
                 };
                 var updated = await _routineTemplateRepository.UpdateRoutineTemplateAsync(entity);

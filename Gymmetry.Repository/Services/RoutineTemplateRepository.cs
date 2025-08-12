@@ -102,7 +102,6 @@ namespace Gymmetry.Repository.Services
                 CreatedAt = DateTime.UtcNow,
                 IsActive = true,
                 GymId = gymId,
-                RoutineUserRoutineId = original.RoutineUserRoutineId,
                 RoutineAssignedId = original.RoutineAssignedId,
                 IsDefault = false,
                 TagsObjectives = original.TagsObjectives,
