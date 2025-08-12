@@ -7,5 +7,6 @@ namespace Gymmetry.Domain.DTO.RoutineAssigned.Request
     {
         public string? Comments { get; set; }
         public Guid UserId { get; set; }
+        public Guid RoutineTemplateId { get; set; }
     }
 }

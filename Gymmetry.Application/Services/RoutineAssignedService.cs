@@ -32,7 +32,8 @@ namespace Gymmetry.Application.Services
                     Comments = request.Comments,
                     Ip = request.Ip,
                     IsActive = request.IsActive,
-                    UserId = request.UserId
+                    UserId = request.UserId,
+                    RoutineTemplateId= request.RoutineTemplateId
                 };
                 var created = await _routineAssignedRepository.CreateRoutineAssignedAsync(entity);
                 return new ApplicationResponse<RoutineAssigned>

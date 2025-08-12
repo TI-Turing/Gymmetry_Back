@@ -21,7 +21,8 @@ public partial class RoutineAssigned
 
     public Guid UserId { get; set; }
 
-    public virtual ICollection<RoutineTemplate> RoutineTemplates { get; set; } = new List<RoutineTemplate>();
+    public Guid RoutineTemplateId { get; set; }
+    public virtual RoutineTemplate RoutineTemplate { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;
 }
