@@ -99,6 +99,7 @@ namespace Gymmetry.Repository.Services
             var predicate = BuildPredicate(filters);
             return await _context.RoutineDays
                 .AsNoTracking()
+                .Include(x=> x.Exercise)
                 .Where(predicate)
                 .ToListAsync()
                 .ConfigureAwait(false);
