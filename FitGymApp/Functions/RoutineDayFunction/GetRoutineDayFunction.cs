@@ -64,13 +64,20 @@ namespace Gymmetry.Functions.RoutineDayFunction
                     return notFoundResponse;
                 }
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<RoutineDay>
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(new ApiResponse<RoutineDay>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                }, options);
+                await successResponse.WriteStringAsync(json);
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)
@@ -111,13 +118,20 @@ namespace Gymmetry.Functions.RoutineDayFunction
             {
                 var result = await _service.GetAllRoutineDaysAsync();
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineDay>>
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(new ApiResponse<IEnumerable<RoutineDay>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                }, options);
+                await successResponse.WriteStringAsync(json);
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)
@@ -172,13 +186,20 @@ namespace Gymmetry.Functions.RoutineDayFunction
                 }
                 var result = await _service.FindRoutineDaysByFieldsAsync(filters);
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineDay>>
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(new ApiResponse<IEnumerable<RoutineDay>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                }, options);
+                await successResponse.WriteStringAsync(json);
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)
