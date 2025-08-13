@@ -27,13 +27,21 @@ namespace Gymmetry.Application.Services
         {
             try
             {
+                // Buscar si el usuario ya tiene una rutina asignada activa
+                var filters = new Dictionary<string, object> { { "UserId", request.UserId }, { "IsActive", true } };
+                var existingAssigneds = await _routineAssignedRepository.FindRoutineAssignedsByFieldsAsync(filters);
+                foreach (var assigned in existingAssigneds)
+                {
+                    // Inactivar cada rutina asignada previa
+                    await DeleteRoutineAssignedAsync(assigned.Id);
+                }
                 var entity = new RoutineAssigned
                 {
                     Comments = request.Comments,
                     Ip = request.Ip,
                     IsActive = request.IsActive,
                     UserId = request.UserId,
-                    RoutineTemplateId= request.RoutineTemplateId
+                    RoutineTemplateId = request.RoutineTemplateId
                 };
                 var created = await _routineAssignedRepository.CreateRoutineAssignedAsync(entity);
                 return new ApplicationResponse<RoutineAssigned>
