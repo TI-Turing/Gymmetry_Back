@@ -106,7 +106,7 @@ namespace Gymmetry.Repository.Services
             }
 
             var lambda = Expression.Lambda<Func<User, bool>>(predicate, parameter);
-            return await _context.Users.Where(lambda).ToListAsync();
+            return await _context.Users.Include(x => x.RoutineAssigneds.Where(x=>x.IsActive)).Where(lambda).ToListAsync();
         }
 
         public async Task<bool> BulkUpdateFieldAsync(IEnumerable<Guid> userIds, string fieldName, object? value)

@@ -11,6 +11,8 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Gymmetry.Functions.Auth
 {
@@ -64,13 +66,21 @@ namespace Gymmetry.Functions.Auth
                     return unauthorizedResponse;
                 }
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<LoginResponse>
+                var options = System.Text.Json.JsonSerializerOptions.Default;
+                options = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(new ApiResponse<LoginResponse>
                 {
                     Success = true,
                     Message = "Login exitoso.",
                     Data = result,
                     StatusCode = StatusCodes.Status200OK
-                });
+                }, options);
+                await successResponse.WriteStringAsync(json);
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (System.Exception ex)
