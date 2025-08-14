@@ -11,6 +11,8 @@ public partial class Daily
 
     public DateTime EndDate { get; set; }
 
+    public int Percentage { get; set; }
+
     public DateTime CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
@@ -25,15 +27,13 @@ public partial class Daily
 
     public Guid RoutineDayId { get; set; } // Cambia la relación a RoutineDay
 
-    public Guid BranchId { get; set; } // Nueva FK a Branch
-
-    public Guid DailyExerciseId { get; set; } // FK a DailyExercise
+    public Guid? BranchId { get; set; } // Nueva FK a Branch
 
     public virtual RoutineDay RoutineDay { get; set; } = null!; // Relación con RoutineDay
 
-    public virtual Branch Branch { get; set; } = null!; // Relación con Branch
+    public virtual Branch? Branch { get; set; } = null; // Relación con Branch
 
     public virtual User User { get; set; } = null!;
 
-    public virtual DailyExercise DailyExercise { get; set; } = null!; // Relación 1 a 1
+    public virtual ICollection<DailyExercise> DailyExercises { get; set; } = new List<DailyExercise>(); // Relación 1 a muchos
 }

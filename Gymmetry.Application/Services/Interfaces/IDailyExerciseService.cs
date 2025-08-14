@@ -15,5 +15,6 @@ namespace Gymmetry.Application.Services.Interfaces
         Task<ApplicationResponse<bool>> UpdateDailyExerciseAsync(UpdateDailyExerciseRequest request, Guid? userId, string ip = "", string invocationId = "");
         Task<ApplicationResponse<bool>> DeleteDailyExerciseAsync(Guid id);
         Task<ApplicationResponse<IEnumerable<DailyExercise>>> FindDailyExercisesByFieldsAsync(Dictionary<string, object> filters);
+        Task<ApplicationResponse<IEnumerable<DailyExercise>>> CreateDailyExercisesBulkAsync(IEnumerable<AddDailyExerciseRequest> requests); // Nuevo método
     }
 }

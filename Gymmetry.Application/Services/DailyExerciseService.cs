@@ -8,6 +8,7 @@ using Gymmetry.Domain.DTO.DailyExercise.Request;
 using Gymmetry.Domain.DTO;
 using Gymmetry.Repository.Services.Interfaces;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace Gymmetry.Application.Services
 {
@@ -17,37 +18,35 @@ namespace Gymmetry.Application.Services
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
         private readonly IMapper _mapper;
+        private readonly ILogger<DailyExerciseService> _logger;
 
-        public DailyExerciseService(IDailyExerciseRepository dailyExerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
+        public DailyExerciseService(IDailyExerciseRepository dailyExerciseRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper, ILogger<DailyExerciseService> logger)
         {
             _dailyExerciseRepository = dailyExerciseRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<ApplicationResponse<DailyExercise>> CreateDailyExerciseAsync(AddDailyExerciseRequest request)
         {
+            _logger.LogInformation("[DailyExerciseService] Inicio CreateDailyExerciseAsync");
             try
             {
+                if (request == null)
+                    return ApplicationResponse<DailyExercise>.ErrorResponse("Request nulo", "BadRequest");
                 var entity = _mapper.Map<DailyExercise>(request);
+                entity.CreatedAt = DateTime.UtcNow;
+                entity.IsActive = true;
                 var created = await _dailyExerciseRepository.CreateDailyExerciseAsync(entity);
-                return new ApplicationResponse<DailyExercise>
-                {
-                    Success = true,
-                    Message = "Ejercicio diario creado correctamente.",
-                    Data = created
-                };
+                _logger.LogInformation($"[DailyExerciseService] DailyExercise creado: {created.Id}");
+                return ApplicationResponse<DailyExercise>.SuccessResponse(created, "DailyExercise creado correctamente.");
             }
             catch (Exception ex)
             {
-                await _logErrorService.LogErrorAsync(ex);
-                return new ApplicationResponse<DailyExercise>
-                {
-                    Success = false,
-                    Message = "Error técnico al crear el ejercicio diario.",
-                    ErrorCode = "TechnicalError"
-                };
+                _logger.LogError(ex, "[DailyExerciseService] Error en CreateDailyExerciseAsync");
+                return ApplicationResponse<DailyExercise>.ErrorResponse("Error técnico al crear DailyExercise", "TechnicalError");
             }
         }
 
@@ -167,6 +166,31 @@ namespace Gymmetry.Application.Services
                 Success = true,
                 Data = entities
             };
+        }
+
+        public async Task<ApplicationResponse<IEnumerable<DailyExercise>>> CreateDailyExercisesBulkAsync(IEnumerable<AddDailyExerciseRequest> requests)
+        {
+            try
+            {
+                var entities = requests.Select(r => _mapper.Map<DailyExercise>(r)).ToList();
+                var created = await _dailyExerciseRepository.CreateDailyExercisesBulkAsync(entities);
+                return new ApplicationResponse<IEnumerable<DailyExercise>>
+                {
+                    Success = true,
+                    Message = "Ejercicios diarios creados correctamente.",
+                    Data = created
+                };
+            }
+            catch (Exception ex)
+            {
+                await _logErrorService.LogErrorAsync(ex);
+                return new ApplicationResponse<IEnumerable<DailyExercise>>
+                {
+                    Success = false,
+                    Message = "Error técnico al crear los ejercicios diarios.",
+                    ErrorCode = "TechnicalError"
+                };
+            }
         }
     }
 }

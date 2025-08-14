@@ -22,7 +22,7 @@ namespace Gymmetry.Repository.Services
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            await _context.DailyExercises.AddAsync(entity);
+            _context.DailyExercises.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
@@ -88,6 +88,20 @@ namespace Gymmetry.Repository.Services
 
             var lambda = Expression.Lambda<Func<DailyExercise, bool>>(predicate, parameter);
             return await _context.DailyExercises.Where(lambda).ToListAsync();
+        }
+
+        public async Task<IEnumerable<DailyExercise>> CreateDailyExercisesBulkAsync(IEnumerable<DailyExercise> entities)
+        {
+            var list = entities.ToList();
+            foreach (var entity in list)
+            {
+                entity.Id = Guid.NewGuid();
+                entity.CreatedAt = DateTime.UtcNow;
+                entity.IsActive = true;
+                _context.DailyExercises.Add(entity);
+            }
+            await _context.SaveChangesAsync();
+            return list;
         }
     }
 }

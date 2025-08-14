@@ -1,3 +1,4 @@
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -28,56 +29,66 @@ public class AddDailyFunction
     }
 
     [Function("Daily_AddDailyFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "daily/add")] HttpRequest req)
+    public async Task<HttpResponseData> AddAsync(
+        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "daily/add")] HttpRequestData req,
+        FunctionContext executionContext)
     {
+        var logger = executionContext.GetLogger("Daily_AddDailyFunction");
+        string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+        var objRequest = JsonConvert.DeserializeObject<AddDailyRequest>(requestBody);
+        FunctionResponseHelper.LogRequest(logger, "Daily_AddDailyFunction", objRequest);
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {
-            return new ApiResponse<Guid>
-            {
-                Success = false,
-                Message = error!,
-                Data = default,
-                StatusCode = StatusCodes.Status401Unauthorized
-            };
+            return await FunctionResponseHelper.CreateResponseAsync(req, System.Net.HttpStatusCode.Unauthorized,
+                new ApiResponse<Guid>
+                {
+                    Success = false,
+                    Message = error!,
+                    Data = default,
+                    StatusCode = StatusCodes.Status401Unauthorized
+                });
         }
-
-        _logger.LogInformation("Procesando solicitud para agregar un Daily.");
         try
         {
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var objRequest = JsonConvert.DeserializeObject<AddDailyRequest>(requestBody);
             var validationResult = ModelValidator.ValidateModel<AddDailyRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
-            if (validationResult is not null) return validationResult;
-
+            if (validationResult is not null)
+            {
+                return await FunctionResponseHelper.CreateResponseAsync(req, System.Net.HttpStatusCode.BadRequest, validationResult);
+            }
+            var ip = FunctionResponseHelper.GetClientIp(req);
+            objRequest.Ip = ip;
             var result = await _service.CreateDailyAsync(objRequest);
             if (!result.Success)
             {
-                return new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = result.Message,
-                    Data = default,
-                    StatusCode = StatusCodes.Status400BadRequest
-                };
+                return await FunctionResponseHelper.CreateResponseAsync(req, System.Net.HttpStatusCode.BadRequest,
+                    new ApiResponse<Guid>
+                    {
+                        Success = false,
+                        Message = result.Message,
+                        Data = default,
+                        StatusCode = StatusCodes.Status400BadRequest
+                    });
             }
-            return new ApiResponse<Guid>
-            {
-                Success = true,
-                Message = result.Message,
-                Data = result.Data != null ? result.Data.Id : default,
-                StatusCode = StatusCodes.Status200OK
-            };
+            return await FunctionResponseHelper.CreateResponseAsync(req, System.Net.HttpStatusCode.OK,
+                new ApiResponse<Guid>
+                {
+                    Success = true,
+                    Message = result.Message,
+                    Data = result.Data != null ? result.Data.Id : default,
+                    StatusCode = StatusCodes.Status200OK
+                });
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error al agregar Daily.");
-            return new ApiResponse<Guid>
-            {
-                Success = false,
-                Message = "Ocurrió un error al procesar la solicitud.",
-                Data = default,
-                StatusCode = StatusCodes.Status400BadRequest
-            };
+            FunctionResponseHelper.LogError(logger, "Daily_AddDailyFunction", ex);
+            return await FunctionResponseHelper.CreateResponseAsync(req, System.Net.HttpStatusCode.BadRequest,
+                new ApiResponse<Guid>
+                {
+                    Success = false,
+                    Message = "Ocurrió un error al procesar la solicitud.",
+                    Data = default,
+                    StatusCode = StatusCodes.Status400BadRequest
+                });
         }
     }
 }

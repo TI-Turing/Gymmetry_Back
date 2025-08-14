@@ -4,6 +4,7 @@ using Gymmetry.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gymmetry.Domain.Migrations
 {
     [DbContext(typeof(GymmetryContext))]
-    partial class GymmetryContextModelSnapshot : ModelSnapshot
+    [Migration("20250814181204_AddPercentageToDaily")]
+    partial class AddPercentageToDaily
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -459,11 +462,14 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BranchId")
+                    b.Property<Guid>("BranchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
+
+                    b.Property<Guid>("DailyExerciseId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime");
@@ -497,6 +503,8 @@ namespace Gymmetry.Domain.Migrations
 
                     b.HasIndex(new[] { "BranchId" }, "IX_FK_BranchDaily");
 
+                    b.HasIndex(new[] { "DailyExerciseId" }, "IX_FK_DailyExerciseDaily");
+
                     b.HasIndex(new[] { "RoutineDayId" }, "IX_FK_RoutineDayDaily");
 
                     b.HasIndex(new[] { "UserId" }, "IX_FK_UserDaily");
@@ -511,9 +519,6 @@ namespace Gymmetry.Domain.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
-
-                    b.Property<Guid>("DailyId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime");
@@ -542,8 +547,6 @@ namespace Gymmetry.Domain.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "DailyId" }, "IX_FK_DailyDailyExercise");
 
                     b.HasIndex(new[] { "ExerciseId" }, "IX_FK_ExerciseDailyExercise");
 
@@ -2983,8 +2986,14 @@ namespace Gymmetry.Domain.Migrations
                     b.HasOne("Gymmetry.Domain.Models.Branch", "Branch")
                         .WithMany()
                         .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.SetNull)
+                        .IsRequired()
                         .HasConstraintName("FK_BranchDaily");
+
+                    b.HasOne("Gymmetry.Domain.Models.DailyExercise", "DailyExercise")
+                        .WithMany("Dailys")
+                        .HasForeignKey("DailyExerciseId")
+                        .IsRequired()
+                        .HasConstraintName("FK_DailyExerciseDaily");
 
                     b.HasOne("Gymmetry.Domain.Models.RoutineDay", "RoutineDay")
                         .WithMany()
@@ -3000,6 +3009,8 @@ namespace Gymmetry.Domain.Migrations
 
                     b.Navigation("Branch");
 
+                    b.Navigation("DailyExercise");
+
                     b.Navigation("RoutineDay");
 
                     b.Navigation("User");
@@ -3007,19 +3018,11 @@ namespace Gymmetry.Domain.Migrations
 
             modelBuilder.Entity("Gymmetry.Domain.Models.DailyExercise", b =>
                 {
-                    b.HasOne("Gymmetry.Domain.Models.Daily", "Daily")
-                        .WithMany("DailyExercises")
-                        .HasForeignKey("DailyId")
-                        .IsRequired()
-                        .HasConstraintName("FK_DailyDailyExercise");
-
                     b.HasOne("Gymmetry.Domain.Models.Exercise", "Exercise")
                         .WithMany("DailyExercises")
                         .HasForeignKey("ExerciseId")
                         .IsRequired()
                         .HasConstraintName("FK_ExerciseDailyExercise");
-
-                    b.Navigation("Daily");
 
                     b.Navigation("Exercise");
                 });
@@ -3644,9 +3647,9 @@ namespace Gymmetry.Domain.Migrations
                     b.Navigation("Exercises");
                 });
 
-            modelBuilder.Entity("Gymmetry.Domain.Models.Daily", b =>
+            modelBuilder.Entity("Gymmetry.Domain.Models.DailyExercise", b =>
                 {
-                    b.Navigation("DailyExercises");
+                    b.Navigation("Dailys");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.DailyExerciseHistory", b =>
