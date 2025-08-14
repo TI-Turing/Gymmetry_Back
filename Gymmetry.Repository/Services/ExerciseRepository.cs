@@ -29,12 +29,39 @@ namespace Gymmetry.Repository.Services
 
         public async Task<Exercise?> GetExerciseByIdAsync(Guid id)
         {
-            return await _context.Exercises.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
+            var exercise = await _context.Exercises
+                .Where(e => e.Id == id && e.IsActive)
+                .Select(e => new {
+                    e.Id,
+                    e.Name,
+                    e.Description,
+                    e.CategoryExerciseId,
+                    e.TagsMuscle,
+                    e.TagsObjectives,
+                    CategoryExercise = new {
+                        e.CategoryExercise.Id,
+                        e.CategoryExercise.Name
+                    }
+                })
+                .FirstOrDefaultAsync();
+
+            return exercise != null ? new Exercise {
+                Id = exercise.Id,
+                Name = exercise.Name,
+                Description = exercise.Description,
+                CategoryExerciseId = exercise.CategoryExerciseId,
+                TagsMuscle=exercise.TagsMuscle,
+                TagsObjectives=exercise.TagsObjectives,
+                CategoryExercise = new CategoryExercise {
+                    Id = exercise.CategoryExercise.Id,
+                    Name = exercise.CategoryExercise.Name
+                }
+            } : null;
         }
 
         public async Task<IEnumerable<Exercise>> GetAllExercisesAsync()
         {
-            return await _context.Exercises.Where(e => e.IsActive).ToListAsync();
+            return await _context.Exercises.Include(x => x.CategoryExercise).Where(e => e.IsActive).ToListAsync();
         }
 
         public async Task<bool> UpdateExerciseAsync(Exercise entity)
@@ -75,12 +102,35 @@ namespace Gymmetry.Repository.Services
                 var property = typeof(Exercise).GetProperty(filter.Key);
                 if (property == null) continue;
                 var left = Expression.Property(parameter, property);
-                var right = Expression.Constant(ValueConverter.ConvertValueToType(filter.Value, property.PropertyType));
-                var equals = Expression.Equal(left, right);
-                predicate = Expression.AndAlso(predicate, equals);
+                var value = ValueConverter.ConvertValueToType(filter.Value, property.PropertyType);
+                Expression containsExpr;
+                if (property.PropertyType == typeof(string))
+                {
+                    containsExpr = Expression.Call(left, typeof(string).GetMethod("Contains", new[] { typeof(string) })!, Expression.Constant(value));
+                }
+                else
+                {
+                    containsExpr = Expression.Equal(left, Expression.Constant(value));
+                }
+                predicate = Expression.AndAlso(predicate, containsExpr);
             }
             var lambda = Expression.Lambda<Func<Exercise, bool>>(predicate, parameter);
-            return await _context.Exercises.Where(lambda).ToListAsync();
+            var exercises = await _context.Exercises
+                .Where(lambda)
+                .Select(e => new Exercise {
+                    Id = e.Id,
+                    Name = e.Name,
+                    Description = e.Description,
+                    TagsObjectives = e.TagsObjectives,
+                    TagsMuscle = e.TagsMuscle,
+                    CategoryExerciseId = e.CategoryExerciseId,
+                    CategoryExercise = e.CategoryExercise == null ? null : new CategoryExercise {
+                        Id = e.CategoryExercise.Id,
+                        Name = e.CategoryExercise.Name
+                    }
+                })
+                .ToListAsync();
+            return exercises;
         }
     }
 }

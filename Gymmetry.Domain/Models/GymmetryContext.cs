@@ -235,10 +235,10 @@ public partial class GymmetryContext : DbContext
         modelBuilder.Entity<Daily>(entity =>
         {
             entity.ToTable("Daily");
-
-            entity.HasIndex(e => e.RoutineExerciseId, "IX_FK_RoutineExerciseDaily");
-
+            entity.HasIndex(e => e.RoutineDayId, "IX_FK_RoutineDayDaily");
             entity.HasIndex(e => e.UserId, "IX_FK_UserDaily");
+            entity.HasIndex(e => e.BranchId, "IX_FK_BranchDaily");
+            entity.HasIndex(e => e.DailyExerciseId, "IX_FK_DailyExerciseDaily");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -248,22 +248,34 @@ public partial class GymmetryContext : DbContext
             entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
 
-            entity.HasOne(d => d.RoutineExercise).WithMany(p => p.Dailies)
-                .HasForeignKey(d => d.RoutineExerciseId)
+            entity.HasOne(d => d.RoutineDay)
+                .WithMany()
+                .HasForeignKey(d => d.RoutineDayId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_RoutineExerciseDaily");
+                .HasConstraintName("FK_RoutineDayDaily");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Dailies)
+            entity.HasOne(d => d.User)
+                .WithMany(p => p.Dailies)
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserDaily");
+
+            entity.HasOne(d => d.Branch)
+                .WithMany()
+                .HasForeignKey(d => d.BranchId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_BranchDaily");
+
+            entity.HasOne(d => d.DailyExercise)
+                .WithMany(p => p.Dailys)
+                .HasForeignKey(d => d.DailyExerciseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DailyExerciseDaily");
         });
 
         modelBuilder.Entity<DailyExercise>(entity =>
         {
             entity.ToTable("DailyExercise");
-
-            entity.HasIndex(e => e.DailyId, "IX_FK_DailyDailyExercise");
 
             entity.HasIndex(e => e.ExerciseId, "IX_FK_ExerciseDailyExercise");
 
@@ -274,11 +286,6 @@ public partial class GymmetryContext : DbContext
             entity.Property(e => e.Repetitions).HasMaxLength(10);
             entity.Property(e => e.Set).HasMaxLength(10);
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-
-            entity.HasOne(d => d.Daily).WithMany(p => p.DailyExercises)
-                .HasForeignKey(d => d.DailyId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DailyDailyExercise");
 
             entity.HasOne(d => d.Exercise).WithMany(p => p.DailyExercises)
                 .HasForeignKey(d => d.ExerciseId)

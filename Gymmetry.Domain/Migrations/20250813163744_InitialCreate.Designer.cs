@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Gymmetry.Domain.Migrations
 {
     [DbContext(typeof(GymmetryContext))]
-    [Migration("20250809150250_AddTagsMuscleToExercise")]
-    partial class AddTagsMuscleToExercise
+    [Migration("20250813163744_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -467,6 +467,9 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("BranchId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
@@ -483,7 +486,10 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
-                    b.Property<Guid>("RoutineExerciseId")
+                    b.Property<Guid>("RoutineDayId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("RoutineExerciseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("StartDate")
@@ -497,7 +503,11 @@ namespace Gymmetry.Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "RoutineExerciseId" }, "IX_FK_RoutineExerciseDaily");
+                    b.HasIndex("RoutineExerciseId");
+
+                    b.HasIndex(new[] { "BranchId" }, "IX_FK_BranchDaily");
+
+                    b.HasIndex(new[] { "RoutineDayId" }, "IX_FK_RoutineDayDaily");
 
                     b.HasIndex(new[] { "UserId" }, "IX_FK_UserDaily");
 
@@ -629,11 +639,11 @@ namespace Gymmetry.Domain.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId");
+
                     b.HasIndex(new[] { "BranchId" }, "IX_FK_BranchDailyHistory");
 
                     b.HasIndex(new[] { "RoutineExerciseId" }, "IX_FK_RoutineExerciseDailyHistory");
-
-                    b.HasIndex(new[] { "UserId" }, "IX_FK_UserDailyHistory");
 
                     b.ToTable("DailyHistory", (string)null);
                 });
@@ -2297,6 +2307,9 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<Guid>("RoutineTemplateId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime");
 
@@ -2304,6 +2317,8 @@ namespace Gymmetry.Domain.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex(new[] { "RoutineTemplateId" }, "IX_FK_RoutineTemplateRoutineAssigned");
 
                     b.HasIndex(new[] { "UserId" }, "IX_FK_UserRoutineAssigned");
 
@@ -2417,9 +2432,6 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AuthorUserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("Author_UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -2464,10 +2476,6 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<Guid?>("RoutineAssignedId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("RoutineUserRoutineId")
-                        .HasColumnType("uniqueidentifier")
-                        .HasColumnName("RoutineUser_RoutineId");
-
                     b.Property<string>("TagsMachines")
                         .HasColumnType("nvarchar(max)");
 
@@ -2479,15 +2487,11 @@ namespace Gymmetry.Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthorUserId");
-
                     b.HasIndex(new[] { "Author_UserId" }, "IX_FK_AuthorUserRoutineTemplate");
 
                     b.HasIndex(new[] { "GymId" }, "IX_FK_GymRoutine");
 
                     b.HasIndex(new[] { "RoutineAssignedId" }, "IX_FK_RoutineAssignedRoutine");
-
-                    b.HasIndex(new[] { "RoutineUserRoutineId" }, "IX_FK_RoutineUser");
 
                     b.ToTable("RoutineTemplate", (string)null);
                 });
@@ -2990,11 +2994,21 @@ namespace Gymmetry.Domain.Migrations
 
             modelBuilder.Entity("Gymmetry.Domain.Models.Daily", b =>
                 {
-                    b.HasOne("Gymmetry.Domain.Models.RoutineExercise", "RoutineExercise")
-                        .WithMany("Dailies")
-                        .HasForeignKey("RoutineExerciseId")
+                    b.HasOne("Gymmetry.Domain.Models.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId")
                         .IsRequired()
-                        .HasConstraintName("FK_RoutineExerciseDaily");
+                        .HasConstraintName("FK_BranchDaily");
+
+                    b.HasOne("Gymmetry.Domain.Models.RoutineDay", "RoutineDay")
+                        .WithMany()
+                        .HasForeignKey("RoutineDayId")
+                        .IsRequired()
+                        .HasConstraintName("FK_RoutineDayDaily");
+
+                    b.HasOne("Gymmetry.Domain.Models.RoutineExercise", null)
+                        .WithMany("Dailies")
+                        .HasForeignKey("RoutineExerciseId");
 
                     b.HasOne("Gymmetry.Domain.Models.User", "User")
                         .WithMany("Dailies")
@@ -3002,7 +3016,9 @@ namespace Gymmetry.Domain.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_UserDaily");
 
-                    b.Navigation("RoutineExercise");
+                    b.Navigation("Branch");
+
+                    b.Navigation("RoutineDay");
 
                     b.Navigation("User");
                 });
@@ -3436,11 +3452,19 @@ namespace Gymmetry.Domain.Migrations
 
             modelBuilder.Entity("Gymmetry.Domain.Models.RoutineAssigned", b =>
                 {
+                    b.HasOne("Gymmetry.Domain.Models.RoutineTemplate", "RoutineTemplate")
+                        .WithMany("RoutineAssigneds")
+                        .HasForeignKey("RoutineTemplateId")
+                        .IsRequired()
+                        .HasConstraintName("FK_RoutineTemplateRoutineAssigned");
+
                     b.HasOne("Gymmetry.Domain.Models.User", "User")
                         .WithMany("RoutineAssigneds")
                         .HasForeignKey("UserId")
                         .IsRequired()
                         .HasConstraintName("FK_UserRoutineAssigned");
+
+                    b.Navigation("RoutineTemplate");
 
                     b.Navigation("User");
                 });
@@ -3485,11 +3509,7 @@ namespace Gymmetry.Domain.Migrations
             modelBuilder.Entity("Gymmetry.Domain.Models.RoutineTemplate", b =>
                 {
                     b.HasOne("Gymmetry.Domain.Models.User", "AuthorUser")
-                        .WithMany()
-                        .HasForeignKey("AuthorUserId");
-
-                    b.HasOne("Gymmetry.Domain.Models.User", null)
-                        .WithMany()
+                        .WithMany("RoutineTemplates")
                         .HasForeignKey("Author_UserId")
                         .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("FK_AuthorUserRoutineTemplate");
@@ -3500,22 +3520,15 @@ namespace Gymmetry.Domain.Migrations
                         .HasConstraintName("FK_GymRoutine");
 
                     b.HasOne("Gymmetry.Domain.Models.RoutineAssigned", "RoutineAssigned")
-                        .WithMany("RoutineTemplates")
+                        .WithMany()
                         .HasForeignKey("RoutineAssignedId")
                         .HasConstraintName("FK_RoutineAssignedRoutine");
-
-                    b.HasOne("Gymmetry.Domain.Models.User", "RoutineUserRoutine")
-                        .WithMany("RoutineTemplates")
-                        .HasForeignKey("RoutineUserRoutineId")
-                        .HasConstraintName("FK_RoutineUser");
 
                     b.Navigation("AuthorUser");
 
                     b.Navigation("Gym");
 
                     b.Navigation("RoutineAssigned");
-
-                    b.Navigation("RoutineUserRoutine");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.Schedule", b =>
@@ -3785,11 +3798,6 @@ namespace Gymmetry.Domain.Migrations
                     b.Navigation("Likes");
                 });
 
-            modelBuilder.Entity("Gymmetry.Domain.Models.RoutineAssigned", b =>
-                {
-                    b.Navigation("RoutineTemplates");
-                });
-
             modelBuilder.Entity("Gymmetry.Domain.Models.RoutineExercise", b =>
                 {
                     b.Navigation("Dailies");
@@ -3799,6 +3807,8 @@ namespace Gymmetry.Domain.Migrations
 
             modelBuilder.Entity("Gymmetry.Domain.Models.RoutineTemplate", b =>
                 {
+                    b.Navigation("RoutineAssigneds");
+
                     b.Navigation("RoutineDays");
 
                     b.Navigation("RoutineExercises");

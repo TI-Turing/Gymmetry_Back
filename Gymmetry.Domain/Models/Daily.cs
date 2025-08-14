@@ -23,13 +23,17 @@ public partial class Daily
 
     public Guid UserId { get; set; }
 
-    public Guid RoutineExerciseId { get; set; }
+    public Guid RoutineDayId { get; set; } // Cambia la relación a RoutineDay
 
-    public virtual ICollection<Branch> Branches { get; set; } = new List<Branch>();
+    public Guid BranchId { get; set; } // Nueva FK a Branch
 
-    public virtual ICollection<DailyExercise> DailyExercises { get; set; } = new List<DailyExercise>();
+    public Guid DailyExerciseId { get; set; } // FK a DailyExercise
 
-    public virtual RoutineExercise RoutineExercise { get; set; } = null!;
+    public virtual RoutineDay RoutineDay { get; set; } = null!; // Relación con RoutineDay
+
+    public virtual Branch Branch { get; set; } = null!; // Relación con Branch
 
     public virtual User User { get; set; } = null!;
+
+    public virtual DailyExercise DailyExercise { get; set; } = null!; // Relación 1 a 1
 }
