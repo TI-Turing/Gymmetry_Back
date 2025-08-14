@@ -25,8 +25,6 @@ public partial class RoutineExercise
 
     public Guid ExerciseId { get; set; }
 
-    public virtual ICollection<Daily> Dailies { get; set; } = new List<Daily>();
-
     public virtual ICollection<DailyHistory> DailyHistories { get; set; } = new List<DailyHistory>();
 
     public virtual Exercise Exercise { get; set; } = null!;

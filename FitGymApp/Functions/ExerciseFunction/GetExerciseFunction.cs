@@ -65,13 +65,20 @@ namespace Gymmetry.Functions.ExerciseFunction
                     return notFoundResponse;
                 }
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<Exercise>
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(new ApiResponse<Exercise>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                }, options);
+                await successResponse.WriteStringAsync(json);
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)
@@ -112,13 +119,20 @@ namespace Gymmetry.Functions.ExerciseFunction
             {
                 var result = await _service.GetAllExercisesAsync();
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Exercise>>
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(new ApiResponse<IEnumerable<Exercise>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                }, options);
+                await successResponse.WriteStringAsync(json);
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)
@@ -173,13 +187,20 @@ namespace Gymmetry.Functions.ExerciseFunction
                 }
                 var result = await _service.FindExercisesByFieldsAsync(filters);
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Exercise>>
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve,
+                    WriteIndented = true
+                };
+                var json = System.Text.Json.JsonSerializer.Serialize(new ApiResponse<IEnumerable<Exercise>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                }, options);
+                await successResponse.WriteStringAsync(json);
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)

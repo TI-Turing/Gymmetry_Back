@@ -21,11 +21,9 @@ public partial class DailyExercise
 
     public bool IsActive { get; set; }
 
-    public Guid DailyId { get; set; }
-
     public Guid ExerciseId { get; set; }
 
-    public virtual Daily Daily { get; set; } = null!;
-
     public virtual Exercise Exercise { get; set; } = null!;
+
+    public virtual ICollection<Daily> Dailys { get; set; } = new List<Daily>(); // Relación 1 a muchos
 }
