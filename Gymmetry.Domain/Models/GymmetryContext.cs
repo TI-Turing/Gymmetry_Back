@@ -238,7 +238,6 @@ public partial class GymmetryContext : DbContext
             entity.HasIndex(e => e.RoutineDayId, "IX_FK_RoutineDayDaily");
             entity.HasIndex(e => e.UserId, "IX_FK_UserDaily");
             entity.HasIndex(e => e.BranchId, "IX_FK_BranchDaily");
-            entity.HasIndex(e => e.DailyExerciseId, "IX_FK_DailyExerciseDaily");
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -263,14 +262,8 @@ public partial class GymmetryContext : DbContext
             entity.HasOne(d => d.Branch)
                 .WithMany()
                 .HasForeignKey(d => d.BranchId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_BranchDaily");
-
-            entity.HasOne(d => d.DailyExercise)
-                .WithMany(p => p.Dailys)
-                .HasForeignKey(d => d.DailyExerciseId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK_DailyExerciseDaily");
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_BranchDaily"); // Permite nulos por ser Guid?
         });
 
         modelBuilder.Entity<DailyExercise>(entity =>
@@ -278,7 +271,7 @@ public partial class GymmetryContext : DbContext
             entity.ToTable("DailyExercise");
 
             entity.HasIndex(e => e.ExerciseId, "IX_FK_ExerciseDailyExercise");
-
+            entity.HasIndex(e => e.DailyId, "IX_FK_DailyDailyExercise");
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
@@ -291,6 +284,12 @@ public partial class GymmetryContext : DbContext
                 .HasForeignKey(d => d.ExerciseId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_ExerciseDailyExercise");
+
+            entity.HasOne(d => d.Daily)
+                .WithMany(p => p.DailyExercises)
+                .HasForeignKey(d => d.DailyId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_DailyDailyExercise");
         });
 
         modelBuilder.Entity<DailyExerciseHistory>(entity =>
@@ -837,6 +836,7 @@ public partial class GymmetryContext : DbContext
 
             entity.HasOne(d => d.UserType).WithMany(p => p.Permissions)
                 .HasForeignKey(d => d.UserTypeId)
+                // Aquí se cambió a ClientSetNull para permitir nulos
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserTypePermissions");
         });

@@ -21,7 +21,7 @@ namespace Gymmetry.Repository.Services
             entity.Id = Guid.NewGuid();
             entity.CreatedAt = DateTime.UtcNow;
             entity.IsActive = true;
-            await _context.Dailies.AddAsync(entity);
+            _context.Dailies.Add(entity);
             await _context.SaveChangesAsync();
             return entity;
         }

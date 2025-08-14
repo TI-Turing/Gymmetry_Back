@@ -3,6 +3,8 @@ using Gymmetry.Domain.DTO.AccessMethodType.Request;
 using Gymmetry.Domain.DTO.Bill.Request;
 using Gymmetry.Domain.DTO.Branch.Request;
 using Gymmetry.Domain.DTO.Brand.Request;
+using Gymmetry.Domain.DTO.Daily.Request;
+using Gymmetry.Domain.DTO.DailyExercise.Request;
 using Gymmetry.Domain.DTO.Exercise.Request;
 using Gymmetry.Domain.DTO.FitUser.Request;
 using Gymmetry.Domain.DTO.Gym.Request;
@@ -42,6 +44,8 @@ public class AutoMapperProfile : Profile
         CreateMap<AddGymPlanSelectedRequest, GymPlanSelected>();
         CreateMap<AddRoutineDayRequest, RoutineDay>();
         CreateMap<AddPlanRequest, Plan>();
+        CreateMap<AddDailyRequest, Daily>();
+        CreateMap<AddDailyExerciseRequest, DailyExercise>();
 
     }
 }

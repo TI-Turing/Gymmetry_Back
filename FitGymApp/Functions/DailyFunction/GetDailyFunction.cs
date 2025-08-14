@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Gymmetry.Application.Services.Interfaces;
 using Gymmetry.Domain.DTO;
@@ -26,138 +27,170 @@ namespace Gymmetry.Functions.DailyFunction
         }
 
         [Function("Daily_GetDailyByIdFunction")]
-        public async Task<ApiResponse<Daily>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "daily/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<HttpResponseData> GetByIdAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "daily/{id:guid}")] HttpRequestData req,
+            FunctionContext executionContext,
+            Guid id)
         {
+            var logger = executionContext.GetLogger("Daily_GetDailyByIdFunction");
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
-                return new ApiResponse<Daily>
+                var unauthorizedResponse = req.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Daily>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation($"Consultando Daily por Id: {id}");
+            logger.LogInformation($"Consultando Daily por Id: {id}");
             try
             {
                 var result = await _service.GetDailyByIdAsync(id);
                 if (!result.Success)
                 {
-                    return new ApiResponse<Daily>
+                    var notFoundResponse = req.CreateResponse(System.Net.HttpStatusCode.NotFound);
+                    await notFoundResponse.WriteAsJsonAsync(new ApiResponse<Daily>
                     {
                         Success = false,
                         Message = result.Message,
                         Data = null,
                         StatusCode = StatusCodes.Status404NotFound
-                    };
+                    });
+                    return notFoundResponse;
                 }
-                return new ApiResponse<Daily>
+                var successResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<Daily>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar Daily por Id.");
-                return new ApiResponse<Daily>
+                logger.LogError(ex, "Error al consultar Daily por Id.");
+                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<Daily>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
         [Function("Daily_GetAllDailiesFunction")]
-        public async Task<ApiResponse<IEnumerable<Daily>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailies")] HttpRequest req)
+        public async Task<HttpResponseData> GetAllAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailies")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("Daily_GetAllDailiesFunction");
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
-                return new ApiResponse<IEnumerable<Daily>>
+                var unauthorizedResponse = req.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando todos los Dailies activos.");
+            logger.LogInformation("Consultando todos los Dailies activos.");
             try
             {
                 var result = await _service.GetAllDailiesAsync();
-                return new ApiResponse<IEnumerable<Daily>>
+                var successResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar todos los Dailies.");
-                return new ApiResponse<IEnumerable<Daily>>
+                logger.LogError(ex, "Error al consultar todos los Dailies.");
+                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
 
         [Function("Daily_FindDailiesByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<Daily>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailies/find")] HttpRequest req)
+        public async Task<HttpResponseData> FindByFieldsAsync(
+            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailies/find")] HttpRequestData req,
+            FunctionContext executionContext)
         {
+            var logger = executionContext.GetLogger("Daily_FindDailiesByFieldsFunction");
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
-                return new ApiResponse<IEnumerable<Daily>>
+                var unauthorizedResponse = req.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = false,
                     Message = error!,
                     Data = null,
                     StatusCode = StatusCodes.Status401Unauthorized
-                };
+                });
+                return unauthorizedResponse;
             }
-            _logger.LogInformation("Consultando Dailies por filtros dinámicos.");
+            logger.LogInformation("Consultando Dailies por filtros dinámicos.");
             try
             {
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                var filters = JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
+                var filters = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, object>>(requestBody);
                 if (filters == null || filters.Count == 0)
                 {
-                    return new ApiResponse<IEnumerable<Daily>>
+                    var badResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                    await badResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Daily>>
                     {
                         Success = false,
                         Message = "No se proporcionaron filtros válidos.",
                         Data = null,
                         StatusCode = StatusCodes.Status400BadRequest
-                    };
+                    });
+                    return badResponse;
                 }
                 var result = await _service.FindDailiesByFieldsAsync(filters);
-                return new ApiResponse<IEnumerable<Daily>>
+                var successResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                };
+                });
+                return successResponse;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error al consultar Dailies por filtros.");
-                return new ApiResponse<IEnumerable<Daily>>
+                logger.LogError(ex, "Error al consultar Dailies por filtros.");
+                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<Daily>>
                 {
                     Success = false,
                     Message = "Ocurrió un error al procesar la solicitud.",
                     Data = null,
                     StatusCode = StatusCodes.Status400BadRequest
-                };
+                });
+                return errorResponse;
             }
         }
     }

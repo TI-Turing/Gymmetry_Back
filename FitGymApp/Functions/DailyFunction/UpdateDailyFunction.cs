@@ -33,58 +33,50 @@ public class UpdateDailyFunction
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Daily_UpdateDailyFunction");
+        if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
+        {
+            var unauthorizedResponse = req.CreateResponse(System.Net.HttpStatusCode.Unauthorized);
+            await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<bool>
+            {
+                Success = false,
+                Message = error!,
+                Data = false,
+                StatusCode = StatusCodes.Status401Unauthorized
+            });
+            return unauthorizedResponse;
+        }
         logger.LogInformation("Procesando solicitud para actualizar un Daily.");
-        var invocationId = executionContext.InvocationId;
         try
         {
-            if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
-            {
-                var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
-                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Guid>
-                {
-                    Success = false,
-                    Message = error!,
-                    Data = default,
-                    StatusCode = StatusCodes.Status401Unauthorized
-                });
-                return unauthorizedResponse;
-            }
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             var objRequest = JsonConvert.DeserializeObject<UpdateDailyRequest>(requestBody);
-            var validationResult = ModelValidator.ValidateModel<UpdateDailyRequest, Guid>(objRequest, StatusCodes.Status400BadRequest);
+            var validationResult = ModelValidator.ValidateModel<UpdateDailyRequest, bool>(objRequest, StatusCodes.Status400BadRequest);
             if (validationResult is not null)
             {
-                var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                var badResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
                 await badResponse.WriteAsJsonAsync(validationResult);
                 return badResponse;
             }
-            string? ip = req.Headers.TryGetValues("X-Forwarded-For", out var values) ? values.FirstOrDefault()?.Split(',')[0]?.Trim()
-                : req.Headers.TryGetValues("X-Original-For", out var originalForValues) ? originalForValues.FirstOrDefault()?.Split(':')[0]?.Trim()
-                : req.Headers.TryGetValues("REMOTE_ADDR", out var remoteValues) ? remoteValues.FirstOrDefault()
-                : null;
-            if (objRequest != null)
-            {
-                objRequest.Ip = ip;
-            }
-            var result = await _service.UpdateDailyAsync(objRequest, userId, ip, invocationId);
+            var ip = FunctionResponseHelper.GetClientIp(req);
+            var result = await _service.UpdateDailyAsync(objRequest, userId, ip);
             if (!result.Success)
             {
-                var notFoundResponse = req.CreateResponse(HttpStatusCode.NotFound);
-                await notFoundResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+                var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+                await errorResponse.WriteAsJsonAsync(new ApiResponse<bool>
                 {
                     Success = false,
                     Message = result.Message,
-                    Data = objRequest.Id,
-                    StatusCode = StatusCodes.Status404NotFound
+                    Data = false,
+                    StatusCode = StatusCodes.Status400BadRequest
                 });
-                return notFoundResponse;
+                return errorResponse;
             }
-            var successResponse = req.CreateResponse(HttpStatusCode.OK);
-            await successResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+            var successResponse = req.CreateResponse(System.Net.HttpStatusCode.OK);
+            await successResponse.WriteAsJsonAsync(new ApiResponse<bool>
             {
                 Success = true,
                 Message = result.Message,
-                Data = objRequest.Id,
+                Data = true,
                 StatusCode = StatusCodes.Status200OK
             });
             return successResponse;
@@ -92,12 +84,12 @@ public class UpdateDailyFunction
         catch (Exception ex)
         {
             logger.LogError(ex, "Error al actualizar Daily.");
-            var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-            await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
+            var errorResponse = req.CreateResponse(System.Net.HttpStatusCode.BadRequest);
+            await errorResponse.WriteAsJsonAsync(new ApiResponse<bool>
             {
                 Success = false,
                 Message = "Ocurrió un error al procesar la solicitud.",
-                Data = default,
+                Data = false,
                 StatusCode = StatusCodes.Status400BadRequest
             });
             return errorResponse;

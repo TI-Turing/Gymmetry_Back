@@ -23,7 +23,9 @@ public partial class DailyExercise
 
     public Guid ExerciseId { get; set; }
 
+    public Guid DailyId { get; set; } // FK a Daily
+
     public virtual Exercise Exercise { get; set; } = null!;
 
-    public virtual ICollection<Daily> Dailys { get; set; } = new List<Daily>(); // Relación 1 a muchos
+    public virtual Daily Daily { get; set; } = null!; // Relación 1 a 1 con Daily
 }

@@ -8,6 +8,7 @@ using Gymmetry.Domain.DTO.Daily.Request;
 using Gymmetry.Domain.DTO;
 using Gymmetry.Repository.Services.Interfaces;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
 
 namespace Gymmetry.Application.Services
 {
@@ -17,37 +18,35 @@ namespace Gymmetry.Application.Services
         private readonly ILogChangeService _logChangeService;
         private readonly ILogErrorService _logErrorService;
         private readonly IMapper _mapper;
+        private readonly ILogger<DailyService> _logger;
 
-        public DailyService(IDailyRepository dailyRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper)
+        public DailyService(IDailyRepository dailyRepository, ILogChangeService logChangeService, ILogErrorService logErrorService, IMapper mapper, ILogger<DailyService> logger)
         {
             _dailyRepository = dailyRepository;
             _logChangeService = logChangeService;
             _logErrorService = logErrorService;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<ApplicationResponse<Daily>> CreateDailyAsync(AddDailyRequest request)
         {
+            _logger.LogInformation("[DailyService] Inicio CreateDailyAsync");
             try
             {
-                var daily = _mapper.Map<Daily>(request);
-                var created = await _dailyRepository.CreateDailyAsync(daily);
-                return new ApplicationResponse<Daily>
-                {
-                    Success = true,
-                    Message = "Registro diario creado correctamente.",
-                    Data = created
-                };
+                if (request == null)
+                    return ApplicationResponse<Daily>.ErrorResponse("Request nulo", "BadRequest");
+                var entity = _mapper.Map<Daily>(request);
+                entity.CreatedAt = DateTime.UtcNow;
+                entity.IsActive = true;
+                var created = await _dailyRepository.CreateDailyAsync(entity);
+                _logger.LogInformation($"[DailyService] Daily creado: {created.Id}");
+                return ApplicationResponse<Daily>.SuccessResponse(created, "Daily creado correctamente.");
             }
             catch (Exception ex)
             {
-                await _logErrorService.LogErrorAsync(ex);
-                return new ApplicationResponse<Daily>
-                {
-                    Success = false,
-                    Message = "Error técnico al crear el registro diario.",
-                    ErrorCode = "TechnicalError"
-                };
+                _logger.LogError(ex, "[DailyService] Error en CreateDailyAsync");
+                return ApplicationResponse<Daily>.ErrorResponse("Error técnico al crear Daily", "TechnicalError");
             }
         }
 
