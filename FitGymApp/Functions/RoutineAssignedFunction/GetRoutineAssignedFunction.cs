@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Linq;
 using Gymmetry.Utils;
@@ -27,6 +28,12 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
             _logger = logger;
             _service = service;
         }
+
+        private static JsonSerializerOptions JsonCycleOptions => new()
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            WriteIndented = true
+        };
 
         [Function("RoutineAssigned_GetRoutineAssignedFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
@@ -63,14 +70,22 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
                     });
                     return notFoundResponse;
                 }
+                // Evitar ciclos explicitamente eliminando colecciones recursivas pesadas si existen
+                if (result.Data?.RoutineTemplate != null)
+                {
+                    // Rompe posibles ciclos quitando la colección inversa
+                    result.Data.RoutineTemplate.RoutineAssigneds = null!; // será ignorado por IgnoreCycles
+                }
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<RoutineAssigned>
+                var payload = new ApiResponse<RoutineAssigned>
                 {
                     Success = true,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                };
+                await successResponse.WriteStringAsync(System.Text.Json.JsonSerializer.Serialize(payload, JsonCycleOptions));
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)
@@ -110,14 +125,21 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
             try
             {
                 var result = await _service.GetAllRoutineAssignedsAsync();
+                // Romper ciclos en cada elemento
+                foreach (var ra in result.Data ?? Enumerable.Empty<RoutineAssigned>())
+                {
+                    ra.RoutineTemplate?.RoutineAssigneds?.Clear();
+                }
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
+                var payload = new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                };
+                await successResponse.WriteStringAsync(System.Text.Json.JsonSerializer.Serialize(payload, JsonCycleOptions));
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)
@@ -171,14 +193,20 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
                     return badResponse;
                 }
                 var result = await _service.FindRoutineAssignedsByFieldsAsync(filters);
+                foreach (var ra in result.Data ?? Enumerable.Empty<RoutineAssigned>())
+                {
+                    ra.RoutineTemplate?.RoutineAssigneds?.Clear();
+                }
                 var successResponse = req.CreateResponse(HttpStatusCode.OK);
-                await successResponse.WriteAsJsonAsync(new ApiResponse<IEnumerable<RoutineAssigned>>
+                var payload = new ApiResponse<IEnumerable<RoutineAssigned>>
                 {
                     Success = result.Success,
                     Message = result.Message,
                     Data = result.Data,
                     StatusCode = StatusCodes.Status200OK
-                });
+                };
+                await successResponse.WriteStringAsync(System.Text.Json.JsonSerializer.Serialize(payload, JsonCycleOptions));
+                successResponse.Headers.Add("Content-Type", "application/json; charset=utf-8");
                 return successResponse;
             }
             catch (Exception ex)

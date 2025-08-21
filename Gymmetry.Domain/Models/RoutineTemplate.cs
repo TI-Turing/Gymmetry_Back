@@ -21,6 +21,8 @@ public partial class RoutineTemplate
 
     public bool IsActive { get; set; }
 
+    public bool Premium { get; set; }
+
     public Guid? GymId { get; set; }
 
     public Guid? RoutineAssignedId { get; set; }

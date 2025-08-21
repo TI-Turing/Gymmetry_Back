@@ -29,12 +29,98 @@ namespace Gymmetry.Repository.Services
 
         public async Task<RoutineAssigned?> GetRoutineAssignedByIdAsync(Guid id)
         {
-            return await _context.RoutineAssigneds.FirstOrDefaultAsync(e => e.Id == id && e.IsActive);
+            return await _context.RoutineAssigneds
+                .AsNoTracking()
+                .Include(e => e.RoutineTemplate)
+                    .ThenInclude(rt => rt.RoutineDays)
+                .Include(e => e.RoutineTemplate)
+                    .ThenInclude(rt => rt.RoutineExercises)
+                .Where(e => e.Id == id && e.IsActive)
+                .Select(e => new RoutineAssigned
+                {
+                    Id = e.Id,
+                    Comments = e.Comments,
+                    CreatedAt = e.CreatedAt,
+                    UpdatedAt = e.UpdatedAt,
+                    Ip = e.Ip,
+                    IsActive = e.IsActive,
+                    UserId = e.UserId,
+                    RoutineTemplateId = e.RoutineTemplateId,
+                    RoutineTemplate = new RoutineTemplate
+                    {
+                        Id = e.RoutineTemplate.Id,
+                        Name = e.RoutineTemplate.Name,
+                        Comments = e.RoutineTemplate.Comments,
+                        CreatedAt = e.RoutineTemplate.CreatedAt,
+                        UpdatedAt = e.RoutineTemplate.UpdatedAt,
+                        IsActive = e.RoutineTemplate.IsActive,
+                        Premium = e.RoutineTemplate.Premium,
+                        IsDefault = e.RoutineTemplate.IsDefault,
+                        TagsObjectives = e.RoutineTemplate.TagsObjectives,
+                        TagsMachines = e.RoutineTemplate.TagsMachines,
+                        IsBodyweight = e.RoutineTemplate.IsBodyweight,
+                        RequiresEquipment = e.RoutineTemplate.RequiresEquipment,
+                        IsCalisthenic = e.RoutineTemplate.IsCalisthenic,
+                        RoutineDays = e.RoutineTemplate.RoutineDays.Select(d => new RoutineDay
+                        {
+                            Id = d.Id,
+                            DayNumber = d.DayNumber,
+                            Name = d.Name,
+                            Sets = d.Sets,
+                            Repetitions = d.Repetitions,
+                            Notes = d.Notes,
+                            ExerciseId = d.ExerciseId,
+                            RoutineTemplateId = d.RoutineTemplateId,
+                            IsActive = d.IsActive
+                        }).ToList(),
+                        RoutineExercises = e.RoutineTemplate.RoutineExercises.Select(rx => new RoutineExercise
+                        {
+                            Id = rx.Id,
+                            ExerciseId = rx.ExerciseId,
+                            RoutineTemplateId = rx.RoutineTemplateId,
+                            Repetitions = rx.Repetitions,
+                            Sets = rx.Sets,
+                            IsActive = rx.IsActive
+                        }).ToList()
+                    }
+                })
+                .FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<RoutineAssigned>> GetAllRoutineAssignedsAsync()
         {
-            return await _context.RoutineAssigneds.Where(e => e.IsActive).ToListAsync();
+            return await _context.RoutineAssigneds
+                .AsNoTracking()
+                .Include(e => e.RoutineTemplate)
+                .Where(e => e.IsActive)
+                .Select(e => new RoutineAssigned
+                {
+                    Id = e.Id,
+                    Comments = e.Comments,
+                    CreatedAt = e.CreatedAt,
+                    UpdatedAt = e.UpdatedAt,
+                    Ip = e.Ip,
+                    IsActive = e.IsActive,
+                    UserId = e.UserId,
+                    RoutineTemplateId = e.RoutineTemplateId,
+                    RoutineTemplate = new RoutineTemplate
+                    {
+                        Id = e.RoutineTemplate.Id,
+                        Name = e.RoutineTemplate.Name,
+                        Comments = e.RoutineTemplate.Comments,
+                        CreatedAt = e.RoutineTemplate.CreatedAt,
+                        UpdatedAt = e.RoutineTemplate.UpdatedAt,
+                        IsActive = e.RoutineTemplate.IsActive,
+                        Premium = e.RoutineTemplate.Premium,
+                        IsDefault = e.RoutineTemplate.IsDefault,
+                        TagsObjectives = e.RoutineTemplate.TagsObjectives,
+                        TagsMachines = e.RoutineTemplate.TagsMachines,
+                        IsBodyweight = e.RoutineTemplate.IsBodyweight,
+                        RequiresEquipment = e.RoutineTemplate.RequiresEquipment,
+                        IsCalisthenic = e.RoutineTemplate.IsCalisthenic
+                    }
+                })
+                .ToListAsync();
         }
 
         public async Task<bool> UpdateRoutineAssignedAsync(RoutineAssigned entity)
@@ -80,7 +166,38 @@ namespace Gymmetry.Repository.Services
                 predicate = Expression.AndAlso(predicate, equals);
             }
             var lambda = Expression.Lambda<Func<RoutineAssigned, bool>>(predicate, parameter);
-            return await _context.RoutineAssigneds.Where(lambda).ToListAsync();
+            return await _context.RoutineAssigneds
+                .AsNoTracking()
+                .Include(e => e.RoutineTemplate)
+                .Where(lambda)
+                .Select(e => new RoutineAssigned
+                {
+                    Id = e.Id,
+                    Comments = e.Comments,
+                    CreatedAt = e.CreatedAt,
+                    UpdatedAt = e.UpdatedAt,
+                    Ip = e.Ip,
+                    IsActive = e.IsActive,
+                    UserId = e.UserId,
+                    RoutineTemplateId = e.RoutineTemplateId,
+                    RoutineTemplate = new RoutineTemplate
+                    {
+                        Id = e.RoutineTemplate.Id,
+                        Name = e.RoutineTemplate.Name,
+                        Comments = e.RoutineTemplate.Comments,
+                        CreatedAt = e.RoutineTemplate.CreatedAt,
+                        UpdatedAt = e.RoutineTemplate.UpdatedAt,
+                        IsActive = e.RoutineTemplate.IsActive,
+                        Premium = e.RoutineTemplate.Premium,
+                        IsDefault = e.RoutineTemplate.IsDefault,
+                        TagsObjectives = e.RoutineTemplate.TagsObjectives,
+                        TagsMachines = e.RoutineTemplate.TagsMachines,
+                        IsBodyweight = e.RoutineTemplate.IsBodyweight,
+                        RequiresEquipment = e.RoutineTemplate.RequiresEquipment,
+                        IsCalisthenic = e.RoutineTemplate.IsCalisthenic
+                    }
+                })
+                .ToListAsync();
         }
     }
 }
