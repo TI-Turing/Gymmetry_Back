@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Gymmetry.Domain.Enums;
-using Microsoft.AspNetCore.Http;
+using Gymmetry.Domain.DTO.Payments.Requests;
+using Gymmetry.Domain.DTO.Payments.Responses;
+using Gymmetry.Domain.Models;
 
 namespace Gymmetry.Application.Services.Interfaces
 {
     public interface IPaymentGatewayService
     {
-        Task<string> CreatePaymentUrlAsync(string userId, decimal amount, string description);
-        Task<PaymentStatusEnum> HandleWebhookAsync(HttpRequest req);
-        Task<PaymentStatusEnum> CheckPaymentStatusAsync(string externalPaymentId);
+        Task<PaymentPreferenceResponse> CreateUserPlanPreferenceAsync(CreateUserPlanPreferenceRequest request);
+        Task<PaymentPreferenceResponse> CreateGymPlanPreferenceAsync(CreateGymPlanPreferenceRequest request);
+        Task<(PaymentStatus Status, string RawJson, decimal? Amount, string? Currency, string? PreferenceId, string? ExternalPaymentId)> GetPaymentDetailsAsync(string externalPaymentId);
+        bool VerifyWebhookSignature(IDictionary<string, string> headers, string rawBody);
+        Task<PaymentPreferenceResponse> CreateUserPlanCardPaymentAsync(CreateCardPaymentRequest request);
+        Task<PaymentPreferenceResponse> CreateGymPlanCardPaymentAsync(CreateCardPaymentRequest request);
     }
 }

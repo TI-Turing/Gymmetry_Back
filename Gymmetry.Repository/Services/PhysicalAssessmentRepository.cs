@@ -29,17 +29,17 @@ namespace Gymmetry.Repository.Services
 
         public async Task<PhysicalAssessment?> GetPhysicalAssessmentByIdAsync(Guid id)
         {
-            return await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
+            return await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == id && a.IsActive == true);
         }
 
         public async Task<IEnumerable<PhysicalAssessment>> GetAllPhysicalAssessmentsAsync()
         {
-            return await _context.PhysicalAssessments.Where(a => a.IsActive).ToListAsync();
+            return await _context.PhysicalAssessments.Where(a => a.IsActive == true).ToListAsync();
         }
 
         public async Task<bool> UpdatePhysicalAssessmentAsync(PhysicalAssessment assessment)
         {
-            var existing = await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == assessment.Id && a.IsActive);
+            var existing = await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == assessment.Id && a.IsActive == true);
             if (existing != null)
             {
                 _context.Entry(existing).CurrentValues.SetValues(assessment);
@@ -52,7 +52,7 @@ namespace Gymmetry.Repository.Services
 
         public async Task<bool> DeletePhysicalAssessmentAsync(Guid id)
         {
-            var entity = await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == id && a.IsActive);
+            var entity = await _context.PhysicalAssessments.FirstOrDefaultAsync(a => a.Id == id && a.IsActive == true);
             if (entity != null)
             {
                 entity.IsActive = false;
@@ -66,9 +66,10 @@ namespace Gymmetry.Repository.Services
         public async Task<IEnumerable<PhysicalAssessment>> FindPhysicalAssessmentsByFieldsAsync(Dictionary<string, object> filters)
         {
             var parameter = Expression.Parameter(typeof(PhysicalAssessment), "a");
+            // a => a.IsActive == true
             Expression predicate = Expression.Equal(
                 Expression.Property(parameter, nameof(PhysicalAssessment.IsActive)),
-                Expression.Constant(true)
+                Expression.Constant(true, typeof(bool?))
             );
             foreach (var filter in filters)
             {

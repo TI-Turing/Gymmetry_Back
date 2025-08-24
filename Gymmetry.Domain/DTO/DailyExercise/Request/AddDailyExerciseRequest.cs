@@ -13,6 +13,5 @@ namespace Gymmetry.Domain.DTO.DailyExercise.Request
         public Guid ExerciseId { get; set; }
         [Required]
         public Guid DailyId { get; set; }
-        public string? Ip { get; set; }
     }
 }

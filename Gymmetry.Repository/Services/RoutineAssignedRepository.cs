@@ -199,5 +199,19 @@ namespace Gymmetry.Repository.Services
                 })
                 .ToListAsync();
         }
+
+        public async Task<IReadOnlyList<RoutineAssigned>> GetActiveByUserAsync(Guid userId)
+        {
+            return await _context.RoutineAssigneds.AsNoTracking()
+                .Where(ra => ra.IsActive && ra.UserId == userId)
+                .ToListAsync();
+        }
+        public async Task<RoutineAssigned?> GetLatestByUserUntilAsync(Guid userId, DateTime untilUtc)
+        {
+            return await _context.RoutineAssigneds.AsNoTracking()
+                .Where(ra => ra.UserId == userId && ra.CreatedAt <= untilUtc)
+                .OrderByDescending(ra => ra.CreatedAt)
+                .FirstOrDefaultAsync();
+        }
     }
 }

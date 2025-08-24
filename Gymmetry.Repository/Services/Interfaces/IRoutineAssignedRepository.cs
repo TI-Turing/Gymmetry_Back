@@ -13,5 +13,7 @@ namespace Gymmetry.Repository.Services.Interfaces
         Task<bool> UpdateRoutineAssignedAsync(RoutineAssigned entity);
         Task<bool> DeleteRoutineAssignedAsync(Guid id);
         Task<IEnumerable<RoutineAssigned>> FindRoutineAssignedsByFieldsAsync(Dictionary<string, object> filters);
+        Task<IReadOnlyList<RoutineAssigned>> GetActiveByUserAsync(Guid userId);
+        Task<RoutineAssigned?> GetLatestByUserUntilAsync(Guid userId, DateTime untilUtc);
     }
 }

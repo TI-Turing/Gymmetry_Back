@@ -88,5 +88,16 @@ namespace Gymmetry.Repository.Services
             var lambda = Expression.Lambda<Func<Daily, bool>>(predicate, parameter);
             return await _context.Dailies.Where(lambda).ToListAsync();
         }
+
+        public async Task<IReadOnlyList<Daily>> GetUserDailiesInRangeAsync(Guid userId, DateTime startUtc, DateTime endUtc)
+        {
+            return await _context.Dailies
+                .AsNoTracking()
+                .Include(d => d.RoutineDay)
+                .ThenInclude(rd => rd.RoutineTemplate)
+                .Include(d => d.Branch)
+                .Where(d => d.IsActive && d.UserId == userId && d.CreatedAt >= startUtc && d.CreatedAt <= endUtc)
+                .ToListAsync();
+        }
     }
 }

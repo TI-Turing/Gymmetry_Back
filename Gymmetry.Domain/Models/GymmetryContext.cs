@@ -132,6 +132,10 @@ public partial class GymmetryContext : DbContext
 
     public virtual DbSet<BranchMedia> BranchMedias { get; set; }
 
+    public virtual DbSet<PaymentIntent> Payments { get; set; } // Nueva DbSet para PaymentIntent
+
+    public virtual DbSet<UserExerciseMax> UserExerciseMaxes { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccessMethodType>(entity =>
@@ -1383,6 +1387,43 @@ public partial class GymmetryContext : DbContext
                 .WithMany()
                 .HasForeignKey(e => e.BranchId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+        modelBuilder.Entity<PaymentIntent>(entity =>
+        {
+            entity.ToTable("Payments");
+            entity.HasIndex(e => e.PreferenceId).IsUnique();
+            entity.HasIndex(e => e.ExternalPaymentId);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.PreferenceId).HasMaxLength(100);
+            entity.Property(e => e.ExternalPaymentId).HasMaxLength(100);
+            entity.Property(e => e.Currency).HasMaxLength(10);
+            entity.Property(e => e.Amount).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.Status).HasConversion<string>().HasMaxLength(20);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+        });
+
+        modelBuilder.Entity<UserExerciseMax>(entity =>
+        {
+            entity.ToTable("UserExerciseMax");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.WeightKg).HasColumnType("decimal(18,2)");
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
+            entity.Property(e => e.Ip).HasMaxLength(45);
+            entity.HasIndex(e => new { e.UserId, e.ExerciseId, e.AchievedAt }).HasDatabaseName("IX_UserExerciseMax_User_Exercise_Date");
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_UserExerciseMax_User");
+            entity.HasOne(e => e.Exercise)
+                .WithMany()
+                .HasForeignKey(e => e.ExerciseId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_UserExerciseMax_Exercise");
         });
         OnModelCreatingPartial(modelBuilder);
     }

@@ -12,6 +12,8 @@ using Gymmetry.Repository.Services.Interfaces;
 using Gymmetry.Repository.Persistence.Seed;
 using Gymmetry.Repository.Services.Cache;
 using Microsoft.Extensions.Logging;
+using Gymmetry.Application.Services.Payments;
+using Gymmetry.Domain.Options;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -72,6 +74,7 @@ builder.Services.AddScoped<IEmployeeRegisterDailyRepository, EmployeeRegisterDai
 builder.Services.AddScoped<IEmployeeTypeRepository, EmployeeTypeRepository>();
 builder.Services.AddScoped<IEmployeeUserRepository, EmployeeUserRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
+builder.Services.AddScoped<IFeedRepository, FeedRepository>();
 builder.Services.AddScoped<IFitUserRepository, FitUserRepository>();
 builder.Services.AddScoped<IGymPlanSelectedModuleRepository, GymPlanSelectedModuleRepository>();
 builder.Services.AddScoped<IGymPlanSelectedRepository, GymPlanSelectedRepository>();
@@ -101,9 +104,37 @@ builder.Services.AddScoped<IVerificationTypeRepository, VerificationTypeReposito
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IGymImageRepository, GymImageRepository>();
+builder.Services.AddScoped<IPaymentIntentRepository, PaymentIntentRepository>();
+builder.Services.AddScoped<IUserExerciseMaxRepository, UserExerciseMaxRepository>();
+builder.Services.Configure<PaymentsOptions>(configuration.GetSection("Payments"));
+// Payment infrastructure + repositories
+builder.Services.AddHttpClient<MercadoPagoGatewayRepository>();
+builder.Services.AddScoped<IPaymentGatewayRepository, MercadoPagoGatewayRepository>();
+// Payment application services
+builder.Services.AddScoped<IPaymentIntentService, PaymentIntentService>();
+
+var paymentsOptions = configuration.GetSection("Payments").Get<Gymmetry.Domain.Options.PaymentsOptions>() ?? new Gymmetry.Domain.Options.PaymentsOptions();
+if (paymentsOptions.GatewayProvider == 1)
+{
+    builder.Services.AddScoped<IPaymentGatewayService, PayUPaymentGatewayService>();
+}
+else if (paymentsOptions.GatewayProvider == 2)
+{
+    builder.Services.AddScoped<IPaymentGatewayService, WompiPaymentGateway>();
+}
+else if (paymentsOptions.GatewayProvider == 3)
+{
+    builder.Services.AddScoped<IPaymentGatewayService, MercadoPagoPaymentGatewayService>();
+}
+else if (paymentsOptions.GatewayProvider == 4)
+{
+    // Stripe skeleton to implement later; fallback to MercadoPago for ahora
+    builder.Services.AddScoped<IPaymentGatewayService, MercadoPagoPaymentGatewayService>();
+}
 
 // Inyección de dependencias de servicios de aplicación
 builder.Services.AddScoped<IAccessMethodTypeService, AccessMethodTypeService>();
+builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -125,6 +156,7 @@ builder.Services.AddScoped<IEmployeeRegisterDailyService, EmployeeRegisterDailyS
 builder.Services.AddScoped<IEmployeeTypeService, EmployeeTypeService>();
 builder.Services.AddScoped<IEmployeeUserService, EmployeeUserService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddScoped<IFeedService, FeedService>();
 builder.Services.AddScoped<IFitUserService, FitUserService>();
 builder.Services.AddScoped<IGymPlanSelectedModuleService, GymPlanSelectedModuleService>();
 builder.Services.AddScoped<IGymPlanSelectedService, GymPlanSelectedService>();
@@ -151,6 +183,8 @@ builder.Services.AddScoped<ISubModuleService, SubModuleService>();
 builder.Services.AddScoped<IUninstallOptionService, UninstallOptionService>();
 builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 builder.Services.AddScoped<IVerificationTypeService, VerificationTypeService>();
+// Registrar servicios nuevos
+builder.Services.AddScoped<IUserExerciseMaxService, UserExerciseMaxService>();
 builder.Services.AddHttpClient<Gymmetry.Application.Services.ConfigAutoService>();
 builder.Services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(builder.Configuration);
 

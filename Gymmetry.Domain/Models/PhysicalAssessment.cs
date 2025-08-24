@@ -7,51 +7,51 @@ public partial class PhysicalAssessment
 {
     public Guid Id { get; set; }
 
-    public string Height { get; set; } = null!;
+    public string? Height { get; set; }
 
-    public string Weight { get; set; } = null!;
+    public string? Weight { get; set; }
 
-    public string LeftArm { get; set; } = null!;
+    public string? LeftArm { get; set; }
 
-    public string RighArm { get; set; } = null!;
+    public string? RighArm { get; set; }
 
-    public string LeftForearm { get; set; } = null!;
+    public string? LeftForearm { get; set; }
 
-    public string RightForearm { get; set; } = null!;
+    public string? RightForearm { get; set; }
 
-    public string LeftThigh { get; set; } = null!;
+    public string? LeftThigh { get; set; }
 
-    public string RightThigh { get; set; } = null!;
+    public string? RightThigh { get; set; }
 
-    public string LeftCalf { get; set; } = null!;
+    public string? LeftCalf { get; set; }
 
-    public string RightCalf { get; set; } = null!;
+    public string? RightCalf { get; set; }
 
-    public string Abdomen { get; set; } = null!;
+    public string? Abdomen { get; set; }
 
-    public string Chest { get; set; } = null!;
+    public string? Chest { get; set; }
 
-    public string UpperBack { get; set; } = null!;
+    public string? UpperBack { get; set; }
 
-    public string LowerBack { get; set; } = null!;
+    public string? LowerBack { get; set; }
 
-    public string Neck { get; set; } = null!;
+    public string? Neck { get; set; }
 
-    public string Waist { get; set; } = null!;
+    public string? Waist { get; set; }
 
-    public string Hips { get; set; } = null!;
+    public string? Hips { get; set; }
 
-    public string Shoulders { get; set; } = null!;
+    public string? Shoulders { get; set; }
 
-    public string Wrist { get; set; } = null!;
+    public string? Wrist { get; set; }
 
-    public string BodyFatPercentage { get; set; } = null!;
+    public string? BodyFatPercentage { get; set; }
 
-    public string MuscleMass { get; set; } = null!;
+    public string? MuscleMass { get; set; }
 
-    public string Bmi { get; set; } = null!;
+    public string? Bmi { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
 
@@ -59,7 +59,7 @@ public partial class PhysicalAssessment
 
     public string? Ip { get; set; }
 
-    public bool IsActive { get; set; }
+    public bool? IsActive { get; set; }
 
     public Guid UserId { get; set; }
 

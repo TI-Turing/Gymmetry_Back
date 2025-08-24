@@ -1,88 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Gymmetry.Application.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
-using System.Security.Cryptography;
-using Gymmetry.Domain.Enums;
-using Microsoft.Azure.Functions.Worker.Http;
-using System.Text.Json.Nodes;
+using Gymmetry.Domain.DTO.Payments.Requests;
+using Gymmetry.Domain.DTO.Payments.Responses;
+using Gymmetry.Domain.Models;
 
 namespace Gymmetry.Application.Services.Payments
 {
+    // Adaptado al nuevo contrato. Actualmente no usado, retorna NotSupported para preferencias.
     public class WompiPaymentGateway : IPaymentGatewayService
     {
-        private readonly string _publicKey = Environment.GetEnvironmentVariable("WOMPI_PUBLIC_KEY");
-        private readonly string _privateKey = Environment.GetEnvironmentVariable("WOMPI_PRIVATE_KEY");
-        private readonly HttpClient _httpClient = new HttpClient();
+        public Task<PaymentPreferenceResponse> CreateGymPlanPreferenceAsync(CreateGymPlanPreferenceRequest request)
+            => Task.FromException<PaymentPreferenceResponse>(new NotSupportedException("Wompi no implementado para gym planes aún"));
 
-        public async Task<string> CreatePaymentUrlAsync(string userId, decimal amount, string description)
-        {
-            var requestBody = new
-            {
-                public_key = _publicKey,
-                amount_in_cents = (int)(amount * 100),
-                currency = "COP",
-                customer_email = userId, // Assuming userId is an email
-                payment_method_type = "PSE",
-                reference = Guid.NewGuid().ToString(),
-                description = description
-            };
+        public Task<PaymentPreferenceResponse> CreateUserPlanPreferenceAsync(CreateUserPlanPreferenceRequest request)
+            => Task.FromException<PaymentPreferenceResponse>(new NotSupportedException("Wompi no implementado para user planes aún"));
 
-            var content = new StringContent(JsonSerializer.Serialize(requestBody), Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync("https://sandbox.wompi.co/v1/transactions", content);
+        public Task<(PaymentStatus Status, string RawJson, decimal? Amount, string? Currency, string? PreferenceId, string? ExternalPaymentId)> GetPaymentDetailsAsync(string externalPaymentId)
+            => Task.FromResult<(PaymentStatus, string, decimal?, string?, string?, string?)>((PaymentStatus.Pending, string.Empty, null, null, null, externalPaymentId));
 
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception("Failed to create payment URL");
-            }
-
-            var responseData = JsonNode.Parse(await response.Content.ReadAsStringAsync());
-            return responseData?["data"]?["checkout_url"]?.ToString();
-        }
-
-        public async Task<PaymentStatusEnum> HandleWebhookAsync(HttpRequest req)
-        {
-            using var reader = new StreamReader(req.Body);
-            var body = await reader.ReadToEndAsync();
-
-            var signature = req.Headers["X-Wompi-Signature"].FirstOrDefault();
-            if (string.IsNullOrEmpty(signature) || !ValidateSignature(body, signature))
-            {
-                throw new Exception("Invalid webhook signature");
-            }
-
-            var webhookData = JsonNode.Parse(body);
-            var transactionStatus = webhookData?["data"]?["transaction"]?["status"]?.ToString();
-
-            return Enum.TryParse(transactionStatus, true, out PaymentStatusEnum status) ? status : PaymentStatusEnum.Pending;
-        }
-
-        public async Task<PaymentStatusEnum> CheckPaymentStatusAsync(string externalPaymentId)
-        {
-            var response = await _httpClient.GetAsync($"https://sandbox.wompi.co/v1/transactions/{externalPaymentId}");
-
-            if (!response.IsSuccessStatusCode)
-            {
-                throw new Exception("Failed to check payment status");
-            }
-
-            var responseData = JsonNode.Parse(await response.Content.ReadAsStringAsync());
-            var transactionStatus = responseData?["data"]?["status"]?.ToString();
-
-            return Enum.TryParse(transactionStatus, true, out PaymentStatusEnum status) ? status : PaymentStatusEnum.Pending;
-        }
-
-        private bool ValidateSignature(string payload, string signature)
-        {
-            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_privateKey));
-            var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(payload));
-            var computedSignature = BitConverter.ToString(computedHash).Replace("-", string.Empty).ToLower();
-            return computedSignature == signature;
-        }
+        public bool VerifyWebhookSignature(System.Collections.Generic.IDictionary<string, string> headers, string rawBody) => true;
+        public Task<PaymentPreferenceResponse> CreateUserPlanCardPaymentAsync(CreateCardPaymentRequest request)
+            => Task.FromException<PaymentPreferenceResponse>(new NotSupportedException("Wompi card flow no implementado"));
+        public Task<PaymentPreferenceResponse> CreateGymPlanCardPaymentAsync(CreateCardPaymentRequest request)
+            => Task.FromException<PaymentPreferenceResponse>(new NotSupportedException("Wompi card flow no implementado"));
     }
 }
