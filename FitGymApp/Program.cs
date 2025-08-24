@@ -25,9 +25,25 @@ builder.Services
 
 // Configuración de cadena de conexión
 var configuration = builder.Configuration;
-var connectionString = configuration.GetConnectionString("DefaultConnection")
-    ?? configuration["ConnectionStrings:DefaultConnection"]
-    ?? configuration["ConnectionStrings:Gymmetry"];
+string? ResolveConn(params string[] keys)
+{
+    foreach (var k in keys)
+    {
+        var v = configuration[k];
+        if (!string.IsNullOrWhiteSpace(v)) return v;
+    }
+    return null;
+}
+var connectionString = ResolveConn(
+    // Preferir local.settings (Values)
+    "Values:ConnectionStrings:DefaultConnection",
+    "Values:ConnectionStrings:Gymmetry",
+    // Luego claves sin Values
+    "ConnectionStrings:DefaultConnection",
+    "ConnectionStrings:Gymmetry",
+    // O provider por defecto de GetConnectionString
+    configuration.GetConnectionString("DefaultConnection") ?? string.Empty
+) ?? "";
 
 // Registrar DbContext
 builder.Services.AddDbContext<GymmetryContext>(options =>
@@ -105,28 +121,44 @@ builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IGymImageRepository, GymImageRepository>();
 builder.Services.AddScoped<IPaymentIntentRepository, PaymentIntentRepository>();
-builder.Services.AddScoped<IUserExerciseMaxRepository, UserExerciseMaxRepository>();
-builder.Services.Configure<PaymentsOptions>(configuration.GetSection("Payments"));
+
+// Cargar PaymentsOptions desde configuración o Values
+int resolveGatewayProvider()
+{
+    var gp = configuration["Payments:GatewayProvider"]
+        ?? configuration["Values:Payments:GatewayProvider"];
+    return int.TryParse(gp, out var n) ? n : 3;
+}
+string? resolve(string key) => configuration[$"Payments:{key}"] ?? configuration[$"Values:Payments:{key}"];
+
+builder.Services.Configure<PaymentsOptions>(opts =>
+{
+    opts.GatewayProvider = resolveGatewayProvider();
+    opts.BaseSuccessUrl = resolve("BaseSuccessUrl");
+    opts.BaseFailureUrl = resolve("BaseFailureUrl");
+    opts.BasePendingUrl = resolve("BasePendingUrl");
+});
+
 // Payment infrastructure + repositories
 builder.Services.AddHttpClient<MercadoPagoGatewayRepository>();
 builder.Services.AddScoped<IPaymentGatewayRepository, MercadoPagoGatewayRepository>();
 // Payment application services
 builder.Services.AddScoped<IPaymentIntentService, PaymentIntentService>();
 
-var paymentsOptions = configuration.GetSection("Payments").Get<Gymmetry.Domain.Options.PaymentsOptions>() ?? new Gymmetry.Domain.Options.PaymentsOptions();
-if (paymentsOptions.GatewayProvider == 1)
+var providerValue = resolveGatewayProvider();
+if (providerValue == 1)
 {
     builder.Services.AddScoped<IPaymentGatewayService, PayUPaymentGatewayService>();
 }
-else if (paymentsOptions.GatewayProvider == 2)
+else if (providerValue == 2)
 {
     builder.Services.AddScoped<IPaymentGatewayService, WompiPaymentGateway>();
 }
-else if (paymentsOptions.GatewayProvider == 3)
+else if (providerValue == 3)
 {
     builder.Services.AddScoped<IPaymentGatewayService, MercadoPagoPaymentGatewayService>();
 }
-else if (paymentsOptions.GatewayProvider == 4)
+else if (providerValue == 4)
 {
     // Stripe skeleton to implement later; fallback to MercadoPago for ahora
     builder.Services.AddScoped<IPaymentGatewayService, MercadoPagoPaymentGatewayService>();
@@ -183,13 +215,11 @@ builder.Services.AddScoped<ISubModuleService, SubModuleService>();
 builder.Services.AddScoped<IUninstallOptionService, UninstallOptionService>();
 builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 builder.Services.AddScoped<IVerificationTypeService, VerificationTypeService>();
-// Registrar servicios nuevos
-builder.Services.AddScoped<IUserExerciseMaxService, UserExerciseMaxService>();
 builder.Services.AddHttpClient<Gymmetry.Application.Services.ConfigAutoService>();
 builder.Services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(builder.Configuration);
 
 // Configuración de Redis
-var redisConnectionString = configuration["Redis:ConnectionString"] ?? "localhost:6379";
+var redisConnectionString = configuration["Redis:ConnectionString"] ?? configuration["Values:Redis:ConnectionString"] ?? "localhost:6379";
 builder.Services.AddSingleton<IRedisCacheService>(sp =>
     new RedisCacheService(
         redisConnectionString,
