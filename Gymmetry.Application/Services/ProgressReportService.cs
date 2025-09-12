@@ -24,6 +24,7 @@ namespace Gymmetry.Application.Services
         private readonly IPhysicalAssessmentRepository _physicalAssessmentRepository;
         private readonly ILogErrorService _logErrorService;
         private readonly ILogger<ProgressReportService> _logger;
+        private readonly IUserExerciseMaxRepository _userExerciseMaxRepository;
 
         public ProgressReportService(
             IDailyRepository dailyRepository,
@@ -34,7 +35,8 @@ namespace Gymmetry.Application.Services
             IRoutineAssignedRepository routineAssignedRepository,
             IPhysicalAssessmentRepository physicalAssessmentRepository,
             ILogErrorService logErrorService,
-            ILogger<ProgressReportService> logger)
+            ILogger<ProgressReportService> logger,
+            IUserExerciseMaxRepository userExerciseMaxRepository)
         {
             _dailyRepository = dailyRepository;
             _dailyHistoryRepository = dailyHistoryRepository;
@@ -45,6 +47,7 @@ namespace Gymmetry.Application.Services
             _physicalAssessmentRepository = physicalAssessmentRepository;
             _logErrorService = logErrorService;
             _logger = logger;
+            _userExerciseMaxRepository = userExerciseMaxRepository;
         }
 
         public async Task<ApplicationResponse<ProgressSummaryResponse>> GetSummaryAsync(ProgressReportRequest request)
@@ -79,7 +82,7 @@ namespace Gymmetry.Application.Services
                 await BuildExercisesObjectivesAndMusclesAsync(summary, dailies, request.TopExercises);
                 if (request.ComparePreviousPeriod) BuildComparison(summary, dailies, startLocal, endLocal);
                 if (request.IncludeAssessments) await BuildAssessmentsAsync(summary, request.UserId!.Value, startUtc);
-                BuildSuggestions(summary);
+                await BuildPersonalRecordsAsync(summary, request.UserId!.Value);
 
                 return new ApplicationResponse<ProgressSummaryResponse> { Success = true, Data = summary };
             }
@@ -581,6 +584,28 @@ namespace Gymmetry.Application.Services
                 });
             }
             return new ApplicationResponse<MultiProgressHistoryResponse> { Success = true, Data = history };
+        }
+
+        private async Task BuildPersonalRecordsAsync(ProgressSummaryResponse summary, Guid userId)
+        {
+            try
+            {
+                var prs = await _userExerciseMaxRepository.GetLatestByUserAsync(userId, 10);
+                foreach (var pr in prs)
+                {
+                    summary.Exercises.PersonalRecords.Add(new PersonalRecordItem
+                    {
+                        ExerciseId = pr.ExerciseId,
+                        ExerciseName = pr.Exercise?.Name ?? string.Empty,
+                        WeightKg = pr.WeightKg,
+                        AchievedAt = pr.AchievedAt.ToString("yyyy-MM-dd")
+                    });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogWarning(ex, "[ProgressReport] No se pudieron cargar PRs");
+            }
         }
     }
 }

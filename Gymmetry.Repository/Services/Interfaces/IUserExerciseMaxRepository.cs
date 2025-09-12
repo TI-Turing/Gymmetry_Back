@@ -13,5 +13,6 @@ namespace Gymmetry.Repository.Services.Interfaces
         Task<bool> UpdateAsync(UserExerciseMax entity);
         Task<bool> DeleteAsync(Guid id);
         Task<IEnumerable<UserExerciseMax>> FindByFieldsAsync(Dictionary<string, object> filters);
+        Task<IEnumerable<UserExerciseMax>> GetLatestByUserAsync(Guid userId, int topExercises = 10);
     }
 }

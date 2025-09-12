@@ -58,9 +58,11 @@ namespace Gymmetry.Domain.DTO.Progress
         public int TotalReps { get; set; }
         public List<MissingPlannedItem> MissingPlanned { get; set; } = new();
         public List<ExerciseFreq> NewExercises { get; set; } = new();
+        public List<PersonalRecordItem> PersonalRecords { get; set; } = new();
     }
     public class ExerciseFreq { public Guid ExerciseId { get; set; } public string Name { get; set; } = string.Empty; public int Sessions { get; set; } public int Series { get; set; } public int Reps { get; set; } public decimal PercentSessions { get; set; } }
     public class MissingPlannedItem { public Guid ExerciseId { get; set; } public string Name { get; set; } = string.Empty; public int PlannedOccurrences { get; set; } public int ExecutedOccurrences { get; set; } }
+    public class PersonalRecordItem { public Guid ExerciseId { get; set; } public string ExerciseName { get; set; } = string.Empty; public decimal WeightKg { get; set; } public string AchievedAt { get; set; } = string.Empty; }
 
     public class ObjectiveBlock
     {
