@@ -15,6 +15,7 @@ namespace Gymmetry.Application.Services.Interfaces
         Task<ApplicationResponse<bool>> LogLoginAsync(Guid? userId, bool success, string? ip = null, string? message = null);
         Task<ApplicationResponse<bool>> LogLoginAsync(Guid? userId, bool success, string refreshToken, DateTime refreshTokenExpiration, string? ip = null, string? message = null);
         Task<ApplicationResponse<LogLogin>> GetLogLoginByUserId(Guid userId);
+        Task<ApplicationResponse<LogLogin>> GetLogLoginByRefreshTokenAsync(string refreshToken);
         Task<ApplicationResponse<bool>> UpdateLogLoginAsync(LogLogin logLogin);
     }
 

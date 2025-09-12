@@ -14,5 +14,6 @@ namespace Gymmetry.Repository.Services.Interfaces
         Task<bool> DeleteDailyExerciseAsync(Guid id);
         Task<IEnumerable<DailyExercise>> FindDailyExercisesByFieldsAsync(Dictionary<string, object> filters);
         Task<IEnumerable<DailyExercise>> CreateDailyExercisesBulkAsync(IEnumerable<DailyExercise> entities); // Nuevo método
+        Task<IReadOnlyList<DailyExercise>> GetByDailyIdsAsync(IEnumerable<Guid> dailyIds); // Nuevo para reportes
     }
 }

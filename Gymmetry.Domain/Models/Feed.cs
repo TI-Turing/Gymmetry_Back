@@ -17,6 +17,14 @@ public partial class Feed
     public string? Ip { get; set; }
     public bool IsActive { get; set; } = true;
     public bool IsDeleted { get; set; } = false;
+    public bool IsAnonymous { get; set; } = false;
+
+    // Métricas agregadas
+    public int LikesCount { get; set; } = 0;
+    public int CommentsCount { get; set; } = 0;
 
     public virtual User User { get; set; } = null!;
+
+    public virtual ICollection<FeedLike> FeedLikes { get; set; } = new List<FeedLike>();
+    public virtual ICollection<FeedComment> FeedComments { get; set; } = new List<FeedComment>();
 }

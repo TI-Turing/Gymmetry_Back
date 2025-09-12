@@ -31,6 +31,10 @@ namespace Gymmetry.Repository.Services
         {
             return await _context.LogLogins.Where(x=>x.UserId==userId && x.IsActive==true).FirstOrDefaultAsync();
         }
+        public async Task<LogLogin> GetByRefreshTokenAsync(string refreshToken)
+        {
+            return await _context.LogLogins.Where(x => x.RefreshToken == refreshToken && x.IsActive == true).FirstOrDefaultAsync();
+        }
         public async Task<bool> UpdateAsync(LogLogin log)
         {
             _context.LogLogins.Update(log);

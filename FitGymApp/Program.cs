@@ -53,6 +53,13 @@ builder.Services.AddAutoMapper(cfg => {
     cfg.AddProfile<AutoMapperProfile>();
 });
 
+// OAuth client credentials options
+builder.Services.Configure<OAuthOptions>(opts =>
+{
+    var section = configuration.GetSection("OAuth");
+    section.Bind(opts);
+});
+
 // Inyección de dependencias de repositorios
 builder.Services.AddScoped<IUserRepository, UserRepository>(sp =>
     new UserRepository(
@@ -70,6 +77,7 @@ builder.Services.AddScoped<IFeedRepository, FeedRepository>(sp =>
     )
 );
 
+//Repository services
 builder.Services.AddScoped<IAccessMethodTypeRepository, AccessMethodTypeRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ILogErrorRepository, LogErrorRepository>();
@@ -90,7 +98,6 @@ builder.Services.AddScoped<IEmployeeRegisterDailyRepository, EmployeeRegisterDai
 builder.Services.AddScoped<IEmployeeTypeRepository, EmployeeTypeRepository>();
 builder.Services.AddScoped<IEmployeeUserRepository, EmployeeUserRepository>();
 builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-builder.Services.AddScoped<IFeedRepository, FeedRepository>();
 builder.Services.AddScoped<IFitUserRepository, FitUserRepository>();
 builder.Services.AddScoped<IGymPlanSelectedModuleRepository, GymPlanSelectedModuleRepository>();
 builder.Services.AddScoped<IGymPlanSelectedRepository, GymPlanSelectedRepository>();
@@ -164,7 +171,7 @@ else if (providerValue == 4)
     builder.Services.AddScoped<IPaymentGatewayService, MercadoPagoPaymentGatewayService>();
 }
 
-// Inyección de dependencias de servicios de aplicación
+// Application services
 builder.Services.AddScoped<IAccessMethodTypeService, AccessMethodTypeService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
@@ -206,6 +213,7 @@ builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IPhysicalAssessmentService, PhysicalAssessmentService>();
 builder.Services.AddScoped<IPlanService, PlanService>();
 builder.Services.AddScoped<IPlanTypeService, PlanTypeService>();
+builder.Services.AddScoped<IProgressReportService, ProgressReportService>();
 builder.Services.AddScoped<IRoutineAssignedService, RoutineAssignedService>();
 builder.Services.AddScoped<IRoutineDayService, RoutineDayService>();
 builder.Services.AddScoped<IRoutineExerciseService, RoutineExerciseService>();
@@ -217,6 +225,11 @@ builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 builder.Services.AddScoped<IVerificationTypeService, VerificationTypeService>();
 builder.Services.AddHttpClient<Gymmetry.Application.Services.ConfigAutoService>();
 builder.Services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(builder.Configuration);
+
+// Client credentials service
+builder.Services.AddScoped<IClientCredentialsService, ClientCredentialsService>();
+// Payment read service
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 // Configuración de Redis
 var redisConnectionString = configuration["Redis:ConnectionString"] ?? configuration["Values:Redis:ConnectionString"] ?? "localhost:6379";

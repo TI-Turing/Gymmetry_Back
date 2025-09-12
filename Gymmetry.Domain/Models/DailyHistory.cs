@@ -27,6 +27,8 @@ public partial class DailyHistory
 
     public Guid RoutineExerciseId { get; set; }
 
+    public int Percentage { get; set; } // 0-100
+
     public virtual Branch Branch { get; set; } = null!;
 
     public virtual ICollection<DailyExerciseHistory> DailyExerciseHistories { get; set; } = new List<DailyExerciseHistory>();

@@ -23,7 +23,9 @@ public partial class DailyExerciseHistory
 
     public Guid DailyHistoryId { get; set; }
 
+    public Guid ExerciseId { get; set; } // FK directa al ejercicio
+
     public virtual DailyHistory DailyHistory { get; set; } = null!;
 
-    public virtual ICollection<Exercise> Exercises { get; set; } = new List<Exercise>();
+    public virtual Exercise Exercise { get; set; } = null!; // Navegación 1:1 similar a DailyExercise
 }

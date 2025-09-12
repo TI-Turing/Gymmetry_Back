@@ -16,6 +16,7 @@ public partial class Post
     public string? Ip { get; set; }
     public bool IsActive { get; set; } = true;
     public bool IsDeleted { get; set; } = false;
+    public bool IsAnonymous { get; set; } = false;
 
     public virtual User User { get; set; } = null!;
     public virtual ICollection<Comment> Comments { get; set; } = new List<Comment>();

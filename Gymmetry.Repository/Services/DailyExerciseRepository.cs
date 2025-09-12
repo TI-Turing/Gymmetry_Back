@@ -103,5 +103,16 @@ namespace Gymmetry.Repository.Services
             await _context.SaveChangesAsync();
             return list;
         }
+
+        public async Task<IReadOnlyList<DailyExercise>> GetByDailyIdsAsync(IEnumerable<Guid> dailyIds)
+        {
+            var ids = dailyIds.ToList();
+            if (!ids.Any()) return new List<DailyExercise>();
+            return await _context.DailyExercises
+                .AsNoTracking()
+                .Include(x => x.Exercise)
+                .Where(x => x.IsActive && ids.Contains(x.DailyId))
+                .ToListAsync();
+        }
     }
 }

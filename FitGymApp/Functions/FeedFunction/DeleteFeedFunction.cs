@@ -5,16 +5,17 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Gymmetry.Application.Services.Interfaces;
+using Gymmetry.Domain.DTO;
 using Gymmetry.Utils;
 
 namespace Gymmetry.Functions.FeedFunction
 {
-    public class FeedDeleteFunction
+    public class DeleteFeedFunction
     {
-        private readonly ILogger<FeedDeleteFunction> _logger;
+        private readonly ILogger<DeleteFeedFunction> _logger;
         private readonly IFeedService _feedService;
 
-        public FeedDeleteFunction(ILogger<FeedDeleteFunction> logger, IFeedService feedService)
+        public DeleteFeedFunction(ILogger<DeleteFeedFunction> logger, IFeedService feedService)
         {
             _logger = logger;
             _feedService = feedService;
@@ -28,11 +29,12 @@ namespace Gymmetry.Functions.FeedFunction
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
                 var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
-                await unauthorizedResponse.WriteStringAsync("Unauthorized");
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<object>{ Success=false, Message=error!, StatusCode=401 });
                 return unauthorizedResponse;
             }
-            var response = req.CreateResponse(HttpStatusCode.NotImplemented);
-            await response.WriteStringAsync("Feed delete not implemented yet.");
+            var result = await _feedService.DeleteFeedAsync(id);
+            var response = req.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
+            await response.WriteAsJsonAsync(new ApiResponse<object>{ Success=result.Success, Message=result.Message, Data=result.Data, StatusCode = result.Success ? 200 : 400 });
             return response;
         }
     }

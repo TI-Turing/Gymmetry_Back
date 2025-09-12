@@ -14,5 +14,7 @@ namespace Gymmetry.Repository.Services.Interfaces
         Task<bool> UpdateAsync(PaymentIntent intent);
         Task<bool> ExistsPendingForUserPlanAsync(Guid userId, Guid planTypeId);
         Task<bool> ExistsPendingForGymPlanAsync(Guid gymId, Guid gymPlanSelectedTypeId);
+        Task<IEnumerable<PaymentIntent>> GetAllAsync();
+        Task<IEnumerable<PaymentIntent>> FindByFieldsAsync(Dictionary<string, object> filters);
     }
 }

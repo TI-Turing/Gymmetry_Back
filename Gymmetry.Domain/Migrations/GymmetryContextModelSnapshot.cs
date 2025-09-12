@@ -193,51 +193,49 @@ namespace Gymmetry.Domain.Migrations
             modelBuilder.Entity("Gymmetry.Domain.Models.BranchMedia", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BranchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ip")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("MediaType")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("BranchMedia", (string)null);
+                    b.ToTable("BranchMedias");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.BranchService", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BranchId")
@@ -247,24 +245,22 @@ namespace Gymmetry.Domain.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Ip")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Notes")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -272,42 +268,40 @@ namespace Gymmetry.Domain.Migrations
 
                     b.HasIndex("BranchServiceTypeId");
 
-                    b.ToTable("BranchService", (string)null);
+                    b.ToTable("BranchServices");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.BranchServiceType", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ip")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
-                    b.ToTable("BranchServiceType", (string)null);
+                    b.ToTable("BranchServiceTypes");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.Brand", b =>
@@ -397,6 +391,9 @@ namespace Gymmetry.Domain.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -423,20 +420,20 @@ namespace Gymmetry.Domain.Migrations
             modelBuilder.Entity("Gymmetry.Domain.Models.CurrentOccupancy", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("BranchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Ip")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -445,13 +442,13 @@ namespace Gymmetry.Domain.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("CurrentOccupancy", (string)null);
+                    b.ToTable("CurrentOccupancies");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.Daily", b =>
@@ -564,6 +561,9 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime");
 
+                    b.Property<Guid>("ExerciseId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Ip")
                         .HasMaxLength(45)
                         .HasColumnType("nvarchar(45)");
@@ -587,6 +587,8 @@ namespace Gymmetry.Domain.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex(new[] { "DailyHistoryId" }, "IX_FK_DailyHistoryDailyExerciseHistory");
+
+                    b.HasIndex(new[] { "ExerciseId" }, "IX_FK_ExerciseDailyExerciseHistory_Historic");
 
                     b.ToTable("DailyExerciseHistory", (string)null);
                 });
@@ -614,6 +616,9 @@ namespace Gymmetry.Domain.Migrations
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
+
+                    b.Property<int>("Percentage")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("RoutineExerciseId")
                         .HasColumnType("uniqueidentifier");
@@ -852,9 +857,6 @@ namespace Gymmetry.Domain.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
-                    b.Property<Guid?>("DailyExerciseHistoryId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime");
 
@@ -895,8 +897,6 @@ namespace Gymmetry.Domain.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DailyExerciseHistoryId");
-
                     b.HasIndex("MachineId");
 
                     b.HasIndex(new[] { "CategoryExerciseId" }, "IX_FK_ExerciseDailyExerciseHistory");
@@ -908,6 +908,11 @@ namespace Gymmetry.Domain.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("CommentsCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
@@ -928,10 +933,18 @@ namespace Gymmetry.Domain.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(false);
+
+                    b.Property<int>("LikesCount")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0);
 
                     b.Property<string>("MediaType")
                         .HasMaxLength(50)
@@ -957,6 +970,98 @@ namespace Gymmetry.Domain.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Feed", (string)null);
+                });
+
+            modelBuilder.Entity("Gymmetry.Domain.Models.FeedComment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("FeedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FeedId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FeedComment", (string)null);
+                });
+
+            modelBuilder.Entity("Gymmetry.Domain.Models.FeedLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("FeedId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<bool>("IsActive")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<bool>("IsDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("FeedId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("FeedLike", (string)null);
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.FitUser", b =>
@@ -1110,42 +1215,40 @@ namespace Gymmetry.Domain.Migrations
             modelBuilder.Entity("Gymmetry.Domain.Models.GymImage", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("BranchId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("GymId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Ip")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("datetime");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Url")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("GymImage", (string)null);
+                    b.ToTable("GymImages");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.GymPlanSelected", b =>
@@ -1365,6 +1468,9 @@ namespace Gymmetry.Domain.Migrations
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
 
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -1372,6 +1478,9 @@ namespace Gymmetry.Domain.Migrations
 
                     b.Property<Guid>("PostId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -1952,6 +2061,9 @@ namespace Gymmetry.Domain.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime");
+
                     b.Property<DateTime?>("ExpiresAt")
                         .HasColumnType("datetime2");
 
@@ -1967,6 +2079,13 @@ namespace Gymmetry.Domain.Migrations
 
                     b.Property<string>("Hash")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Ip")
+                        .HasMaxLength(45)
+                        .HasColumnType("nvarchar(45)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime?>("LastStatusCheckAt")
                         .HasColumnType("datetime2");
@@ -2305,6 +2424,9 @@ namespace Gymmetry.Domain.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
                         .HasDefaultValue(true);
+
+                    b.Property<bool>("IsAnonymous")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsDeleted")
                         .ValueGeneratedOnAdd()
@@ -3135,7 +3257,15 @@ namespace Gymmetry.Domain.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_DailyHistoryDailyExerciseHistory");
 
+                    b.HasOne("Gymmetry.Domain.Models.Exercise", "Exercise")
+                        .WithMany()
+                        .HasForeignKey("ExerciseId")
+                        .IsRequired()
+                        .HasConstraintName("FK_ExerciseDailyExerciseHistory_Historic");
+
                     b.Navigation("DailyHistory");
+
+                    b.Navigation("Exercise");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.DailyHistory", b =>
@@ -3195,10 +3325,6 @@ namespace Gymmetry.Domain.Migrations
                         .IsRequired()
                         .HasConstraintName("FK_ExerciseCategoryExercise");
 
-                    b.HasOne("Gymmetry.Domain.Models.DailyExerciseHistory", null)
-                        .WithMany("Exercises")
-                        .HasForeignKey("DailyExerciseHistoryId");
-
                     b.HasOne("Gymmetry.Domain.Models.Machine", "Machine")
                         .WithMany("Exercises")
                         .HasForeignKey("MachineId")
@@ -3218,6 +3344,44 @@ namespace Gymmetry.Domain.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_FeedUser");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Gymmetry.Domain.Models.FeedComment", b =>
+                {
+                    b.HasOne("Gymmetry.Domain.Models.Feed", "Feed")
+                        .WithMany("FeedComments")
+                        .HasForeignKey("FeedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gymmetry.Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Feed");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Gymmetry.Domain.Models.FeedLike", b =>
+                {
+                    b.HasOne("Gymmetry.Domain.Models.Feed", "Feed")
+                        .WithMany("FeedLikes")
+                        .HasForeignKey("FeedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Gymmetry.Domain.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Feed");
 
                     b.Navigation("User");
                 });
@@ -3773,11 +3937,6 @@ namespace Gymmetry.Domain.Migrations
                     b.Navigation("DailyExercises");
                 });
 
-            modelBuilder.Entity("Gymmetry.Domain.Models.DailyExerciseHistory", b =>
-                {
-                    b.Navigation("Exercises");
-                });
-
             modelBuilder.Entity("Gymmetry.Domain.Models.DailyHistory", b =>
                 {
                     b.Navigation("DailyExerciseHistories");
@@ -3812,6 +3971,13 @@ namespace Gymmetry.Domain.Migrations
                     b.Navigation("RoutineDays");
 
                     b.Navigation("RoutineExercises");
+                });
+
+            modelBuilder.Entity("Gymmetry.Domain.Models.Feed", b =>
+                {
+                    b.Navigation("FeedComments");
+
+                    b.Navigation("FeedLikes");
                 });
 
             modelBuilder.Entity("Gymmetry.Domain.Models.FitUser", b =>

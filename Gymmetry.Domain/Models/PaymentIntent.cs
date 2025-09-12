@@ -18,6 +18,9 @@ namespace Gymmetry.Domain.Models
         public PaymentStatus Status { get; set; } = PaymentStatus.Pending;
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? DeletedAt { get; set; }
+        public string? Ip { get; set; }
+        public bool IsActive { get; set; } = true;
         public string? RawPreferenceJson { get; set; }
         public string? RawPaymentJson { get; set; }
         public string? Hash { get; set; }

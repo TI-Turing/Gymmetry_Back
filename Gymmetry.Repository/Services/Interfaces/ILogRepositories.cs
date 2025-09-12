@@ -12,6 +12,7 @@ namespace Gymmetry.Repository.Services.Interfaces
     {
         Task<bool> AddAsync(LogLogin log);
         Task<LogLogin> GetByUserIdAsync(Guid userId);
+        Task<LogLogin> GetByRefreshTokenAsync(string refreshToken);
         Task<bool> UpdateAsync(LogLogin log);
     }
     public interface ILogChangeRepository

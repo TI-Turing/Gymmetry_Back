@@ -7,5 +7,6 @@ namespace Gymmetry.Domain.DTO.DailyExerciseHistory.Request
         public string Set { get; set; } = null!;
         public string Repetitions { get; set; } = null!;
         public Guid DailyHistoryId { get; set; }
+        public Guid ExerciseId { get; set; } // Nuevo
     }
 }

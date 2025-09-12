@@ -82,5 +82,13 @@ namespace Gymmetry.Repository.Services
             var lambda = Expression.Lambda<Func<DailyHistory, bool>>(predicate, parameter);
             return await _context.DailyHistories.Where(lambda).ToListAsync();
         }
+
+        public async Task<IReadOnlyList<DailyHistory>> GetUserDailyHistoriesInRangeAsync(Guid userId, DateTime startUtc, DateTime endUtc)
+        {
+            return await _context.DailyHistories
+                .Where(d => d.UserId == userId && d.IsActive && d.StartDate >= startUtc && d.EndDate <= endUtc)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

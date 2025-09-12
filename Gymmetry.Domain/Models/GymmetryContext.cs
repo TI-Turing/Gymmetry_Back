@@ -136,6 +136,9 @@ public partial class GymmetryContext : DbContext
 
     public virtual DbSet<UserExerciseMax> UserExerciseMaxes { get; set; }
 
+    public virtual DbSet<FeedLike> FeedLikes { get; set; }
+    public virtual DbSet<FeedComment> FeedComments { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccessMethodType>(entity =>
@@ -301,6 +304,7 @@ public partial class GymmetryContext : DbContext
             entity.ToTable("DailyExerciseHistory");
 
             entity.HasIndex(e => e.DailyHistoryId, "IX_FK_DailyHistoryDailyExerciseHistory");
+            entity.HasIndex(e => e.ExerciseId, "IX_FK_ExerciseDailyExerciseHistory_Historic"); // Nuevo índice
 
             entity.Property(e => e.Id).ValueGeneratedNever();
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -314,6 +318,12 @@ public partial class GymmetryContext : DbContext
                 .HasForeignKey(d => d.DailyHistoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_DailyHistoryDailyExerciseHistory");
+
+            entity.HasOne(d => d.Exercise)
+                .WithMany()
+                .HasForeignKey(d => d.ExerciseId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_ExerciseDailyExerciseHistory_Historic");
         });
 
         modelBuilder.Entity<DailyHistory>(entity =>
@@ -331,6 +341,7 @@ public partial class GymmetryContext : DbContext
             entity.Property(e => e.Ip).HasMaxLength(45);
             entity.Property(e => e.StartDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Percentage).HasColumnType("int"); // Nuevo campo
 
             entity.HasOne(d => d.Branch).WithMany(p => p.DailyHistories)
                 .HasForeignKey(d => d.BranchId)
@@ -1304,6 +1315,8 @@ public partial class GymmetryContext : DbContext
             entity.Property(e => e.Ip).HasMaxLength(45);
             entity.Property(e => e.IsActive).HasDefaultValue(true);
             entity.Property(e => e.IsDeleted).HasDefaultValue(false);
+            entity.Property(e => e.LikesCount).HasDefaultValue(0);
+            entity.Property(e => e.CommentsCount).HasDefaultValue(0);
 
             entity.HasOne(e => e.User)
                 .WithMany()
@@ -1312,82 +1325,50 @@ public partial class GymmetryContext : DbContext
                 .HasConstraintName("FK_FeedUser");
         });
 
-        modelBuilder.Entity<GymImage>(entity =>
+        modelBuilder.Entity<FeedLike>(entity =>
         {
-            entity.ToTable("GymImage");
+            entity.ToTable("FeedLike");
             entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Url).HasMaxLength(500);
-            entity.Property(e => e.Description).HasMaxLength(500);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Ip).HasMaxLength(45);
-            entity.Property(e => e.IsActive);
-            entity.Property(e => e.GymId);
-            entity.Property(e => e.BranchId);
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
+            entity.HasIndex(e => new { e.FeedId, e.UserId }).IsUnique();
+            entity.HasOne(e => e.Feed)
+                .WithMany(f => f.FeedLikes)
+                .HasForeignKey(e => e.FeedId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)
+                .WithMany()
+                .HasForeignKey(e => e.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
-        modelBuilder.Entity<BranchService>(entity =>
+        modelBuilder.Entity<FeedComment>(entity =>
         {
-            entity.ToTable("BranchService");
+            entity.ToTable("FeedComment");
+            entity.HasKey(e => e.Id);
             entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Notes).HasMaxLength(500);
+            entity.Property(e => e.Content).HasMaxLength(1000);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.DeletedAt).HasColumnType("datetime");
             entity.Property(e => e.Ip).HasMaxLength(45);
-            entity.HasOne(e => e.Branch)
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
+            entity.HasIndex(e => e.FeedId);
+            entity.HasOne(e => e.Feed)
+                .WithMany(f => f.FeedComments)
+                .HasForeignKey(e => e.FeedId)
+                .OnDelete(DeleteBehavior.Cascade);
+            entity.HasOne(e => e.User)
                 .WithMany()
-                .HasForeignKey(e => e.BranchId)
+                .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
-            entity.HasOne(e => e.BranchServiceType)
-                .WithMany(t => t.BranchServices)
-                .HasForeignKey(e => e.BranchServiceTypeId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-        modelBuilder.Entity<BranchServiceType>(entity =>
-        {
-            entity.ToTable("BranchServiceType");
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Name).HasMaxLength(100);
-            entity.Property(e => e.Description).HasMaxLength(500);
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Ip).HasMaxLength(45);
         });
 
-        modelBuilder.Entity<CurrentOccupancy>(entity =>
-        {
-            entity.ToTable("CurrentOccupancy");
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Occupancy);
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Ip).HasMaxLength(45);
-            entity.HasOne(e => e.Branch)
-                .WithMany()
-                .HasForeignKey(e => e.BranchId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
-        modelBuilder.Entity<BranchMedia>(entity =>
-        {
-            entity.ToTable("BranchMedia");
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.Url).HasMaxLength(500);
-            entity.Property(e => e.MediaType).HasMaxLength(50);
-            entity.Property(e => e.Description).HasMaxLength(500);
-            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
-            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
-            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
-            entity.Property(e => e.Ip).HasMaxLength(45);
-            entity.HasOne(e => e.Branch)
-                .WithMany()
-                .HasForeignKey(e => e.BranchId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
         modelBuilder.Entity<PaymentIntent>(entity =>
         {
             entity.ToTable("Payments");
@@ -1401,6 +1382,9 @@ public partial class GymmetryContext : DbContext
             entity.Property(e => e.Status).HasConversion<string>().HasMaxLength(20);
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
+            entity.Property(e => e.Ip).HasMaxLength(45);
+            entity.Property(e => e.IsActive);
         });
 
         modelBuilder.Entity<UserExerciseMax>(entity =>

@@ -30,7 +30,7 @@ namespace Gymmetry.Application.Services
         {
             try
             {
-                var entity = _mapper.Map<DailyExerciseHistory>(request);
+                var entity = _mapper.Map<DailyExerciseHistory>(request); // Debe mapear ExerciseId
                 var created = await _dailyExerciseHistoryRepository.CreateDailyExerciseHistoryAsync(entity);
                 return new ApplicationResponse<DailyExerciseHistory>
                 {
@@ -85,7 +85,7 @@ namespace Gymmetry.Application.Services
             try
             {
                 var before = await _dailyExerciseHistoryRepository.GetDailyExerciseHistoryByIdAsync(request.Id);
-                var entity = _mapper.Map<DailyExerciseHistory>(request);
+                var entity = _mapper.Map<DailyExerciseHistory>(request); // Debe mapear ExerciseId
                 var updated = await _dailyExerciseHistoryRepository.UpdateDailyExerciseHistoryAsync(entity);
                 if (updated)
                 {

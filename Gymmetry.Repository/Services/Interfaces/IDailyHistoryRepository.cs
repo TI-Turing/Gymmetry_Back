@@ -13,5 +13,6 @@ namespace Gymmetry.Repository.Services.Interfaces
         Task<bool> UpdateDailyHistoryAsync(DailyHistory entity);
         Task<bool> DeleteDailyHistoryAsync(Guid id);
         Task<IEnumerable<DailyHistory>> FindDailyHistoriesByFieldsAsync(Dictionary<string, object> filters);
+        Task<IReadOnlyList<DailyHistory>> GetUserDailyHistoriesInRangeAsync(Guid userId, DateTime startUtc, DateTime endUtc); // Nuevo
     }
 }

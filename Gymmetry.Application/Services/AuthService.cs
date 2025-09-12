@@ -87,10 +87,10 @@ namespace Gymmetry.Application.Services
 
         public async Task<ApplicationResponse<RefreshTokenResponse>> RefreshTokenAsync(RefreshTokenRequest request)
         {
-            // Permitir access token vencido, solo validar formato y firma
+            // Permitir access token vencido, solo validar formato y firma si viene
+            Guid userId = Guid.Empty;
             if (!string.IsNullOrEmpty(request.Token))
             {
-                Guid userId;
                 try
                 {
                     var principal = await JwtTokenGenerator.ValidateTokenIgnoreExpirationAsync(request.Token);
@@ -103,29 +103,15 @@ namespace Gymmetry.Application.Services
                 {
                     return null;
                 }
-                // Consultar el usuario por id
-                var user = await _userRepository.GetUserByIdAsync(userId);
-                if (user == null)
-                    return null;
+            }
 
-                var logLogin = _logLoginService.GetLogLoginByUserId(userId).Result;
-                string newToken = string.Empty;
-                // Validar refresh token y expiración
-                if (logLogin.Data?.RefreshToken == request.RefreshToken && logLogin.Data?.RefreshTokenExpiration > DateTime.UtcNow)
-                {
-                    newToken = await JwtTokenGenerator.GenerateTokenAsync(user.Id, user.UserName ?? user.Email, user.Email, 60);
-                    return new ApplicationResponse<RefreshTokenResponse>
-                    {
-                        Success = true,
-                        Message = "Token refrescado correctamente.",
-                        Data = new RefreshTokenResponse
-                        {
-                            NewToken = newToken,
-                            TokenExpiration = DateTime.UtcNow.AddMinutes(60)
-                        }
-                    };
-                }
-                else
+            // Si no viene token, resolver por refresh token
+            LogLogin? logLoginEntity = null;
+            if (string.IsNullOrEmpty(request.Token))
+            {
+                var logLoginByRt = await _logLoginService.GetLogLoginByRefreshTokenAsync(request.RefreshToken);
+                logLoginEntity = logLoginByRt.Data;
+                if (logLoginEntity == null)
                 {
                     return new ApplicationResponse<RefreshTokenResponse>
                     {
@@ -134,8 +120,41 @@ namespace Gymmetry.Application.Services
                         Data = null
                     };
                 }
+                userId = logLoginEntity.UserId;
             }
-            return null;
+
+            // Consultar el usuario por id
+            var user = await _userRepository.GetUserByIdAsync(userId);
+            if (user == null)
+                return null;
+
+            // Obtener logLogin si no se obtuvo antes
+            var logLogin = logLoginEntity != null ? new ApplicationResponse<LogLogin> { Data = logLoginEntity, Success = true } : _logLoginService.GetLogLoginByUserId(userId).Result;
+            string newToken = string.Empty;
+            // Validar refresh token y expiración
+            if (logLogin.Data?.RefreshToken == request.RefreshToken && logLogin.Data?.RefreshTokenExpiration > DateTime.UtcNow)
+            {
+                newToken = await JwtTokenGenerator.GenerateTokenAsync(user.Id, user.UserName ?? user.Email, user.Email, 60);
+                return new ApplicationResponse<RefreshTokenResponse>
+                {
+                    Success = true,
+                    Message = "Token refrescado correctamente.",
+                    Data = new RefreshTokenResponse
+                    {
+                        NewToken = newToken,
+                        TokenExpiration = DateTime.UtcNow.AddMinutes(60)
+                    }
+                };
+            }
+            else
+            {
+                return new ApplicationResponse<RefreshTokenResponse>
+                {
+                    Success = false,
+                    Message = "Refresh token inválido o expirado.",
+                    Data = null
+                };
+            }
         }
     }
 }

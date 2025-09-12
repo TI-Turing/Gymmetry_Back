@@ -77,6 +77,16 @@ namespace Gymmetry.Application.Services
                 ? new ApplicationResponse<bool> { Success = true, Message = "LogLogin updated successfully." } 
                 : new ApplicationResponse<bool> { Success = false, Message = "Failed to update LogLogin." };
         }
+
+        public async Task<ApplicationResponse<LogLogin>> GetLogLoginByRefreshTokenAsync(string refreshToken)
+        {
+            var response = new ApplicationResponse<LogLogin>();
+            response.Success = true;
+            response.Data = await _repo.GetByRefreshTokenAsync(refreshToken);
+            response.ErrorCode = response.Data == null ? "NotFound" : null;
+            response.Message = response.Data == null ? "LogLogin not found for the specified refresh token." : "LogLogin retrieved successfully.";
+            return response;
+        }
     }
 
     public class LogChangeService : ILogChangeService

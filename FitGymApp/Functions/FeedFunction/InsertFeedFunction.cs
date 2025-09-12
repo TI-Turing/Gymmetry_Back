@@ -1,6 +1,7 @@
+using System;
+using System.IO;
 using System.Net;
 using System.Threading.Tasks;
-using System.Text.Json;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
@@ -8,15 +9,17 @@ using Gymmetry.Application.Services.Interfaces;
 using Gymmetry.Domain.DTO;
 using Gymmetry.Domain.DTO.Feed.Request;
 using Gymmetry.Utils;
+using System.Text.Json;
+using Gymmetry.Domain.Models;
 
 namespace Gymmetry.Functions.FeedFunction
 {
-    public class FeedInsertFunction
+    public class InsertFeedFunction
     {
-        private readonly ILogger<FeedInsertFunction> _logger;
+        private readonly ILogger<InsertFeedFunction> _logger;
         private readonly IFeedService _feedService;
 
-        public FeedInsertFunction(ILogger<FeedInsertFunction> logger, IFeedService feedService)
+        public InsertFeedFunction(ILogger<InsertFeedFunction> logger, IFeedService feedService)
         {
             _logger = logger;
             _feedService = feedService;
@@ -30,7 +33,7 @@ namespace Gymmetry.Functions.FeedFunction
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
                 var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
-                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<string>
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<object>
                 {
                     Success = false,
                     Message = error!,
@@ -40,29 +43,24 @@ namespace Gymmetry.Functions.FeedFunction
                 return unauthorizedResponse;
             }
 
-            // var body = await new StreamReader(req.Body).ReadToEndAsync();
-            // var dto = JsonSerializer.Deserialize<FeedCreateRequestDto>(body); // Descomentar cuando exista el DTO
-            // if (dto == null)
-            // {
-            //     var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
-            //     await badRequest.WriteAsJsonAsync(new ApiResponse<string>
-            //     {
-            //         Success = false,
-            //         Message = "Datos de feed inválidos.",
-            //         Data = null,
-            //         StatusCode = 400
-            //     });
-            //     return badRequest;
-            // }
-            // dto.UserId = userId ?? Guid.Empty;
-            // var result = await _feedService.CreateFeedAsync(dto);
-            // var response = req.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
-            // await response.WriteAsJsonAsync(result);
-            // return response;
-
-            // Placeholder response
-            var response = req.CreateResponse(HttpStatusCode.NotImplemented);
-            await response.WriteStringAsync("Feed creation not implemented yet.");
+            var body = await new StreamReader(req.Body).ReadToEndAsync();
+            var dto = JsonSerializer.Deserialize<FeedCreateRequestDto>(body);
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Title))
+            {
+                var badRequest = req.CreateResponse(HttpStatusCode.BadRequest);
+                await badRequest.WriteAsJsonAsync(new ApiResponse<object>
+                {
+                    Success = false,
+                    Message = "Datos de feed inválidos.",
+                    Data = null,
+                    StatusCode = 400
+                });
+                return badRequest;
+            }
+            var entity = new Feed { UserId = userId ?? Guid.Empty, Title = dto.Title, Description = dto.Description };
+            var result = await _feedService.CreateFeedAsync(entity, dto.Media, dto.FileName, dto.MediaType);
+            var response = req.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
+            await response.WriteAsJsonAsync(new ApiResponse<object>{ Success=result.Success, Message=result.Message, Data=result.Data, StatusCode = result.Success ? 200 : 400 });
             return response;
         }
 
@@ -77,7 +75,7 @@ namespace Gymmetry.Functions.FeedFunction
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
                 var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
-                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<string>
+                await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<object>
                 {
                     Success = false,
                     Message = error!,
@@ -112,7 +110,7 @@ namespace Gymmetry.Functions.FeedFunction
             if (feedId == Guid.Empty || mediaBytes == null)
             {
                 var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
-                await badResponse.WriteAsJsonAsync(new ApiResponse<string>
+                await badResponse.WriteAsJsonAsync(new ApiResponse<object>
                 {
                     Success = false,
                     Message = "FeedId y Media son requeridos.",
@@ -122,16 +120,9 @@ namespace Gymmetry.Functions.FeedFunction
                 return badResponse;
             }
 
-            var dto = new UploadFeedMediaRequest
-            {
-                FeedId = feedId,
-                Media = mediaBytes,
-                FileName = fileName,
-                ContentType = mediaType
-            };
-            var result = await _feedService.UploadFeedMediaAsync(dto);
+            var result = await _feedService.UploadFeedMediaAsync(feedId, mediaBytes, fileName, mediaType);
             var response = req.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.BadRequest);
-            await response.WriteAsJsonAsync(result);
+            await response.WriteAsJsonAsync(new ApiResponse<object>{ Success=result.Success, Message=result.Message, Data=result.Data, StatusCode = result.Success ? 200 : 400 });
             return response;
         }
     }

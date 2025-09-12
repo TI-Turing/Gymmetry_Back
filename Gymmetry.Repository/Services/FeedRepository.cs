@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
@@ -225,6 +226,119 @@ namespace Gymmetry.Repository.Services
                 _logger.LogError(ex, "Error searching feeds");
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<Feed>> FindFeedsByFieldsAsync(Dictionary<string, object> filters)
+        {
+            var parameter = Expression.Parameter(typeof(Feed), "e");
+            Expression predicate = Expression.AndAlso(
+                Expression.Equal(Expression.Property(parameter, nameof(Feed.IsActive)), Expression.Constant(true)),
+                Expression.Equal(Expression.Property(parameter, nameof(Feed.IsDeleted)), Expression.Constant(false))
+            );
+
+            foreach (var filter in filters)
+            {
+                var property = typeof(Feed).GetProperty(filter.Key);
+                if (property == null) continue;
+                var left = Expression.Property(parameter, property);
+                var right = Expression.Constant(ValueConverter.ConvertValueToType(filter.Value, property.PropertyType));
+                var equals = Expression.Equal(left, right);
+                predicate = Expression.AndAlso(predicate, equals);
+            }
+
+            var lambda = Expression.Lambda<Func<Feed, bool>>(predicate, parameter);
+            return await _context.Feeds.Where(lambda).OrderByDescending(f => f.CreatedAt).ToListAsync();
+        }
+
+        // Likes
+        public async Task<bool> AddLikeAsync(Guid feedId, Guid userId, string? ip = null)
+        {
+            try
+            {
+                var existing = await _context.FeedLikes.FirstOrDefaultAsync(l => l.FeedId == feedId && l.UserId == userId && l.IsActive && !l.IsDeleted);
+                if (existing != null) return true; // idempotente
+                var like = new FeedLike { Id = Guid.NewGuid(), FeedId = feedId, UserId = userId, CreatedAt = DateTime.UtcNow, Ip = ip, IsActive = true, IsDeleted = false };
+                _context.FeedLikes.Add(like);
+                var feed = await _context.Feeds.FirstOrDefaultAsync(f => f.Id == feedId);
+                if (feed != null) feed.LikesCount += 1;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding like FeedId={FeedId} UserId={UserId}", feedId, userId);
+                return false;
+            }
+        }
+
+        public async Task<bool> RemoveLikeAsync(Guid feedId, Guid userId)
+        {
+            try
+            {
+                var existing = await _context.FeedLikes.FirstOrDefaultAsync(l => l.FeedId == feedId && l.UserId == userId && l.IsActive && !l.IsDeleted);
+                if (existing == null) return true; // idempotente
+                existing.IsActive = false;
+                existing.IsDeleted = true;
+                existing.DeletedAt = DateTime.UtcNow;
+                var feed = await _context.Feeds.FirstOrDefaultAsync(f => f.Id == feedId);
+                if (feed != null && feed.LikesCount > 0) feed.LikesCount -= 1;
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error removing like FeedId={FeedId} UserId={UserId}", feedId, userId);
+                return false;
+            }
+        }
+
+        public async Task<int> GetLikesCountAsync(Guid feedId)
+        {
+            return await _context.FeedLikes.CountAsync(l => l.FeedId == feedId && l.IsActive && !l.IsDeleted);
+        }
+
+        // Comments
+        public async Task<FeedComment> AddCommentAsync(FeedComment comment)
+        {
+            comment.Id = Guid.NewGuid();
+            comment.CreatedAt = DateTime.UtcNow;
+            comment.IsActive = true;
+            comment.IsDeleted = false;
+            _context.FeedComments.Add(comment);
+            var feed = await _context.Feeds.FirstOrDefaultAsync(f => f.Id == comment.FeedId);
+            if (feed != null) feed.CommentsCount += 1;
+            await _context.SaveChangesAsync();
+            return comment;
+        }
+
+        public async Task<bool> DeleteCommentAsync(Guid commentId, Guid userId)
+        {
+            var existing = await _context.FeedComments.FirstOrDefaultAsync(c => c.Id == commentId && c.UserId == userId && c.IsActive && !c.IsDeleted);
+            if (existing == null) return false;
+            existing.IsActive = false;
+            existing.IsDeleted = true;
+            existing.DeletedAt = DateTime.UtcNow;
+            var feed = await _context.Feeds.FirstOrDefaultAsync(f => f.Id == existing.FeedId);
+            if (feed != null && feed.CommentsCount > 0) feed.CommentsCount -= 1;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<IEnumerable<FeedComment>> GetCommentsAsync(Guid feedId, int page = 1, int pageSize = 50)
+        {
+            if (page < 1) page = 1;
+            if (pageSize <= 0 || pageSize > 200) pageSize = 50;
+            return await _context.FeedComments
+                .Where(c => c.FeedId == feedId && c.IsActive && !c.IsDeleted)
+                .OrderByDescending(c => c.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+        }
+
+        public async Task<int> GetCommentsCountAsync(Guid feedId)
+        {
+            return await _context.FeedComments.CountAsync(c => c.FeedId == feedId && c.IsActive && !c.IsDeleted);
         }
     }
 }
