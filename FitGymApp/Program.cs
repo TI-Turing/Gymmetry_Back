@@ -141,6 +141,7 @@ builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IGymImageRepository, GymImageRepository>();
 builder.Services.AddScoped<IPaymentIntentRepository, PaymentIntentRepository>();
 builder.Services.AddScoped<IReportContentRepository, ReportContentRepository>();
+builder.Services.AddScoped<IUserBlockRepository, UserBlockRepository>();
 
 // Cargar PaymentsOptions desde configuración o Values
 int resolveGatewayProvider()
@@ -235,6 +236,7 @@ builder.Services.AddScoped<ISubModuleService, SubModuleService>();
 builder.Services.AddScoped<IUninstallOptionService, UninstallOptionService>();
 builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 builder.Services.AddScoped<IReportContentService, ReportContentService>();
+builder.Services.AddScoped<IUserBlockService, UserBlockService>();
 builder.Services.AddHttpClient<Gymmetry.Application.Services.ConfigAutoService>();
 builder.Services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(builder.Configuration);
 

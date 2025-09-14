@@ -143,6 +143,8 @@ public partial class GymmetryContext : DbContext
     public virtual DbSet<ReportContentEvidence> ReportContentEvidences { get; set; }
     public virtual DbSet<ReportContentAudit> ReportContentAudits { get; set; }
 
+    public virtual DbSet<UserBlock> UserBlocks { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccessMethodType>(entity =>
@@ -1460,6 +1462,45 @@ public partial class GymmetryContext : DbContext
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_ReportContentAudit_Report");
         });
+
+        modelBuilder.Entity<UserBlock>(entity =>
+        {
+            entity.ToTable("UserBlock");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
+            entity.Property(e => e.Ip).HasMaxLength(45);
+            entity.Property(e => e.Reason).HasMaxLength(500);
+            entity.Property(e => e.IsActive).IsRequired();
+
+            // Índices para optimización
+            entity.HasIndex(e => new { e.BlockerId, e.BlockedUserId })
+                .IsUnique()
+                .HasDatabaseName("UX_UserBlock_BlockerBlocked");
+            entity.HasIndex(e => e.BlockerId).HasDatabaseName("IX_UserBlock_Blocker");
+            entity.HasIndex(e => e.BlockedUserId).HasDatabaseName("IX_UserBlock_Blocked");
+            entity.HasIndex(e => e.CreatedAt).HasDatabaseName("IX_UserBlock_CreatedAt");
+            entity.HasIndex(e => e.IsActive).HasDatabaseName("IX_UserBlock_IsActive");
+
+            // Relaciones
+            entity.HasOne(d => d.Blocker)
+                .WithMany()
+                .HasForeignKey(d => d.BlockerId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_UserBlock_Blocker");
+
+            entity.HasOne(d => d.BlockedUser)
+                .WithMany()
+                .HasForeignKey(d => d.BlockedUserId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_UserBlock_BlockedUser");
+
+            // Constraint para prevenir auto-bloqueo
+            entity.HasCheckConstraint("CK_UserBlock_NoSelfBlock", "BlockerId != BlockedUserId");
+        });
+
         OnModelCreatingPartial(modelBuilder);
     }
 

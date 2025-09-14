@@ -13,6 +13,7 @@ using Gymmetry.Domain.DTO.Notification.Request;
 using Gymmetry.Domain.DTO.Plan.Request;
 using Gymmetry.Domain.DTO.RoutineDay.Request;
 using Gymmetry.Domain.DTO.RoutineExercise.Request;
+using Gymmetry.Domain.DTO.UserBlock;
 using Gymmetry.Domain.Models;
 
 public class AutoMapperProfile : Profile
@@ -50,5 +51,20 @@ public class AutoMapperProfile : Profile
         CreateMap<Gymmetry.Domain.DTO.ReportContent.ReportContentCreateRequest, ReportContent>();
         CreateMap<Gymmetry.Domain.DTO.ReportContent.ReportContentUpdateRequest, ReportContent>();
         CreateMap<ReportContent, Gymmetry.Domain.DTO.ReportContent.ReportContentResponse>();
+
+        // UserBlock mappings
+        CreateMap<UserBlockCreateRequest, UserBlock>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.DeletedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsActive, opt => opt.Ignore())
+            .ForMember(dest => dest.BlockerId, opt => opt.Ignore())
+            .ForMember(dest => dest.Blocker, opt => opt.Ignore())
+            .ForMember(dest => dest.BlockedUser, opt => opt.Ignore());
+
+        CreateMap<UserBlock, UserBlockResponse>()
+            .ForMember(dest => dest.BlockerName, opt => opt.MapFrom(src => src.Blocker != null ? src.Blocker.Name : null))
+            .ForMember(dest => dest.BlockedUserName, opt => opt.MapFrom(src => src.BlockedUser != null ? src.BlockedUser.Name : null));
     }
 }
