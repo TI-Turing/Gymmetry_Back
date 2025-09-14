@@ -147,6 +147,10 @@ public partial class GymmetryContext : DbContext
     
     public virtual DbSet<ContentModeration> ContentModerations { get; set; }
 
+    // Nuevas entidades para sistema unificado de notificaciones
+    public virtual DbSet<NotificationTemplate> NotificationTemplates { get; set; }
+    public virtual DbSet<UserNotificationPreference> UserNotificationPreferences { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccessMethodType>(entity =>
@@ -1544,6 +1548,63 @@ public partial class GymmetryContext : DbContext
 
             // Constraints
             entity.HasCheckConstraint("CK_ContentModeration_Confidence", "Confidence IS NULL OR (Confidence >= 0 AND Confidence <= 1)");
+        });
+
+        modelBuilder.Entity<NotificationTemplate>(entity =>
+        {
+            entity.ToTable("NotificationTemplate");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.TemplateKey).HasMaxLength(100).IsRequired();
+            entity.Property(e => e.NotificationType).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.Priority).HasMaxLength(20).IsRequired();
+            entity.Property(e => e.Subject).HasMaxLength(500).IsRequired();
+            entity.Property(e => e.BodyTemplate).HasColumnType("nvarchar(max)").IsRequired();
+            entity.Property(e => e.EmailTemplate).HasColumnType("nvarchar(max)");
+            entity.Property(e => e.SmsTemplate).HasMaxLength(500);
+            entity.Property(e => e.WhatsAppTemplate).HasMaxLength(1000);
+            entity.Property(e => e.IsActive).IsRequired().HasDefaultValue(true);
+            entity.Property(e => e.RequiresEmail).IsRequired().HasDefaultValue(false);
+            entity.Property(e => e.RequiresSms).IsRequired().HasDefaultValue(false);
+            entity.Property(e => e.AllowedChannels).HasMaxLength(200).IsRequired().HasDefaultValue("push,app");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
+            // Índices
+            entity.HasIndex(e => e.TemplateKey).IsUnique().HasDatabaseName("UX_NotificationTemplate_TemplateKey");
+            entity.HasIndex(e => e.NotificationType).HasDatabaseName("IX_NotificationTemplate_Type");
+            entity.HasIndex(e => e.Priority).HasDatabaseName("IX_NotificationTemplate_Priority");
+            entity.HasIndex(e => e.IsActive).HasDatabaseName("IX_NotificationTemplate_IsActive");
+        });
+
+        modelBuilder.Entity<UserNotificationPreference>(entity =>
+        {
+            entity.ToTable("UserNotificationPreference");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedOnAdd();
+            entity.Property(e => e.UserId).IsRequired();
+            entity.Property(e => e.NotificationType).HasMaxLength(50).IsRequired();
+            entity.Property(e => e.PushEnabled).IsRequired().HasDefaultValue(true);
+            entity.Property(e => e.EmailEnabled).IsRequired().HasDefaultValue(true);
+            entity.Property(e => e.SmsEnabled).IsRequired().HasDefaultValue(false);
+            entity.Property(e => e.WhatsAppEnabled).IsRequired().HasDefaultValue(false);
+            entity.Property(e => e.AppEnabled).IsRequired().HasDefaultValue(true);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+
+            // Índices
+            entity.HasIndex(e => e.UserId).HasDatabaseName("IX_UserNotificationPreference_User");
+            entity.HasIndex(e => e.NotificationType).HasDatabaseName("IX_UserNotificationPreference_Type");
+            entity.HasIndex(e => new { e.UserId, e.NotificationType })
+                .IsUnique()
+                .HasDatabaseName("UX_UserNotificationPreference_UserType");
+
+            // Relación
+            entity.HasOne(d => d.User)
+                .WithMany()
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_UserNotificationPreference_User");
         });
 
         OnModelCreatingPartial(modelBuilder);

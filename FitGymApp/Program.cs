@@ -261,6 +261,20 @@ builder.Services.AddSingleton<IRedisCacheService>(sp =>
 builder.Services.AddScoped<IReportContentRealtimeService, ReportContentRealtimeService>();
 builder.Services.AddScoped<IReportContentEvidenceService, ReportContentEvidenceService>();
 
+// Sistema de Notificaciones Unificado
+builder.Services.AddScoped<INotificationTemplateRepository, NotificationTemplateRepository>();
+builder.Services.AddScoped<IUserNotificationPreferenceRepository, UserNotificationPreferenceRepository>();
+builder.Services.AddScoped<IUnifiedNotificationService, UnifiedNotificationService>();
+builder.Services.AddScoped<INotificationDeliveryService, NotificationDeliveryService>();
+
+// Configuraciones de servicios externos
+builder.Services.Configure<MailGunSettings>(configuration.GetSection("MailGun"));
+builder.Services.Configure<TwilioSettings>(configuration.GetSection("Twilio"));
+builder.Services.Configure<ExpoPushSettings>(configuration.GetSection("ExpoPush"));
+
+// HttpClient para servicios de entrega
+builder.Services.AddHttpClient<INotificationDeliveryService, NotificationDeliveryService>();
+
 // Aplicar migraciones y ejecutar seeds (opcional, solo en desarrollo o si es seguro)
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {

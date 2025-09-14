@@ -1,0 +1,18 @@
+{
+  "MailGun": {
+    "ApiKey": "your-mailgun-api-key",
+    "Domain": "your-domain.com",
+    "FromEmail": "notifications@your-domain.com",
+    "FromName": "Gymmetry Notifications"
+  },
+  "Twilio": {
+    "AccountSid": "your-twilio-account-sid",
+    "AuthToken": "your-twilio-auth-token",
+    "FromPhone": "+1234567890",
+    "WhatsAppNumber": "+14155238886"
+  },
+  "ExpoPush": {
+    "AccessToken": "your-expo-access-token-optional",
+    "ApiUrl": "https://exp.host/--/api/v2/push/send"
+  }
+}

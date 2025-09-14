@@ -39,6 +39,15 @@ public partial class Notification
 
     public Guid UserId { get; set; }
 
+    // Nuevos campos para sistema unificado
+    public string NotificationType { get; set; } = "fitness";
+
+    public string Priority { get; set; } = "normal";
+
+    public string? Category { get; set; }
+
+    public string? TemplateKey { get; set; }
+
     public virtual ICollection<NotificationOption> NotificationOptions { get; set; } = new List<NotificationOption>();
 
     public virtual User User { get; set; } = null!;

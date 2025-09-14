@@ -21,6 +21,9 @@ namespace Gymmetry.Repository.Persistence.Seed
             await ExerciseSeed.SeedAsync(context);
             await RoutineTemplateSeed.SeedAsync(context);
             await RoutineDaySeed.SeedAsync(context);
+            
+            // Sistema de Notificaciones Unificado
+            await NotificationTemplateSeed.SeedAsync(context);
         }
     }
 }
