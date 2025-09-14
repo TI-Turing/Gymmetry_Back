@@ -14,6 +14,7 @@ using Gymmetry.Domain.DTO.Plan.Request;
 using Gymmetry.Domain.DTO.RoutineDay.Request;
 using Gymmetry.Domain.DTO.RoutineExercise.Request;
 using Gymmetry.Domain.DTO.UserBlock;
+using Gymmetry.Domain.DTO.ContentModeration;
 using Gymmetry.Domain.Models;
 
 public class AutoMapperProfile : Profile
@@ -66,5 +67,32 @@ public class AutoMapperProfile : Profile
         CreateMap<UserBlock, UserBlockResponse>()
             .ForMember(dest => dest.BlockerName, opt => opt.MapFrom(src => src.Blocker != null ? src.Blocker.Name : null))
             .ForMember(dest => dest.BlockedUserName, opt => opt.MapFrom(src => src.BlockedUser != null ? src.BlockedUser.Name : null));
+
+        // ContentModeration mappings
+        CreateMap<ContentModerationCreateRequest, ContentModeration>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.ModeratedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsActive, opt => opt.Ignore())
+            .ForMember(dest => dest.Ip, opt => opt.Ignore())
+            .ForMember(dest => dest.Moderator, opt => opt.Ignore());
+
+        CreateMap<ContentModerationUpdateRequest, ContentModeration>()
+            .ForMember(dest => dest.ContentId, opt => opt.Ignore())
+            .ForMember(dest => dest.ContentType, opt => opt.Ignore())
+            .ForMember(dest => dest.ModerationReason, opt => opt.Ignore())
+            .ForMember(dest => dest.ModeratedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.AutoModerated, opt => opt.Ignore())
+            .ForMember(dest => dest.FilterType, opt => opt.Ignore())
+            .ForMember(dest => dest.Confidence, opt => opt.Ignore())
+            .ForMember(dest => dest.IsActive, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.Ip, opt => opt.Ignore())
+            .ForMember(dest => dest.Moderator, opt => opt.Ignore());
+
+        CreateMap<ContentModeration, ContentModerationResponse>()
+            .ForMember(dest => dest.ModeratorName, opt => opt.MapFrom(src => src.Moderator != null ? src.Moderator.Name : null));
     }
 }

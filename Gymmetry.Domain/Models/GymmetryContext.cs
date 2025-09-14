@@ -144,6 +144,8 @@ public partial class GymmetryContext : DbContext
     public virtual DbSet<ReportContentAudit> ReportContentAudits { get; set; }
 
     public virtual DbSet<UserBlock> UserBlocks { get; set; }
+    
+    public virtual DbSet<ContentModeration> ContentModerations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -1499,6 +1501,49 @@ public partial class GymmetryContext : DbContext
 
             // Constraint para prevenir auto-bloqueo
             entity.HasCheckConstraint("CK_UserBlock_NoSelfBlock", "BlockerId != BlockedUserId");
+        });
+
+        modelBuilder.Entity<ContentModeration>(entity =>
+        {
+            entity.ToTable("ContentModeration");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.ContentId).IsRequired();
+            entity.Property(e => e.ContentType).IsRequired();
+            entity.Property(e => e.ModerationAction).IsRequired();
+            entity.Property(e => e.ModerationReason).IsRequired();
+            entity.Property(e => e.Severity).IsRequired();
+            entity.Property(e => e.ModeratedAt).HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.AutoModerated).IsRequired();
+            entity.Property(e => e.ReviewRequired).IsRequired();
+            entity.Property(e => e.FilterType).HasMaxLength(100);
+            entity.Property(e => e.Confidence).HasColumnType("decimal(3,2)");
+            entity.Property(e => e.Notes).HasMaxLength(1000);
+            entity.Property(e => e.IsActive).IsRequired();
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Ip).HasMaxLength(45);
+
+            // Índices para optimización
+            entity.HasIndex(e => e.ContentId).HasDatabaseName("IX_ContentModeration_ContentId");
+            entity.HasIndex(e => e.ContentType).HasDatabaseName("IX_ContentModeration_ContentType");
+            entity.HasIndex(e => e.ModerationAction).HasDatabaseName("IX_ContentModeration_Action");
+            entity.HasIndex(e => e.ModeratedAt).HasDatabaseName("IX_ContentModeration_ModeratedAt");
+            entity.HasIndex(e => e.AutoModerated).HasDatabaseName("IX_ContentModeration_AutoModerated");
+            entity.HasIndex(e => e.ReviewRequired).HasDatabaseName("IX_ContentModeration_ReviewRequired");
+            entity.HasIndex(e => e.IsActive).HasDatabaseName("IX_ContentModeration_IsActive");
+            entity.HasIndex(e => new { e.ContentId, e.ContentType })
+                .HasDatabaseName("IX_ContentModeration_Content");
+
+            // Relaciones
+            entity.HasOne(d => d.Moderator)
+                .WithMany()
+                .HasForeignKey(d => d.ModeratedBy)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_ContentModeration_Moderator");
+
+            // Constraints
+            entity.HasCheckConstraint("CK_ContentModeration_Confidence", "Confidence IS NULL OR (Confidence >= 0 AND Confidence <= 1)");
         });
 
         OnModelCreatingPartial(modelBuilder);
