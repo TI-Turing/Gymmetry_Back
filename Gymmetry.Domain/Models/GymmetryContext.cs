@@ -139,6 +139,10 @@ public partial class GymmetryContext : DbContext
     public virtual DbSet<FeedLike> FeedLikes { get; set; }
     public virtual DbSet<FeedComment> FeedComments { get; set; }
 
+    public virtual DbSet<ReportContent> ReportContents { get; set; }
+    public virtual DbSet<ReportContentEvidence> ReportContentEvidences { get; set; }
+    public virtual DbSet<ReportContentAudit> ReportContentAudits { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccessMethodType>(entity =>
@@ -1408,6 +1412,53 @@ public partial class GymmetryContext : DbContext
                 .HasForeignKey(e => e.ExerciseId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_UserExerciseMax_Exercise");
+        });
+        modelBuilder.Entity<ReportContent>(entity => {
+            entity.ToTable("ReportContent");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Description).HasMaxLength(1000);
+            entity.Property(e => e.Resolution).HasMaxLength(1000);
+            entity.Property(e => e.Ip).HasMaxLength(45);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.DeletedAt).HasColumnType("datetime");
+            entity.HasIndex(e => new { e.Status, e.Priority }).HasDatabaseName("IX_ReportContent_Status_Priority");
+            entity.HasIndex(e => new { e.ReportedContentId, e.ContentType }).HasDatabaseName("IX_ReportContent_Content");
+            entity.HasIndex(e => new { e.ReporterId, e.ReportedContentId, e.ContentType }).IsUnique().HasDatabaseName("UX_ReportContent_UniqueReporterContent");
+            entity.HasOne(e => e.Reporter).WithMany().HasForeignKey(e => e.ReporterId).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_ReportContent_Reporter");
+            entity.HasOne(e => e.ReportedUser).WithMany().HasForeignKey(e => e.ReportedUserId).OnDelete(DeleteBehavior.Cascade).HasConstraintName("FK_ReportContent_ReportedUser");
+            entity.HasOne(e => e.Reviewer).WithMany().HasForeignKey(e => e.ReviewedBy).OnDelete(DeleteBehavior.SetNull).HasConstraintName("FK_ReportContent_Reviewer");
+        });
+        modelBuilder.Entity<ReportContentEvidence>(entity => {
+            entity.ToTable("ReportContentEvidence");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.FileName).HasMaxLength(255);
+            entity.Property(e => e.ContentType).HasMaxLength(100);
+            entity.Property(e => e.StoragePath).HasMaxLength(500);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.HasIndex(e => e.ReportContentId).HasDatabaseName("IX_ReportContentEvidence_Report");
+            entity.HasOne<ReportContent>()
+                .WithMany()
+                .HasForeignKey(e => e.ReportContentId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_ReportContentEvidence_Report");
+        });
+        modelBuilder.Entity<ReportContentAudit>(entity => {
+            entity.ToTable("ReportContentAudit");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.Action).HasMaxLength(100);
+            entity.Property(e => e.SnapshotJson).HasColumnType("nvarchar(max)");
+            entity.Property(e => e.Ip).HasMaxLength(45);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.HasIndex(e => e.ReportContentId).HasDatabaseName("IX_ReportContentAudit_Report");
+            entity.HasOne<ReportContent>()
+                .WithMany()
+                .HasForeignKey(e => e.ReportContentId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_ReportContentAudit_Report");
         });
         OnModelCreatingPartial(modelBuilder);
     }

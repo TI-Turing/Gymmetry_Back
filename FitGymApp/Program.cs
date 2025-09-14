@@ -14,6 +14,8 @@ using Gymmetry.Repository.Services.Cache;
 using Microsoft.Extensions.Logging;
 using Gymmetry.Application.Services.Payments;
 using Gymmetry.Domain.Options;
+using FitGymApp.Hubs;
+using Azure.Storage.Blobs;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
@@ -47,7 +49,12 @@ var connectionString = ResolveConn(
 
 // Registrar DbContext
 builder.Services.AddDbContext<GymmetryContext>(options =>
-    options.UseSqlServer(connectionString));
+{
+    options.UseSqlServer(connectionString);
+    // Suprimir advertencia de migraciones pendientes en producción
+    options.ConfigureWarnings(warnings =>
+        warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
+});
 
 builder.Services.AddAutoMapper(cfg => {
     cfg.AddProfile<AutoMapperProfile>();
@@ -59,6 +66,10 @@ builder.Services.Configure<OAuthOptions>(opts =>
     var section = configuration.GetSection("OAuth");
     section.Bind(opts);
 });
+
+// Azure Blob Storage
+builder.Services.AddSingleton(sp => new BlobServiceClient(configuration["AzureStorage:ConnectionString"] ?? configuration["Values:AzureStorage:ConnectionString"] ?? "UseDevelopmentStorage=true"));
+builder.Services.AddScoped<IBlobStorageService, AzureBlobStorageService>();
 
 // Inyección de dependencias de repositorios
 builder.Services.AddScoped<IUserRepository, UserRepository>(sp =>
@@ -122,12 +133,14 @@ builder.Services.AddScoped<IRoutineTemplateRepository, RoutineTemplateRepository
 builder.Services.AddScoped<IScheduleRepository, ScheduleRepository>();
 builder.Services.AddScoped<ISubModuleRepository, SubModuleRepository>();
 builder.Services.AddScoped<IUninstallOptionRepository, UninstallOptionRepository>();
+builder.Services.AddScoped<IUserExerciseMaxRepository, UserExerciseMaxRepository>();
 builder.Services.AddScoped<IUserTypeRepository, UserTypeRepository>();
 builder.Services.AddScoped<IVerificationTypeRepository, VerificationTypeRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<ILikeRepository, LikeRepository>();
 builder.Services.AddScoped<IGymImageRepository, GymImageRepository>();
 builder.Services.AddScoped<IPaymentIntentRepository, PaymentIntentRepository>();
+builder.Services.AddScoped<IReportContentRepository, ReportContentRepository>();
 
 // Cargar PaymentsOptions desde configuración o Values
 int resolveGatewayProvider()
@@ -189,7 +202,6 @@ builder.Services.AddScoped<IDailyExerciseHistoryService, DailyExerciseHistorySer
 builder.Services.AddScoped<IDailyExerciseService, DailyExerciseService>();
 builder.Services.AddScoped<IDailyHistoryService, DailyHistoryService>();
 builder.Services.AddScoped<IDailyService, DailyService>();
-builder.Services.AddScoped<IDietService, DietService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IEmployeeRegisterDailyService, EmployeeRegisterDailyService>();
 builder.Services.AddScoped<IEmployeeTypeService, EmployeeTypeService>();
@@ -222,7 +234,7 @@ builder.Services.AddScoped<IScheduleService, ScheduleService>();
 builder.Services.AddScoped<ISubModuleService, SubModuleService>();
 builder.Services.AddScoped<IUninstallOptionService, UninstallOptionService>();
 builder.Services.AddScoped<IUserTypeService, UserTypeService>();
-builder.Services.AddScoped<IVerificationTypeService, VerificationTypeService>();
+builder.Services.AddScoped<IReportContentService, ReportContentService>();
 builder.Services.AddHttpClient<Gymmetry.Application.Services.ConfigAutoService>();
 builder.Services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(builder.Configuration);
 
@@ -240,16 +252,38 @@ builder.Services.AddSingleton<IRedisCacheService>(sp =>
     )
 );
 
+// SignalR services
+// builder.Services.AddSignalR(); // SignalR removido por ahora (host Functions aislado)
+builder.Services.AddScoped<IReportContentRealtimeService, ReportContentRealtimeService>();
+builder.Services.AddScoped<IReportContentEvidenceService, ReportContentEvidenceService>();
+
 // Aplicar migraciones y ejecutar seeds (opcional, solo en desarrollo o si es seguro)
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<GymmetryContext>();
-    db.Database.Migrate(); // Aplica migraciones pendientes
-    DbInitializer.SeedAsync(db).GetAwaiter().GetResult(); // Llamar al inicializador de seeds de repository
+    
+    try
+    {
+        // Solo aplicar migraciones si hay pendientes
+        var pendingMigrations = await db.Database.GetPendingMigrationsAsync();
+        if (pendingMigrations.Any())
+        {
+            db.Database.Migrate(); // Aplica migraciones pendientes
+        }
+        
+        DbInitializer.SeedAsync(db).GetAwaiter().GetResult(); // Llamar al inicializador de seeds de repository
 
-    // Ejecutar funciones de ConfigFunction
-    var configAutoService = scope.ServiceProvider.GetRequiredService<IConfigAutoService>();
-    configAutoService.UpdateUsdPricesFromExchangeAsync().GetAwaiter().GetResult();
+        // Ejecutar funciones de ConfigFunction
+        var configAutoService = scope.ServiceProvider.GetRequiredService<IConfigAutoService>();
+        configAutoService.UpdateUsdPricesFromExchangeAsync().GetAwaiter().GetResult();
+    }
+    catch (Exception ex)
+    {
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+        logger.LogWarning(ex, "Error durante la inicialización de la base de datos");
+    }
 }
 
-builder.Build().Run();
+var built = builder.Build();
+// SignalR hub no configurado en Functions host.
+built.Run();

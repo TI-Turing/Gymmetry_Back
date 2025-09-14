@@ -39,6 +39,7 @@ public class AutoMapperProfile : Profile
         CreateMap<UpdateBrandRequest, Brand>();
         CreateMap<AddNotificationRequest, Notification>();
         CreateMap<UpdateNotificationRequest, Notification>();
+        CreateMap<NotificationCreateRequestDto, Notification>();
         CreateMap<AddGymRequest, Gym>();
         CreateMap<UpdateGymRequest, Gym>();
         CreateMap<AddGymPlanSelectedRequest, GymPlanSelected>();
@@ -46,6 +47,8 @@ public class AutoMapperProfile : Profile
         CreateMap<AddPlanRequest, Plan>();
         CreateMap<AddDailyRequest, Daily>();
         CreateMap<AddDailyExerciseRequest, DailyExercise>();
-
+        CreateMap<Gymmetry.Domain.DTO.ReportContent.ReportContentCreateRequest, ReportContent>();
+        CreateMap<Gymmetry.Domain.DTO.ReportContent.ReportContentUpdateRequest, ReportContent>();
+        CreateMap<ReportContent, Gymmetry.Domain.DTO.ReportContent.ReportContentResponse>();
     }
 }

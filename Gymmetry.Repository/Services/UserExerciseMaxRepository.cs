@@ -84,15 +84,18 @@ namespace Gymmetry.Repository.Services
 
         public async Task<IEnumerable<UserExerciseMax>> GetLatestByUserAsync(Guid userId, int topExercises = 10)
         {
-            // Obtener último registro (por AchievedAt) por ejercicio para el usuario
-            var query = _context.UserExerciseMaxes
+            var latestIdsQuery = _context.UserExerciseMaxes
                 .Where(x => x.UserId == userId && x.IsActive)
                 .GroupBy(x => x.ExerciseId)
-                .Select(g => g.OrderByDescending(e => e.AchievedAt).First())
+                .Select(g => g.OrderByDescending(e => e.AchievedAt).First().Id);
+
+            var list = await _context.UserExerciseMaxes
+                .Where(x => latestIdsQuery.Contains(x.Id))
+                .Include(x => x.Exercise)
                 .OrderByDescending(x => x.AchievedAt)
                 .Take(topExercises)
-                .Include(x => x.Exercise);
-            return await query.ToListAsync();
+                .ToListAsync();
+            return list;
         }
     }
 }
