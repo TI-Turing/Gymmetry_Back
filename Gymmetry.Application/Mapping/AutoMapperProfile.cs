@@ -15,6 +15,8 @@ using Gymmetry.Domain.DTO.RoutineDay.Request;
 using Gymmetry.Domain.DTO.RoutineExercise.Request;
 using Gymmetry.Domain.DTO.UserBlock;
 using Gymmetry.Domain.DTO.ContentModeration;
+using Gymmetry.Domain.DTO.PostShare.Request;
+using Gymmetry.Domain.DTO.PostShare.Response;
 using Gymmetry.Domain.Models;
 
 public class AutoMapperProfile : Profile
@@ -94,5 +96,18 @@ public class AutoMapperProfile : Profile
 
         CreateMap<ContentModeration, ContentModerationResponse>()
             .ForMember(dest => dest.ModeratorName, opt => opt.MapFrom(src => src.Moderator != null ? src.Moderator.Name : null));
+
+        // PostShare mappings
+        CreateMap<AddPostShareRequest, PostShare>()
+            .ForMember(dest => dest.Id, opt => opt.Ignore())
+            .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
+            .ForMember(dest => dest.IsActive, opt => opt.Ignore())
+            .ForMember(dest => dest.Ip, opt => opt.Ignore())
+            .ForMember(dest => dest.Post, opt => opt.Ignore())
+            .ForMember(dest => dest.SharedByUser, opt => opt.Ignore())
+            .ForMember(dest => dest.SharedWithUser, opt => opt.Ignore());
+
+        CreateMap<PostShare, PostShareResponse>();
     }
 }

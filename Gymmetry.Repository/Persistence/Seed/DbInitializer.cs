@@ -24,6 +24,9 @@ namespace Gymmetry.Repository.Persistence.Seed
             
             // Sistema de Notificaciones Unificado
             await NotificationTemplateSeed.SeedAsync(context);
+            
+            // Sistema de PostShare
+            await PostShareSeed.SeedAsync(context);
         }
     }
 }

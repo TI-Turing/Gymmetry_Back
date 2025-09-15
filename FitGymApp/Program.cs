@@ -267,6 +267,10 @@ builder.Services.AddScoped<IUserNotificationPreferenceRepository, UserNotificati
 builder.Services.AddScoped<IUnifiedNotificationService, UnifiedNotificationService>();
 builder.Services.AddScoped<INotificationDeliveryService, NotificationDeliveryService>();
 
+// Sistema de PostShare
+builder.Services.AddScoped<IPostShareRepository, PostShareRepository>();
+builder.Services.AddScoped<IPostShareService, PostShareService>();
+
 // Configuraciones de servicios externos
 builder.Services.Configure<MailGunSettings>(configuration.GetSection("MailGun"));
 builder.Services.Configure<TwilioSettings>(configuration.GetSection("Twilio"));

@@ -151,6 +151,9 @@ public partial class GymmetryContext : DbContext
     public virtual DbSet<NotificationTemplate> NotificationTemplates { get; set; }
     public virtual DbSet<UserNotificationPreference> UserNotificationPreferences { get; set; }
 
+    // Sistema de PostShare
+    public virtual DbSet<PostShare> PostShares { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<AccessMethodType>(entity =>
@@ -1605,6 +1608,55 @@ public partial class GymmetryContext : DbContext
                 .HasForeignKey(d => d.UserId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_UserNotificationPreference_User");
+        });
+
+        // Sistema de PostShare
+        modelBuilder.Entity<PostShare>(entity =>
+        {
+            entity.ToTable("PostShares");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.PostId).IsRequired();
+            entity.Property(e => e.SharedBy).IsRequired();
+            entity.Property(e => e.SharedWith);
+            entity.Property(e => e.ShareType).HasMaxLength(16).IsRequired();
+            entity.Property(e => e.Platform).HasMaxLength(16).IsRequired();
+            entity.Property(e => e.Metadata).HasColumnType("nvarchar(max)");
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
+            entity.Property(e => e.Ip).HasMaxLength(45);
+            entity.Property(e => e.IsActive).IsRequired().HasDefaultValue(true);
+
+            // Índices optimizados
+            entity.HasIndex(e => e.PostId).HasDatabaseName("IX_PostShares_PostId");
+            entity.HasIndex(e => e.SharedBy).HasDatabaseName("IX_PostShares_SharedBy");
+            entity.HasIndex(e => e.SharedWith).HasDatabaseName("IX_PostShares_SharedWith");
+            entity.HasIndex(e => e.CreatedAt).HasDatabaseName("IX_PostShares_CreatedAt");
+            entity.HasIndex(e => new { e.PostId, e.Platform }).HasDatabaseName("IX_PostShares_Post_Platform");
+            entity.HasIndex(e => new { e.SharedBy, e.CreatedAt }).HasDatabaseName("IX_PostShares_SharedBy_CreatedAt");
+
+            // Relaciones (Foreign Keys)
+            entity.HasOne(d => d.Post)
+                .WithMany()
+                .HasForeignKey(d => d.PostId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_PostShares_Posts");
+
+            entity.HasOne(d => d.SharedByUser)
+                .WithMany()
+                .HasForeignKey(d => d.SharedBy)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_PostShares_SharedBy");
+
+            entity.HasOne(d => d.SharedWithUser)
+                .WithMany()
+                .HasForeignKey(d => d.SharedWith)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_PostShares_SharedWith");
+
+            // Check constraints
+            entity.HasCheckConstraint("CK_PostShares_ShareType", "ShareType IN ('Internal', 'External')");
+            entity.HasCheckConstraint("CK_PostShares_Platform", "Platform IN ('App', 'WhatsApp', 'Instagram', 'Facebook', 'Twitter', 'SMS', 'Email', 'Other')");
         });
 
         OnModelCreatingPartial(modelBuilder);
