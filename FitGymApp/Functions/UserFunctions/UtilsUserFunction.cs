@@ -29,7 +29,7 @@ public class UtilsUserFunction
 
     [Function("User_UploadProfileImageFunction")]
     public async Task<HttpResponseData> UploadProfileImageAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "user/upload-profile-image")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user/upload-profile-image")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("User_UploadProfileImageFunction");

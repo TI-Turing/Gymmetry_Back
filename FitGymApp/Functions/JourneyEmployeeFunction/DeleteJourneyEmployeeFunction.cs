@@ -24,7 +24,7 @@ namespace Gymmetry.Functions.JourneyEmployeeFunction
 
         [Function("JourneyEmployee_DeleteJourneyEmployeeFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "journeyemployee/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "journeyemployee/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

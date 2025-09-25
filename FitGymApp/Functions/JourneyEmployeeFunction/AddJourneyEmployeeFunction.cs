@@ -27,7 +27,7 @@ public class AddJourneyEmployeeFunction
 
     [Function("JourneyEmployee_AddJourneyEmployeeFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "journeyemployee/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "journeyemployee/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("JourneyEmployee_AddJourneyEmployeeFunction");

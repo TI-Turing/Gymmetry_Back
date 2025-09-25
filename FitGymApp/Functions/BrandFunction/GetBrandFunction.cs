@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.BrandFunction
         }
 
         [Function("Brand_GetBrandByIdFunction")]
-        public async Task<ApiResponse<Brand>> GetBrandByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "brand/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<ApiResponse<Brand>> GetBrandByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "brand/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -74,7 +74,7 @@ namespace Gymmetry.Functions.BrandFunction
         }
 
         [Function("Brand_GetAllBrandsFunction")]
-        public async Task<ApiResponse<IEnumerable<Brand>>> GetAllBrandsAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "brands")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<Brand>>> GetAllBrandsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "brands")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -112,7 +112,7 @@ namespace Gymmetry.Functions.BrandFunction
         }
 
         [Function("Brand_FindBrandsByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<Brand>>> FindBrandsByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "brands/find")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<Brand>>> FindBrandsByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "brands/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

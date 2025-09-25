@@ -27,7 +27,7 @@ public class AddMachineFunction
     }
 
     [Function("Machine_AddMachineFunction")]
-    public async Task<HttpResponseData> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "machine/add")] HttpRequestData req)
+    public async Task<HttpResponseData> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "machine/add")] HttpRequestData req)
     {
         var response = req.CreateResponse();
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
@@ -97,7 +97,7 @@ public class AddMachineFunction
     }
 
     [Function("Machine_AddMachinesFunction")]
-    public async Task<HttpResponseData> AddMachinesAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "machines/add")] HttpRequestData req)
+    public async Task<HttpResponseData> AddMachinesAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "machines/add")] HttpRequestData req)
     {
         var response = req.CreateResponse();
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

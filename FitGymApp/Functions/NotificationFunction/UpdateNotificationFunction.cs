@@ -26,7 +26,7 @@ public class UpdateNotificationFunction
 
     [Function("Notification_UpdateNotificationFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "notification/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "notification/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Notification_UpdateNotificationFunction");

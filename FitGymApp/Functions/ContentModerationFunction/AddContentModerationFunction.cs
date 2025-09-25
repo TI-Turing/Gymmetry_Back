@@ -32,7 +32,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_AddContentModerationFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "contentmoderation")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "contentmoderation")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_AddContentModerationFunction");

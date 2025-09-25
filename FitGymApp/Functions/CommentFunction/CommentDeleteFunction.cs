@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.CommentFunction
 
         [Function("Comment_DeleteCommentFunction")]
         public async Task<HttpResponseData> DeleteCommentAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "comment/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "comment/{id:guid}")] HttpRequestData req,
             Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

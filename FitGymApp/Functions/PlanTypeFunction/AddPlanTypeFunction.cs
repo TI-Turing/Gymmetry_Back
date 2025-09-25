@@ -32,7 +32,7 @@ public class AddPlanTypeFunction
 
     [Function("PlanType_AddPlanTypeFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "plantype/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "plantype/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("PlanType_AddPlanTypeFunction");

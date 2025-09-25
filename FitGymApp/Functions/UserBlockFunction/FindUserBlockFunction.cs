@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_FindUserBlockFunction")]
         public async Task<HttpResponseData> FindAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "userblock/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "userblock/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UserBlock_FindUserBlockFunction");

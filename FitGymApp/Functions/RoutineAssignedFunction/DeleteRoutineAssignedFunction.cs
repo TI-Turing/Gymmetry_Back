@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
 
         [Function("RoutineAssigned_DeleteRoutineAssignedFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "routineassigned/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "routineassigned/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

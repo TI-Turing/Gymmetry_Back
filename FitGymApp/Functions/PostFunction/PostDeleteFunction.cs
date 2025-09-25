@@ -22,7 +22,7 @@ namespace Gymmetry.Functions.PostFunction
 
         [Function("Post_DeletePostFunction")]
         public async Task<HttpResponseData> DeletePostAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "post/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "post/{id:guid}")] HttpRequestData req,
             Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

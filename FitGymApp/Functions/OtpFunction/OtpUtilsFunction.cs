@@ -29,7 +29,7 @@ public class OtpUtilsFunction
 
     [Function("Otp_GenerateOtpFunction")]
     public async Task<HttpResponseData> GenerateOtpAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "otp/generate-otp")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "otp/generate-otp")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("User_GenerateOtpFunction");
@@ -93,7 +93,7 @@ public class OtpUtilsFunction
 
     [Function("Otp_ValidateOtpFunction")]
     public async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "otp/validate-otp")] HttpRequestData req)
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "otp/validate-otp")] HttpRequestData req)
     {
         try
         {

@@ -28,7 +28,7 @@ public class AddModuleFunction
     }
 
     [Function("Module_AddModuleFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "module/add")] HttpRequest req)
+    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "module/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {

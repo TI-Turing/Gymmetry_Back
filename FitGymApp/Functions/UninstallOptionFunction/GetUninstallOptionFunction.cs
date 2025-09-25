@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.UninstallOptionFunction
 
         [Function("UninstallOption_GetUninstallOptionFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "uninstalloption/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "uninstalloption/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.UninstallOptionFunction
 
         [Function("UninstallOption_GetAllUninstallOptionsFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "uninstalloptions")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "uninstalloptions")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UninstallOption_GetAllUninstallOptionsFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.UninstallOptionFunction
 
         [Function("UninstallOption_FindUninstallOptionsByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "uninstalloptions/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "uninstalloptions/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UninstallOption_FindUninstallOptionsByFieldsFunction");

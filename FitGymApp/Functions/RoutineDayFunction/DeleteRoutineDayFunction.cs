@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.RoutineDayFunction
 
         [Function("RoutineDay_DeleteRoutineDayFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "routineday/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "routineday/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

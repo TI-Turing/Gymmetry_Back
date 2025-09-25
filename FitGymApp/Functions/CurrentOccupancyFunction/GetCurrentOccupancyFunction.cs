@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.CurrentOccupancyFunction
 
         [Function("CurrentOccupancy_GetCurrentOccupancyByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "currentoccupancy/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "currentoccupancy/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.CurrentOccupancyFunction
 
         [Function("CurrentOccupancy_GetAllCurrentOccupanciesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "currentoccupancies")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "currentoccupancies")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("CurrentOccupancy_GetAllCurrentOccupanciesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.CurrentOccupancyFunction
 
         [Function("CurrentOccupancy_FindCurrentOccupanciesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "currentoccupancies/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "currentoccupancies/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("CurrentOccupancy_FindCurrentOccupanciesByFieldsFunction");

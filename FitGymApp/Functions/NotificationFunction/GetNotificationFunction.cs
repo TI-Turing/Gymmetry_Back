@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.NotificationFunction
 
         [Function("Notification_GetNotificationByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notification/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "notification/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -87,7 +87,7 @@ namespace Gymmetry.Functions.NotificationFunction
 
         [Function("Notification_GetAllNotificationsFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notifications")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "notifications")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Notification_GetAllNotificationsFunction");
@@ -134,7 +134,7 @@ namespace Gymmetry.Functions.NotificationFunction
 
         [Function("Notification_FindNotificationsByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Notification_FindNotificationsByFieldsFunction");

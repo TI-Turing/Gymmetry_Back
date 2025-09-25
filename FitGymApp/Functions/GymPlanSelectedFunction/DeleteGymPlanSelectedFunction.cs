@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.GymPlanSelectedFunction
 
         [Function("GymPlanSelected_DeleteGymPlanSelectedFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "gymplanselected/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "gymplanselected/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

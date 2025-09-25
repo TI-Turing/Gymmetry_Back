@@ -31,7 +31,7 @@ public class AddGymFunction
 
     [Function("Gym_AddGymFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gym/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gym/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
 

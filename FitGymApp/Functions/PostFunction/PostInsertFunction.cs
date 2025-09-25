@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.PostFunction
 
         [Function("Post_CreatePostFunction")]
         public async Task<HttpResponseData> CreatePostAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "post")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "post")] HttpRequestData req,
             FunctionContext executionContext)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

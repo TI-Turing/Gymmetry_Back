@@ -22,7 +22,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_AddComment")] // POST feed/{feedId}/comment
         public async Task<HttpResponseData> AddCommentAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "feed/{feedId:guid}/comment")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "feed/{feedId:guid}/comment")] HttpRequestData req,
             Guid feedId,
             FunctionContext ctx)
         {
@@ -53,7 +53,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_DeleteComment")] // DELETE feed/comment/{commentId}
         public async Task<HttpResponseData> DeleteCommentAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "feed/comment/{commentId:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "feed/comment/{commentId:guid}")] HttpRequestData req,
             Guid commentId,
             FunctionContext ctx)
         {
@@ -81,7 +81,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_GetComments")] // GET feed/{feedId}/comments?page=1&size=50
         public async Task<HttpResponseData> GetCommentsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed/{feedId:guid}/comments")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed/{feedId:guid}/comments")] HttpRequestData req,
             Guid feedId,
             FunctionContext ctx)
         {
@@ -102,7 +102,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_CommentsCount")] // GET feed/{feedId}/comments/count
         public async Task<HttpResponseData> GetCommentsCountAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed/{feedId:guid}/comments/count")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed/{feedId:guid}/comments/count")] HttpRequestData req,
             Guid feedId,
             FunctionContext ctx)
         {

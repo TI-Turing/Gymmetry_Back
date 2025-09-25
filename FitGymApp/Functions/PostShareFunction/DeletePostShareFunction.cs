@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.PostShareFunction
 
         [Function("PostShare_DeletePostShareFunction")]
         public async Task<HttpResponseData> DeleteAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "postShare/delete")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "postShare/delete")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PostShare_DeletePostShareFunction");

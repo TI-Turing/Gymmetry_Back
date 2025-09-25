@@ -18,6 +18,7 @@ namespace Gymmetry.Repository.Services.Interfaces
         Task<string> UploadFeedMediaToBlobAsync(Guid feedId, byte[] media, string? fileName, string? mediaType);
         Task<IEnumerable<Feed>> SearchFeedsAsync(SearchFeedRequest request);
         Task<IEnumerable<Feed>> FindFeedsByFieldsAsync(Dictionary<string, object> filters);
+        Task<Feed> CreateFeedWithMediaAsync(Feed feed, List<FeedMedia> mediaFiles);
 
         // Likes
         Task<bool> AddLikeAsync(Guid feedId, Guid userId, string? ip = null);

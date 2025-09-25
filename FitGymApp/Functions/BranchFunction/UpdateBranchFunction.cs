@@ -31,7 +31,7 @@ public class UpdateBranchFunction
 
     [Function("Branch_UpdateBranchFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "branch/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "branch/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Branch_UpdateBranchFunction");

@@ -29,7 +29,7 @@ public class UpdateRoutineDayFunction
 
     [Function("RoutineDay_UpdateRoutineDayFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "routineday/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "routineday/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineDay_UpdateRoutineDayFunction");

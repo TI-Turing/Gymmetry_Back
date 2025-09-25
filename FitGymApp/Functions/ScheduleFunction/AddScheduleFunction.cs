@@ -31,7 +31,7 @@ public class AddScheduleFunction
 
     [Function("Schedule_AddScheduleFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "schedule/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "schedule/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Schedule_AddScheduleFunction");

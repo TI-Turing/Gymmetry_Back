@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("GeneratePaymentUrl")]
         public async Task<HttpResponseData> DeprecatedGeneratePaymentUrlAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "user/payment-url")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user/payment-url")] HttpRequestData req)
         {
             var resp = req.CreateResponse(HttpStatusCode.Gone);
             await resp.WriteAsJsonAsync(new ApiResponse<string>{Success=false, Message="Endpoint obsoleto. Usar /payments/plan/preference", StatusCode=StatusCodes.Status410Gone});
@@ -34,7 +34,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("PaymentWebhook")]
         public async Task<HttpResponseData> DeprecatedWebhookAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "webhook/payment")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "webhook/payment")] HttpRequestData req)
         {
             var resp = req.CreateResponse(HttpStatusCode.Gone);
             await resp.WriteAsJsonAsync(new ApiResponse<string>{Success=false, Message="Webhook obsoleto. Usar /payments/webhook/mercadopago", StatusCode=StatusCodes.Status410Gone});

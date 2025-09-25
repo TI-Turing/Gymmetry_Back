@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_GetFeedByIdFunction")]
         public async Task<HttpResponseData> GetFeedByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed/{id:guid}")] HttpRequestData req,
             Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
@@ -43,7 +43,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_GetAllFeedsFunction")]
         public async Task<HttpResponseData> GetAllFeedsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -59,7 +59,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_SearchFeedsFunction")]
         public async Task<HttpResponseData> SearchFeedsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "feed/search")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "feed/search")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

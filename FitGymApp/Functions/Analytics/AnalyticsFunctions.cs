@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.Analytics
         }
 
         [Function("Analytics_Summary")]
-        public async Task<HttpResponseData> SummaryAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "analytics/summary")] HttpRequestData req, FunctionContext executionContext)
+        public async Task<HttpResponseData> SummaryAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "analytics/summary")] HttpRequestData req, FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Analytics_Summary");
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

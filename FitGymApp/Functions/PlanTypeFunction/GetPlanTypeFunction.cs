@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.PlanTypeFunction
 
         [Function("PlanType_GetPlanTypeFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "plantype/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "plantype/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.PlanTypeFunction
 
         [Function("PlanType_GetAllPlanTypesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "plantypes")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "plantypes")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PlanType_GetAllPlanTypesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.PlanTypeFunction
 
         [Function("PlanType_FindPlanTypesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "plantypes/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "plantypes/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PlanType_FindPlanTypesByFieldsFunction");

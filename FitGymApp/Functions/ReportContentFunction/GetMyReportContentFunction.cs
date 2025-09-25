@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_GetMyReportContentFunction")]
         public async Task<HttpResponseData> GetMyAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "reportcontent/my")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "reportcontent/my")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ReportContent_GetMyReportContentFunction");

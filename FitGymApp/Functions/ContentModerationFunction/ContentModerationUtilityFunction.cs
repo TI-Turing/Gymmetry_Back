@@ -33,7 +33,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_DeleteContentModerationFunction")]
         public async Task<HttpResponseData> DeleteAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "contentmoderation/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "contentmoderation/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -112,7 +112,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_FindContentModerationFunction")]
         public async Task<HttpResponseData> FindAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "contentmoderation/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "contentmoderation/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_FindContentModerationFunction");
@@ -193,7 +193,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_GetStatsFunction")]
         public async Task<HttpResponseData> GetStatsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "contentmoderation/stats")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contentmoderation/stats")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_GetStatsFunction");

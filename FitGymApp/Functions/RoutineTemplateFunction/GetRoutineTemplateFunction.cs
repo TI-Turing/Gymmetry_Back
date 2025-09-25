@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.RoutineTemplateFunction
 
         [Function("RoutineTemplate_GetRoutineTemplateFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routinetemplate/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routinetemplate/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.RoutineTemplateFunction
 
         [Function("RoutineTemplate_GetAllRoutineTemplatesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routinetemplates")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routinetemplates")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineTemplate_GetAllRoutineTemplatesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.RoutineTemplateFunction
 
         [Function("RoutineTemplate_FindRoutineTemplatesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routinetemplates/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routinetemplates/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineTemplate_FindRoutineTemplatesByFieldsFunction");

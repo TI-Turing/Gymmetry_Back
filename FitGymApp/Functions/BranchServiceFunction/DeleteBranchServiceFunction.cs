@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.BranchServiceFunction
 
         [Function("BranchService_DeleteBranchServiceFunction")]
         public async Task<HttpResponseData> RunAsync([
-            HttpTrigger(AuthorizationLevel.Function, "delete", Route = "branchservice/{id:guid}")] HttpRequestData req,
+            HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "branchservice/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

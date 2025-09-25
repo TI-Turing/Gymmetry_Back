@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_GetStatsFunction")]
         public async Task<HttpResponseData> GetStatsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "reportcontent/stats")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "reportcontent/stats")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ReportContent_GetStatsFunction");

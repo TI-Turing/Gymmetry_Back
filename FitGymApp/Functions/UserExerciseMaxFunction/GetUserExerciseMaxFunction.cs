@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.UserExerciseMaxFunction
 
         [Function("UserExerciseMax_GetByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userexercisemax/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "userexercisemax/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -86,7 +86,7 @@ namespace Gymmetry.Functions.UserExerciseMaxFunction
 
         [Function("UserExerciseMax_GetAllFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userexercisemaxes")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "userexercisemaxes")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UserExerciseMax_GetAllFunction");

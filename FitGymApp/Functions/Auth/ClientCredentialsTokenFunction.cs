@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.Auth
 
         [Function("Auth_ClientCredentialsTokenFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "auth/client-credentials/token")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "auth/client-credentials/token")] HttpRequestData req,
             FunctionContext executionContext)
         {
             _logger.LogInformation("Procesando token client credentials");

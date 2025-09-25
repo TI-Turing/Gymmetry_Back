@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.DietFunction
         }
 
         [Function("Diet_GetDietByIdFunction")]
-        public async Task<ApiResponse<Diet>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "diet/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<ApiResponse<Diet>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "diet/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -74,7 +74,7 @@ namespace Gymmetry.Functions.DietFunction
         }
 
         [Function("Diet_GetAllDietsFunction")]
-        public async Task<ApiResponse<IEnumerable<Diet>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "diets")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<Diet>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "diets")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -112,7 +112,7 @@ namespace Gymmetry.Functions.DietFunction
         }
 
         [Function("Diet_FindDietsByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<Diet>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "diets/find")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<Diet>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "diets/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

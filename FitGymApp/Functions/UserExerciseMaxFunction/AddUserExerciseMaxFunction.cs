@@ -26,7 +26,7 @@ public class AddUserExerciseMaxFunction
 
     [Function("UserExerciseMax_AddFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "userexercisemax/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "userexercisemax/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("UserExerciseMax_AddFunction");

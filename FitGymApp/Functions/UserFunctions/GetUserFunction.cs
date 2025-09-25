@@ -31,7 +31,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("User_GetUserByIdFunction")]
         public async Task<HttpResponseData> GetUserByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "user/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -91,7 +91,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("User_GetAllUsersFunction")]
         public async Task<HttpResponseData> GetAllUsersAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "users")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("User_GetAllUsersFunction");
@@ -138,7 +138,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("User_FindUsersByFieldsFunction")]
         public async Task<HttpResponseData> FindUsersByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "users/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("User_FindUsersByFieldsFunction");
@@ -199,7 +199,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("User_GetInfoUserByIdFunction")]
         public async Task<HttpResponseData> ValidateUserFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "user/getinfo/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/getinfo/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -249,7 +249,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("User_PhoneExistsFunction")]
         public async Task<HttpResponseData> PhoneExistsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "user/phone-exists/{phone}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "user/phone-exists/{phone}")] HttpRequestData req,
             FunctionContext executionContext,
             string phone)
         {

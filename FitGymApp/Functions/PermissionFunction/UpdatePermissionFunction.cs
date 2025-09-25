@@ -31,7 +31,7 @@ public class UpdatePermissionFunction
 
     [Function("Permission_UpdatePermissionFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "permission/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "permission/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Permission_UpdatePermissionFunction");

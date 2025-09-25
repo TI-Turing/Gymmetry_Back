@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_GetById")] 
-        public async Task<HttpResponseData> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "payments/{id:guid}")] HttpRequestData req, Guid id)
+        public async Task<HttpResponseData> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "payments/{id:guid}")] HttpRequestData req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -42,7 +42,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_GetAll")] 
-        public async Task<HttpResponseData> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "payments")] HttpRequestData req)
+        public async Task<HttpResponseData> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "payments")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -57,7 +57,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_FindPaymentsByFields")] 
-        public async Task<HttpResponseData> FindPaymentsByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "payments/find")] HttpRequestData req)
+        public async Task<HttpResponseData> FindPaymentsByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "payments/find")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

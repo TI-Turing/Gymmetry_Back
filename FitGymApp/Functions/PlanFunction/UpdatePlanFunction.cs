@@ -32,7 +32,7 @@ public class UpdatePlanFunction
 
     [Function("Plan_UpdatePlanFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "plan/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "plan/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Plan_UpdatePlanFunction");

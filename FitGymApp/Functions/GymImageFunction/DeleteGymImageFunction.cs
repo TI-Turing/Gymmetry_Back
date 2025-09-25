@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.GymImageFunction
 
         [Function("GymImage_DeleteGymImageFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "gymimage/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "gymimage/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

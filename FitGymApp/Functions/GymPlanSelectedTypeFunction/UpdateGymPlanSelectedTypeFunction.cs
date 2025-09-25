@@ -29,7 +29,7 @@ public class UpdateGymPlanSelectedTypeFunction
 
     [Function("GymPlanSelectedType_UpdateGymPlanSelectedTypeFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "gymplanselectedtype/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "gymplanselectedtype/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("GymPlanSelectedType_UpdateGymPlanSelectedTypeFunction");

@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.NotificationManagement
 
         [Function("NotificationManagement_SendUnifiedFunction")]
         public async Task<HttpResponseData> SendUnifiedAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/management/send")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/management/send")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationManagement_SendUnifiedFunction");
@@ -88,7 +88,7 @@ namespace Gymmetry.Functions.NotificationManagement
 
         [Function("NotificationManagement_GetUserPreferencesFunction")]
         public async Task<HttpResponseData> GetUserPreferencesAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notifications/management/user/{userId:guid}/preferences")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "notifications/management/user/{userId:guid}/preferences")] HttpRequestData req,
             FunctionContext executionContext,
             Guid userId)
         {
@@ -154,7 +154,7 @@ namespace Gymmetry.Functions.NotificationManagement
 
         [Function("NotificationManagement_UpdateUserPreferencesFunction")]
         public async Task<HttpResponseData> UpdateUserPreferencesAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "notifications/management/user/{userId:guid}/preferences")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "notifications/management/user/{userId:guid}/preferences")] HttpRequestData req,
             FunctionContext executionContext,
             Guid userId)
         {

@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.PermissionFunction
 
         [Function("Permission_DeletePermissionFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "permission/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "permission/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

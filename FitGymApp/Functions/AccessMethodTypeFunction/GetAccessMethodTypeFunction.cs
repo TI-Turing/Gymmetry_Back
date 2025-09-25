@@ -28,7 +28,7 @@ public class GetAccessMethodTypeFunction
 
     [Function("AccessMethodType_GetAccessMethodTypeByIdFunction")]
     public async Task<HttpResponseData> GetByIdAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "accessmethodtype/{id:guid}")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "accessmethodtype/{id:guid}")] HttpRequestData req,
         FunctionContext executionContext,
         Guid id)
     {
@@ -88,7 +88,7 @@ public class GetAccessMethodTypeFunction
 
     [Function("AccessMethodType_GetAllAccessMethodTypesFunction")]
     public async Task<HttpResponseData> GetAllAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "get", Route = "accessmethodtypes")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "accessmethodtypes")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("AccessMethodType_GetAllAccessMethodTypesFunction");
@@ -135,7 +135,7 @@ public class GetAccessMethodTypeFunction
 
     [Function("AccessMethodType_FindAccessMethodTypesByFieldsFunction")]
     public async Task<HttpResponseData> FindByFieldsAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "accessmethodtypes/find")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "accessmethodtypes/find")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("AccessMethodType_FindAccessMethodTypesByFieldsFunction");

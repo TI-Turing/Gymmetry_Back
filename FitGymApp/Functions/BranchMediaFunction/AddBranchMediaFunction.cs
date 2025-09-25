@@ -11,6 +11,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Gymmetry.Utils;
 using StatusCodes = Microsoft.AspNetCore.Http.StatusCodes;
+using System.Linq;
 
 namespace Gymmetry.Functions.BranchMediaFunction;
 
@@ -27,16 +28,27 @@ public class AddBranchMediaFunction
 
     [Function("BranchMedia_AddBranchMediaFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "branchmedia/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", "options", Route = "branchmedia/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("BranchMedia_AddBranchMediaFunction");
+        string? origin = req.Headers.TryGetValues("Origin", out var oVals) ? oVals.FirstOrDefault() : null;
+        string? reqHeaders = req.Headers.TryGetValues("Access-Control-Request-Headers", out var rVals) ? rVals.FirstOrDefault() : null;
+
+        if (req.Method.Equals("OPTIONS", StringComparison.OrdinalIgnoreCase))
+        {
+            var pre = req.CreateResponse(HttpStatusCode.NoContent);
+            CorsHelper.AddCorsHeaders(pre, origin, reqHeaders);
+            return pre;
+        }
+
         logger.LogInformation("Procesando solicitud para agregar BranchMedia.");
         try
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
                 var unauthorizedResponse = req.CreateResponse(HttpStatusCode.Unauthorized);
+                CorsHelper.AddCorsHeaders(unauthorizedResponse, origin, reqHeaders);
                 await unauthorizedResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = false,
@@ -52,6 +64,7 @@ public class AddBranchMediaFunction
             if (validationResult is not null)
             {
                 var badResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                CorsHelper.AddCorsHeaders(badResponse, origin, reqHeaders);
                 await badResponse.WriteAsJsonAsync(validationResult);
                 return badResponse;
             }
@@ -59,6 +72,7 @@ public class AddBranchMediaFunction
             if (!result.Success)
             {
                 var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+                CorsHelper.AddCorsHeaders(errorResponse, origin, reqHeaders);
                 await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
                 {
                     Success = false,
@@ -69,6 +83,7 @@ public class AddBranchMediaFunction
                 return errorResponse;
             }
             var successResponse = req.CreateResponse(HttpStatusCode.OK);
+            CorsHelper.AddCorsHeaders(successResponse, origin, reqHeaders);
             await successResponse.WriteAsJsonAsync(new ApiResponse<Guid>
             {
                 Success = true,
@@ -82,6 +97,7 @@ public class AddBranchMediaFunction
         {
             logger.LogError(ex, "Error al agregar BranchMedia.");
             var errorResponse = req.CreateResponse(HttpStatusCode.BadRequest);
+            CorsHelper.AddCorsHeaders(errorResponse, origin, reqHeaders);
             await errorResponse.WriteAsJsonAsync(new ApiResponse<Guid>
             {
                 Success = false,

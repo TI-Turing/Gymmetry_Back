@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.LikeFunction
 
         [Function("Like_CreateLikeFunction")]
         public async Task<HttpResponseData> CreateLikeAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "like")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "like")] HttpRequestData req,
             FunctionContext executionContext)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.PostShareFunction
 
         [Function("PostShare_GetPostShareCountersFunction")]
         public async Task<HttpResponseData> GetCountersAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "postShare/counters")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "postShare/counters")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PostShare_GetPostShareCountersFunction");

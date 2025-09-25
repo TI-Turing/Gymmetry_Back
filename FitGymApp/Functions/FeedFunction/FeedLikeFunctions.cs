@@ -19,7 +19,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_Like")] // POST feed/{feedId}/like
         public async Task<HttpResponseData> LikeAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "feed/{feedId:guid}/like")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "feed/{feedId:guid}/like")] HttpRequestData req,
             Guid feedId,
             FunctionContext ctx)
         {
@@ -48,7 +48,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_Unlike")] // DELETE feed/{feedId}/like
         public async Task<HttpResponseData> UnlikeAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "feed/{feedId:guid}/like")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "feed/{feedId:guid}/like")] HttpRequestData req,
             Guid feedId,
             FunctionContext ctx)
         {
@@ -76,7 +76,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_LikesCount")] // GET feed/{feedId}/likes/count
         public async Task<HttpResponseData> LikesCountAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed/{feedId:guid}/likes/count")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed/{feedId:guid}/likes/count")] HttpRequestData req,
             Guid feedId,
             FunctionContext ctx)
         {

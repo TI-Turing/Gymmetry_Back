@@ -30,7 +30,7 @@ public class UpdateLogUninstallFunction
 
     [Function("LogUninstall_UpdateLogUninstallFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "loguninstall/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "loguninstall/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("LogUninstall_UpdateLogUninstallFunction");

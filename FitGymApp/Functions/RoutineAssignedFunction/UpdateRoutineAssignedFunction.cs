@@ -32,7 +32,7 @@ public class UpdateRoutineAssignedFunction
 
     [Function("RoutineAssigned_UpdateRoutineAssignedFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "routineassigned/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "routineassigned/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineAssigned_UpdateRoutineAssignedFunction");

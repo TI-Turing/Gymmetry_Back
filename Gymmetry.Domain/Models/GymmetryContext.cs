@@ -122,6 +122,9 @@ public partial class GymmetryContext : DbContext
 
     public virtual DbSet<Feed> Feeds { get; set; }
 
+    // NEW: FeedMedia DbSet for multimedia feed functionality
+    public virtual DbSet<FeedMedia> FeedMedia { get; set; }
+
     public virtual DbSet<GymImage> GymImages { get; set; }
 
     public virtual DbSet<BranchService> BranchServices { get; set; }
@@ -1338,6 +1341,32 @@ public partial class GymmetryContext : DbContext
                 .HasForeignKey(e => e.UserId)
                 .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("FK_FeedUser");
+        });
+
+        // NEW: FeedMedia entity configuration for multimedia functionality
+        modelBuilder.Entity<FeedMedia>(entity =>
+        {
+            entity.ToTable("FeedMedia");
+            entity.HasKey(e => e.Id);
+            entity.Property(e => e.Id).ValueGeneratedNever();
+            entity.Property(e => e.MediaUrl).IsRequired().HasMaxLength(500);
+            entity.Property(e => e.MediaType).IsRequired().HasMaxLength(50);
+            entity.Property(e => e.FileName).HasMaxLength(255);
+            entity.Property(e => e.BlobName).IsRequired().HasMaxLength(255);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime").IsRequired();
+            entity.Property(e => e.IsActive).HasDefaultValue(true);
+            
+            // Índices para performance
+            entity.HasIndex(e => e.FeedId).HasDatabaseName("IX_FeedMedia_FeedId");
+            entity.HasIndex(e => e.MediaType).HasDatabaseName("IX_FeedMedia_MediaType");
+            entity.HasIndex(e => e.CreatedAt).HasDatabaseName("IX_FeedMedia_CreatedAt");
+            
+            // Relación con Feed
+            entity.HasOne(d => d.Feed)
+                .WithMany()
+                .HasForeignKey(d => d.FeedId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("FK_FeedMedia_Feed");
         });
 
         modelBuilder.Entity<FeedLike>(entity =>

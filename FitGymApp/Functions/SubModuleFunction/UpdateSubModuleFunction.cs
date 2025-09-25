@@ -33,7 +33,7 @@ public class UpdateSubModuleFunction
 
     [Function("SubModule_UpdateSubModuleFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "submodule/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "submodule/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("SubModule_UpdateSubModuleFunction");

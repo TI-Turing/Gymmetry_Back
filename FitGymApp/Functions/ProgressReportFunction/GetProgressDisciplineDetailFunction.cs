@@ -22,7 +22,7 @@ namespace Gymmetry.Functions.ProgressReportFunction
 
         [Function("Progress_GetDisciplineDetailFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "progress/discipline")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "progress/discipline")] HttpRequestData req,
             FunctionContext ctx)
         {
             var logger = ctx.GetLogger("Progress_GetDisciplineDetailFunction");

@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.UserFunctions
 
         [Function("User_DeleteUserFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "user/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "user/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

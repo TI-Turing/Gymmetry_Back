@@ -27,7 +27,7 @@ public class AddBranchServiceFunction
 
     [Function("BranchService_AddBranchServiceFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "branchservice/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "branchservice/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("BranchService_AddBranchServiceFunction");

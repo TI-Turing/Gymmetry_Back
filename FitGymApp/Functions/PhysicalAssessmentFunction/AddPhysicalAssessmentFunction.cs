@@ -29,7 +29,7 @@ namespace Gymmetry.Functions.PhysicalAssessmentFunction
 
         [Function("PhysicalAssessment_AddPhysicalAssessmentFunction")]
         public async Task<HttpResponseData> AddAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "physicalassessment/add")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "physicalassessment/add")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PhysicalAssessment_AddPhysicalAssessmentFunction");

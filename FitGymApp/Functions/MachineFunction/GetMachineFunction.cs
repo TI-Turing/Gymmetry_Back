@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.MachineFunction
         }
 
         [Function("Machine_GetMachineByIdFunction")]
-        public async Task<HttpResponseData> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "machine/{id:guid}")] HttpRequestData req, Guid id)
+        public async Task<HttpResponseData> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "machine/{id:guid}")] HttpRequestData req, Guid id)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
@@ -84,7 +84,7 @@ namespace Gymmetry.Functions.MachineFunction
         }
 
         [Function("Machine_GetAllMachinesFunction")]
-        public async Task<HttpResponseData> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "machines")] HttpRequestData req)
+        public async Task<HttpResponseData> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "machines")] HttpRequestData req)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
@@ -129,7 +129,7 @@ namespace Gymmetry.Functions.MachineFunction
         }
 
         [Function("Machine_FindMachinesByFieldsFunction")]
-        public async Task<HttpResponseData> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "machines/find")] HttpRequestData req)
+        public async Task<HttpResponseData> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "machines/find")] HttpRequestData req)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

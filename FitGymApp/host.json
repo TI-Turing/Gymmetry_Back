@@ -17,5 +17,12 @@
       "Host": "Information",
       "Default": "Warning"
     }
+  },
+  "cors": {
+    "allowedOrigins": [
+      "http://localhost:8081",
+      "http://192.168.0.12:8081"
+    ],
+    "supportCredentials": true
   }
 }

@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.GymPlanSelectedTypeFunction
         }
 
         [Function("GymPlanSelectedType_GetByIdFunction")]
-        public async Task<IActionResult> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselectedtype/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<IActionResult> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymplanselectedtype/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -75,7 +75,7 @@ namespace Gymmetry.Functions.GymPlanSelectedTypeFunction
         }
 
         [Function("GymPlanSelectedType_GetAllFunction")]
-        public async Task<IActionResult> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselectedtypes")] HttpRequest req)
+        public async Task<IActionResult> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymplanselectedtypes")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -113,7 +113,7 @@ namespace Gymmetry.Functions.GymPlanSelectedTypeFunction
         }
 
         [Function("GymPlanSelectedType_FindByFieldsFunction")]
-        public async Task<IActionResult> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselectedtypes/find")] HttpRequest req)
+        public async Task<IActionResult> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gymplanselectedtypes/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.SubModuleFunction
 
         [Function("SubModule_DeleteSubModuleFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "submodule/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "submodule/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

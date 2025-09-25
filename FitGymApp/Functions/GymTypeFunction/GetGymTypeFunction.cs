@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.GymTypeFunction
 
         [Function("GymType_GetGymTypeByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymtype/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymtype/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.GymTypeFunction
 
         [Function("GymType_GetAllGymTypesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymtypes")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymtypes")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("GymType_GetAllGymTypesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.GymTypeFunction
 
         [Function("GymType_FindGymTypesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymtypes/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gymtypes/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("GymType_FindGymTypesByFieldsFunction");

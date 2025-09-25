@@ -32,7 +32,7 @@ public class UpdateBrandFunction
 
     [Function("Brand_UpdateBrandFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "brand/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "brand/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Brand_UpdateBrandFunction");

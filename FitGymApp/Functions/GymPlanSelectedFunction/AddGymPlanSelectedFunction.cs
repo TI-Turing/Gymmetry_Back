@@ -28,7 +28,7 @@ public class AddGymPlanSelectedFunction
 
     [Function("GymPlanSelected_AddGymPlanSelectedFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselected/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gymplanselected/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("GymPlanSelected_AddGymPlanSelectedFunction");

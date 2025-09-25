@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.GymPlanSelectedFunction
 
         [Function("GymPlanSelected_GetGymPlanSelectedByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselected/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymplanselected/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -86,7 +86,7 @@ namespace Gymmetry.Functions.GymPlanSelectedFunction
 
         [Function("GymPlanSelected_GetAllGymPlanSelectedsFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymplanselecteds")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymplanselecteds")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("GymPlanSelected_GetAllGymPlanSelectedsFunction");
@@ -130,7 +130,7 @@ namespace Gymmetry.Functions.GymPlanSelectedFunction
 
         [Function("GymPlanSelected_FindGymPlanSelectedsByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselecteds/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gymplanselecteds/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("GymPlanSelected_FindGymPlanSelectedsByFieldsFunction");

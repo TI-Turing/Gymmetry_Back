@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.RoutineTemplateFunction
 
         [Function("RoutineTemplate_DeleteRoutineTemplateFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "routinetemplate/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "routinetemplate/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.RoutineExerciseFunction
 
         [Function("RoutineExercise_GetRoutineExerciseFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineexercise/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routineexercise/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.RoutineExerciseFunction
 
         [Function("RoutineExercise_GetAllRoutineExercisesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineexercises")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routineexercises")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineExercise_GetAllRoutineExercisesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.RoutineExerciseFunction
 
         [Function("RoutineExercise_FindRoutineExercisesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineexercises/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routineexercises/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineExercise_FindRoutineExercisesByFieldsFunction");

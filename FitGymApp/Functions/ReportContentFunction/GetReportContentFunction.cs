@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_GetReportContentByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "reportcontent/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "reportcontent/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -95,7 +95,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_GetPagedFunction")]
         public async Task<HttpResponseData> GetPagedAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "reportcontent")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "reportcontent")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ReportContent_GetPagedFunction");

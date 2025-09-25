@@ -29,7 +29,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_DeleteReportContentFunction")]
         public async Task<HttpResponseData> DeleteAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "reportcontent/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "reportcontent/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

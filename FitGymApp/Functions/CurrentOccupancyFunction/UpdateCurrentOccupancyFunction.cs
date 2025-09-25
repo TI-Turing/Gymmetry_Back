@@ -28,7 +28,7 @@ public class UpdateCurrentOccupancyFunction
 
     [Function("CurrentOccupancy_UpdateCurrentOccupancyFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "currentoccupancy/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "currentoccupancy/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("CurrentOccupancy_UpdateCurrentOccupancyFunction");

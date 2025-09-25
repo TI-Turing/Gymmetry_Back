@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.NotificationFunction
 
         [Function("Notification_DeleteNotificationFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "notification/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "notification/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

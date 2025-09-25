@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.SubModuleFunction
 
         [Function("SubModule_GetSubModuleFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "submodule/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "submodule/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.SubModuleFunction
 
         [Function("SubModule_GetAllSubModulesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "submodules")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "submodules")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("SubModule_GetAllSubModulesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.SubModuleFunction
 
         [Function("SubModule_FindSubModulesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "submodules/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "submodules/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("SubModule_FindSubModulesByFieldsFunction");

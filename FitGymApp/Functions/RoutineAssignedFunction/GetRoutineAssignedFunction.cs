@@ -37,7 +37,7 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
 
         [Function("RoutineAssigned_GetRoutineAssignedFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineassigned/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routineassigned/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -105,7 +105,7 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
 
         [Function("RoutineAssigned_GetAllRoutineAssignedsFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineassigneds")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routineassigneds")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineAssigned_GetAllRoutineAssignedsFunction");
@@ -159,7 +159,7 @@ namespace Gymmetry.Functions.RoutineAssignedFunction
 
         [Function("RoutineAssigned_FindRoutineAssignedsByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineassigneds/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routineassigneds/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineAssigned_FindRoutineAssignedsByFieldsFunction");

@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.UninstallOptionFunction
 
         [Function("UninstallOption_DeleteUninstallOptionFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "uninstalloption/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "uninstalloption/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

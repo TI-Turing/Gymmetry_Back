@@ -33,7 +33,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_BulkApproveFunction")]
         public async Task<HttpResponseData> BulkApproveAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "contentmoderation/bulk/approve")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "contentmoderation/bulk/approve")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_BulkApproveFunction");
@@ -122,7 +122,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_BulkRejectFunction")]
         public async Task<HttpResponseData> BulkRejectAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "contentmoderation/bulk/reject")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "contentmoderation/bulk/reject")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_BulkRejectFunction");
@@ -211,7 +211,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_AutoScanFunction")]
         public async Task<HttpResponseData> AutoScanAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "contentmoderation/auto-scan")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "contentmoderation/auto-scan")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_AutoScanFunction");

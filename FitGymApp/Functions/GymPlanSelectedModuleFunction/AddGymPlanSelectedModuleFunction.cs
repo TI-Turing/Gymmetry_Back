@@ -25,7 +25,7 @@ public class AddGymPlanSelectedModuleFunction
     }
 
     [Function("GymPlanSelectedModule_AddGymPlanSelectedModuleFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselectedmodule/add")] HttpRequest req)
+    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gymplanselectedmodule/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {

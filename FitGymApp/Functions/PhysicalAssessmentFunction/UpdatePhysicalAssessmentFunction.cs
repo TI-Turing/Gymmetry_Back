@@ -30,7 +30,7 @@ public class UpdatePhysicalAssessmentFunction
 
     [Function("PhysicalAssessment_UpdatePhysicalAssessmentFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "physicalassessment/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "physicalassessment/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("PhysicalAssessment_UpdatePhysicalAssessmentFunction");

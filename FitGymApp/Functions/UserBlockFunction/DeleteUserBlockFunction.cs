@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_DeleteUserBlockFunction")]
         public async Task<HttpResponseData> DeleteAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "userblock/{blockedUserId:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "userblock/{blockedUserId:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid blockedUserId)
         {

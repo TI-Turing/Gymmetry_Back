@@ -32,7 +32,7 @@ public class AddRoutineAssignedFunction
 
     [Function("RoutineAssigned_AddRoutineAssignedFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineassigned/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routineassigned/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineAssigned_AddRoutineAssignedFunction");

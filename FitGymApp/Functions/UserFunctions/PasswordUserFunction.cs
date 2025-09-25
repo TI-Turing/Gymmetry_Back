@@ -26,7 +26,7 @@ public class PasswordUserFunction
 
     [Function("User_PasswordUserFunction")]
     public async Task<HttpResponseData> UpdatePasswordAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "user/password/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "user/password/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("User_PasswordUserFunction");

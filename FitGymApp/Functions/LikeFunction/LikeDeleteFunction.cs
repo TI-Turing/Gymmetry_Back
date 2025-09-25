@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.LikeFunction
 
         [Function("Like_DeleteLikeFunction")]
         public async Task<HttpResponseData> DeleteLikeAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "like/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "like/{id:guid}")] HttpRequestData req,
             Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

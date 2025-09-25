@@ -32,7 +32,7 @@ public class UpdateUninstallOptionFunction
 
     [Function("UninstallOption_UpdateUninstallOptionFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "uninstalloption/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "uninstalloption/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("UninstallOption_UpdateUninstallOptionFunction");

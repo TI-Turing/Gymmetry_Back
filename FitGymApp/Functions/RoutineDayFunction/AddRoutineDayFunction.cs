@@ -31,7 +31,7 @@ public class AddRoutineDayFunction
 
     [Function("RoutineDay_AddRoutineDayFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineday/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routineday/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineDay_AddRoutineDayFunction");
@@ -99,7 +99,7 @@ public class AddRoutineDayFunction
 
     [Function("RoutineDay_AddRoutineDaysFunction")]
     public async Task<HttpResponseData> AddManyAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineday/addmany")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routineday/addmany")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineDay_AddRoutineDaysFunction");

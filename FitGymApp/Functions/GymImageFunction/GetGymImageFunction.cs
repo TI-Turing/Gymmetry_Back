@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.GymImageFunction
 
         [Function("GymImage_GetGymImageByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymimage/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymimage/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -75,7 +75,7 @@ namespace Gymmetry.Functions.GymImageFunction
 
         [Function("GymImage_GetAllGymImagesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "gymimages")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "gymimages")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("GymImage_GetAllGymImagesFunction");

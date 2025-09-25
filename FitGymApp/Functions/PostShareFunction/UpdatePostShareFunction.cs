@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.PostShareFunction
 
         [Function("PostShare_UpdatePostShareFunction")]
         public async Task<HttpResponseData> UpdateAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "postShare/update")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "postShare/update")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PostShare_UpdatePostShareFunction");

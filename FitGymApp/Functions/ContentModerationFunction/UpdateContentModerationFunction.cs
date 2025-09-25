@@ -32,7 +32,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_UpdateContentModerationFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "contentmoderation/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "contentmoderation/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

@@ -28,7 +28,7 @@ public class AddEmployeeTypeFunction
     }
 
     [Function("EmployeeType_AddEmployeeTypeFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "employeetype/add")] HttpRequest req)
+    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "employeetype/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {

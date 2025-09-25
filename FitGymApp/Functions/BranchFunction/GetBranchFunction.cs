@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.BranchFunction
         }
 
         [Function("Branch_GetBranchByIdFunction")]
-        public async Task<HttpResponseData> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "branch/{id:guid}")] HttpRequestData req, Guid id)
+        public async Task<HttpResponseData> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "branch/{id:guid}")] HttpRequestData req, Guid id)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
@@ -85,7 +85,7 @@ namespace Gymmetry.Functions.BranchFunction
         }
 
         [Function("Branch_GetAllBranchesFunction")]
-        public async Task<HttpResponseData> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "branches")] HttpRequestData req)
+        public async Task<HttpResponseData> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "branches")] HttpRequestData req)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
@@ -130,7 +130,7 @@ namespace Gymmetry.Functions.BranchFunction
         }
 
         [Function("Branch_FindBranchesByFieldsFunction")]
-        public async Task<HttpResponseData> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "branches/find")] HttpRequestData req)
+        public async Task<HttpResponseData> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "branches/find")] HttpRequestData req)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

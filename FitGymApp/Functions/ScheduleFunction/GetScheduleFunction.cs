@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.ScheduleFunction
 
         [Function("Schedule_GetScheduleFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "schedule/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "schedule/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.ScheduleFunction
 
         [Function("Schedule_GetAllSchedulesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "schedules")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "schedules")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Schedule_GetAllSchedulesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.ScheduleFunction
 
         [Function("Schedule_FindSchedulesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "schedules/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "schedules/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Schedule_FindSchedulesByFieldsFunction");

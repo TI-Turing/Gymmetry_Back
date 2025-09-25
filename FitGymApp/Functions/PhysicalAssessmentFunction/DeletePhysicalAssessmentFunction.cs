@@ -28,7 +28,7 @@ namespace Gymmetry.Functions.PhysicalAssessmentFunction
 
         [Function("PhysicalAssessment_DeletePhysicalAssessmentFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "physicalassessment/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "physicalassessment/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

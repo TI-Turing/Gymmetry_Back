@@ -31,7 +31,7 @@ public class AddDailyExerciseFunction
 
     [Function("DailyExercise_AddDailyExerciseFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailyexercise/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "dailyexercise/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("DailyExercise_AddDailyExerciseFunction");
@@ -95,7 +95,7 @@ public class AddDailyExerciseFunction
 
     [Function("DailyExercise_AddDailyExercisesBulkFunction")]
     public async Task<HttpResponseData> AddBulkAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailyexercises/addbulk")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "dailyexercises/addbulk")] HttpRequestData req,
             FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("DailyExercise_AddDailyExercisesBulkFunction");

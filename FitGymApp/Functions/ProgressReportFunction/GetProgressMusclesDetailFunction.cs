@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.ProgressReportFunction
 
         [Function("Progress_GetMusclesDetailFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "progress/muscles")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "progress/muscles")] HttpRequestData req,
             FunctionContext ctx)
         {
             var logger = ctx.GetLogger("Progress_GetMusclesDetailFunction");

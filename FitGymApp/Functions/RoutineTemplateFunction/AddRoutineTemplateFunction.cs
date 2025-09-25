@@ -31,7 +31,7 @@ public class AddRoutineTemplateFunction
 
     [Function("RoutineTemplate_AddRoutineTemplateFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routinetemplate/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routinetemplate/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineTemplate_AddRoutineTemplateFunction");
@@ -99,7 +99,7 @@ public class AddRoutineTemplateFunction
 
     [Function("RoutineTemplate_DuplicateRoutineTemplateFunction")]
     public async Task<HttpResponseData> DuplicateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routinetemplate/duplicate")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routinetemplate/duplicate")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineTemplate_DuplicateRoutineTemplateFunction");

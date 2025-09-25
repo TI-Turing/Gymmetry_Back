@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.PlanTypeFunction
 
         [Function("PlanType_DeletePlanTypeFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "plantype/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "plantype/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

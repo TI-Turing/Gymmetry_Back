@@ -31,7 +31,7 @@ public class UpdateEmployeeUserFunction
 
     [Function("EmployeeUser_UpdateEmployeeUserFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "employeeuser/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "employeeuser/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("EmployeeUser_UpdateEmployeeUserFunction");

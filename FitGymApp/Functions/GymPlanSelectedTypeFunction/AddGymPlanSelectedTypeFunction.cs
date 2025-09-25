@@ -26,7 +26,7 @@ public class AddGymPlanSelectedTypeFunction
     }
 
     [Function("GymPlanSelectedType_AddGymPlanSelectedTypeFunction")]
-    public async Task<IActionResult> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymplanselectedtype/add")] HttpRequest req)
+    public async Task<IActionResult> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gymplanselectedtype/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {

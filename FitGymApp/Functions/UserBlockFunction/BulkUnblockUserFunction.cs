@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_BulkUnblockFunction")]
         public async Task<HttpResponseData> BulkUnblockAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "userblock/bulk/unblock")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "userblock/bulk/unblock")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UserBlock_BulkUnblockFunction");

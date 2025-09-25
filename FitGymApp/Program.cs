@@ -1,5 +1,6 @@
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Builder;
+using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -16,10 +17,16 @@ using Gymmetry.Application.Services.Payments;
 using Gymmetry.Domain.Options;
 using FitGymApp.Hubs;
 using Azure.Storage.Blobs;
+using FitGymApp.Middleware;
 
 var builder = FunctionsApplication.CreateBuilder(args);
 
 builder.ConfigureFunctionsWebApplication();
+
+// Middleware CORS + API Key (query ?code=...)
+// (Registrar una sola vez cada middleware)
+builder.Services.AddSingleton<IFunctionsWorkerMiddleware, CorsMiddleware>();
+builder.Services.AddSingleton<IFunctionsWorkerMiddleware, ApiKeyMiddleware>();
 
 builder.Services
     .AddApplicationInsightsTelemetryWorkerService()
@@ -37,13 +44,10 @@ string? ResolveConn(params string[] keys)
     return null;
 }
 var connectionString = ResolveConn(
-    // Preferir local.settings (Values)
     "Values:ConnectionStrings:DefaultConnection",
     "Values:ConnectionStrings:Gymmetry",
-    // Luego claves sin Values
     "ConnectionStrings:DefaultConnection",
     "ConnectionStrings:Gymmetry",
-    // O provider por defecto de GetConnectionString
     configuration.GetConnectionString("DefaultConnection") ?? string.Empty
 ) ?? "";
 
@@ -51,14 +55,11 @@ var connectionString = ResolveConn(
 builder.Services.AddDbContext<GymmetryContext>(options =>
 {
     options.UseSqlServer(connectionString);
-    // Suprimir advertencia de migraciones pendientes en producción
     options.ConfigureWarnings(warnings =>
         warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
 });
 
-builder.Services.AddAutoMapper(cfg => {
-    cfg.AddProfile<AutoMapperProfile>();
-});
+builder.Services.AddAutoMapper(cfg => { cfg.AddProfile<AutoMapperProfile>(); });
 
 // OAuth client credentials options
 builder.Services.Configure<OAuthOptions>(opts =>
@@ -71,24 +72,16 @@ builder.Services.Configure<OAuthOptions>(opts =>
 builder.Services.AddSingleton(sp => new BlobServiceClient(configuration["AzureStorage:ConnectionString"] ?? configuration["Values:AzureStorage:ConnectionString"] ?? "UseDevelopmentStorage=true"));
 builder.Services.AddScoped<IBlobStorageService, AzureBlobStorageService>();
 
-// Inyección de dependencias de repositorios
-builder.Services.AddScoped<IUserRepository, UserRepository>(sp =>
-    new UserRepository(
-        sp.GetRequiredService<GymmetryContext>(),
-        sp.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>(),
-        sp.GetRequiredService<IRedisCacheService>()
-    )
-);
-builder.Services.AddScoped<IFeedRepository, FeedRepository>(sp =>
-    new FeedRepository(
-        sp.GetRequiredService<GymmetryContext>(),
-        sp.GetRequiredService<IConfiguration>(),
-        sp.GetRequiredService<IRedisCacheService>(),
-        sp.GetRequiredService<ILogger<FeedRepository>>()
-    )
-);
-
-//Repository services
+// Repositorios
+builder.Services.AddScoped<IUserRepository, UserRepository>(sp => new UserRepository(
+    sp.GetRequiredService<GymmetryContext>(),
+    sp.GetRequiredService<Microsoft.Extensions.Configuration.IConfiguration>(),
+    sp.GetRequiredService<IRedisCacheService>()));
+builder.Services.AddScoped<IFeedRepository, FeedRepository>(sp => new FeedRepository(
+    sp.GetRequiredService<GymmetryContext>(),
+    sp.GetRequiredService<IConfiguration>(),
+    sp.GetRequiredService<IRedisCacheService>(),
+    sp.GetRequiredService<ILogger<FeedRepository>>()));
 builder.Services.AddScoped<IAccessMethodTypeRepository, AccessMethodTypeRepository>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<ILogErrorRepository, LogErrorRepository>();
@@ -144,11 +137,10 @@ builder.Services.AddScoped<IReportContentRepository, ReportContentRepository>();
 builder.Services.AddScoped<IUserBlockRepository, UserBlockRepository>();
 builder.Services.AddScoped<IContentModerationRepository, ContentModerationRepository>();
 
-// Cargar PaymentsOptions desde configuración o Values
+// PaymentsOptions
 int resolveGatewayProvider()
 {
-    var gp = configuration["Payments:GatewayProvider"]
-        ?? configuration["Values:Payments:GatewayProvider"];
+    var gp = configuration["Payments:GatewayProvider"] ?? configuration["Values:Payments:GatewayProvider"];
     return int.TryParse(gp, out var n) ? n : 3;
 }
 string? resolve(string key) => configuration[$"Payments:{key}"] ?? configuration[$"Values:Payments:{key}"];
@@ -161,34 +153,24 @@ builder.Services.Configure<PaymentsOptions>(opts =>
     opts.BasePendingUrl = resolve("BasePendingUrl");
 });
 
-// Payment infrastructure + repositories
 builder.Services.AddHttpClient<MercadoPagoGatewayRepository>();
 builder.Services.AddScoped<IPaymentGatewayRepository, MercadoPagoGatewayRepository>();
-// Payment application services
 builder.Services.AddScoped<IPaymentIntentService, PaymentIntentService>();
 
 var providerValue = resolveGatewayProvider();
 if (providerValue == 1)
-{
     builder.Services.AddScoped<IPaymentGatewayService, PayUPaymentGatewayService>();
-}
 else if (providerValue == 2)
-{
     builder.Services.AddScoped<IPaymentGatewayService, WompiPaymentGateway>();
-}
 else if (providerValue == 3)
-{
     builder.Services.AddScoped<IPaymentGatewayService, MercadoPagoPaymentGatewayService>();
-}
 else if (providerValue == 4)
-{
-    // Stripe skeleton to implement later; fallback to MercadoPago for ahora
     builder.Services.AddScoped<IPaymentGatewayService, MercadoPagoPaymentGatewayService>();
-}
 
-// Application services
+// Servicios de aplicación
 builder.Services.AddScoped<IAccessMethodTypeService, AccessMethodTypeService>();
 builder.Services.AddScoped<IAnalyticsService, AnalyticsService>();
+builder.Services.AddScoped<IAppStateService, AppStateService>(); // NEW: AppState aggregator service
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -210,6 +192,7 @@ builder.Services.AddScoped<IEmployeeTypeService, EmployeeTypeService>();
 builder.Services.AddScoped<IEmployeeUserService, EmployeeUserService>();
 builder.Services.AddScoped<IExerciseService, ExerciseService>();
 builder.Services.AddScoped<IFeedService, FeedService>();
+builder.Services.AddScoped<IMediaProcessingService, MediaProcessingService>(); // NEW: Media processing for multimedia feeds
 builder.Services.AddScoped<IFitUserService, FitUserService>();
 builder.Services.AddScoped<IGymPlanSelectedModuleService, GymPlanSelectedModuleService>();
 builder.Services.AddScoped<IGymPlanSelectedService, GymPlanSelectedService>();
@@ -239,63 +222,47 @@ builder.Services.AddScoped<IUserTypeService, UserTypeService>();
 builder.Services.AddScoped<IReportContentService, ReportContentService>();
 builder.Services.AddScoped<IUserBlockService, UserBlockService>();
 builder.Services.AddScoped<IContentModerationService, ContentModerationService>();
+
 builder.Services.AddHttpClient<Gymmetry.Application.Services.ConfigAutoService>();
 builder.Services.AddSingleton<Microsoft.Extensions.Configuration.IConfiguration>(builder.Configuration);
 
-// Client credentials service
 builder.Services.AddScoped<IClientCredentialsService, ClientCredentialsService>();
-// Payment read service
 builder.Services.AddScoped<IPaymentService, PaymentService>();
 
-// Configuración de Redis
+// Redis
 var redisConnectionString = configuration["Redis:ConnectionString"] ?? configuration["Values:Redis:ConnectionString"] ?? "localhost:6379";
-builder.Services.AddSingleton<IRedisCacheService>(sp =>
-    new RedisCacheService(
-        redisConnectionString,
-        sp.GetRequiredService<ILogger<RedisCacheService>>()
-    )
-);
+builder.Services.AddSingleton<IRedisCacheService>(sp => new RedisCacheService(
+    redisConnectionString,
+    sp.GetRequiredService<ILogger<RedisCacheService>>()));
 
-// SignalR services
-// builder.Services.AddSignalR(); // SignalR removido por ahora (host Functions aislado)
+// Notificaciones
 builder.Services.AddScoped<IReportContentRealtimeService, ReportContentRealtimeService>();
 builder.Services.AddScoped<IReportContentEvidenceService, ReportContentEvidenceService>();
-
-// Sistema de Notificaciones Unificado
 builder.Services.AddScoped<INotificationTemplateRepository, NotificationTemplateRepository>();
 builder.Services.AddScoped<IUserNotificationPreferenceRepository, UserNotificationPreferenceRepository>();
 builder.Services.AddScoped<IUnifiedNotificationService, UnifiedNotificationService>();
 builder.Services.AddScoped<INotificationDeliveryService, NotificationDeliveryService>();
 
-// Sistema de PostShare
+// PostShare
 builder.Services.AddScoped<IPostShareRepository, PostShareRepository>();
 builder.Services.AddScoped<IPostShareService, PostShareService>();
 
-// Configuraciones de servicios externos
+// External settings
 builder.Services.Configure<MailGunSettings>(configuration.GetSection("MailGun"));
 builder.Services.Configure<TwilioSettings>(configuration.GetSection("Twilio"));
 builder.Services.Configure<ExpoPushSettings>(configuration.GetSection("ExpoPush"));
 
-// HttpClient para servicios de entrega
 builder.Services.AddHttpClient<INotificationDeliveryService, NotificationDeliveryService>();
 
-// Aplicar migraciones y ejecutar seeds (opcional, solo en desarrollo o si es seguro)
+// Seeds & migraciones
 using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<GymmetryContext>();
-    
     try
     {
-        // Solo aplicar migraciones si hay pendientes
         var pendingMigrations = await db.Database.GetPendingMigrationsAsync();
-        if (pendingMigrations.Any())
-        {
-            db.Database.Migrate(); // Aplica migraciones pendientes
-        }
-        
-        DbInitializer.SeedAsync(db).GetAwaiter().GetResult(); // Llamar al inicializador de seeds de repository
-
-        // Ejecutar funciones de ConfigFunction
+        if (pendingMigrations.Any()) db.Database.Migrate();
+        DbInitializer.SeedAsync(db).GetAwaiter().GetResult();
         var configAutoService = scope.ServiceProvider.GetRequiredService<IConfigAutoService>();
         configAutoService.UpdateUsdPricesFromExchangeAsync().GetAwaiter().GetResult();
     }
@@ -307,5 +274,4 @@ using (var scope = builder.Services.BuildServiceProvider().CreateScope())
 }
 
 var built = builder.Build();
-// SignalR hub no configurado en Functions host.
 built.Run();

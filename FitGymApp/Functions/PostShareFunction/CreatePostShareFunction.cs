@@ -29,7 +29,7 @@ namespace Gymmetry.Functions.PostShareFunction
 
         [Function("PostShare_CreatePostShareFunction")]
         public async Task<HttpResponseData> CreateAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "postShare/add")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "postShare/add")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PostShare_CreatePostShareFunction");

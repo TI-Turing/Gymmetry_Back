@@ -28,7 +28,7 @@ public class UpdateMachineFunction
 
     [Function("Machine_UpdateMachineFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "machine/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "machine/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Machine_UpdateMachineFunction");

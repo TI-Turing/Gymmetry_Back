@@ -32,7 +32,7 @@ public class UpdateScheduleFunction
 
     [Function("Schedule_UpdateScheduleFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "schedule/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "schedule/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Schedule_UpdateScheduleFunction");

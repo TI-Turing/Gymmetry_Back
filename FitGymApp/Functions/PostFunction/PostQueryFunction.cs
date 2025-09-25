@@ -21,7 +21,7 @@ namespace Gymmetry.Functions.PostFunction
 
         [Function("Post_GetPostByIdFunction")]
         public async Task<HttpResponseData> GetPostByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "post/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "post/{id:guid}")] HttpRequestData req,
             Guid id)
         {
             var result = await _postService.GetPostByIdAsync(id);
@@ -32,7 +32,7 @@ namespace Gymmetry.Functions.PostFunction
 
         [Function("Post_GetPostsByUserFunction")]
         public async Task<HttpResponseData> GetPostsByUserAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "post/user/{userId:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "post/user/{userId:guid}")] HttpRequestData req,
             Guid userId)
         {
             var result = await _postService.GetPostsByUserAsync(userId);
@@ -43,7 +43,7 @@ namespace Gymmetry.Functions.PostFunction
 
         [Function("Post_GetAllPostsFunction")]
         public async Task<HttpResponseData> GetAllPostsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "post")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "post")] HttpRequestData req)
         {
             var result = await _postService.GetAllPostsAsync();
             var response = req.CreateResponse(result.Success ? HttpStatusCode.OK : HttpStatusCode.NotFound);

@@ -32,7 +32,7 @@ public class UpdateUserFunction
 
     [Function("User_UpdateUserFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "user/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "user/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("User_UpdateUserFunction");
@@ -108,7 +108,7 @@ public class UpdateUserFunction
 
     [Function("User_UpdateUserGymFunction")]
     public async Task<HttpResponseData> UpdateUserGymAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "user/update-gym")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "user/update-gym")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("User_UpdateUserGymFunction");

@@ -31,7 +31,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_GetPendingFunction")]
         public async Task<HttpResponseData> GetPendingAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "reportcontent/pending")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "reportcontent/pending")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ReportContent_GetPendingFunction");

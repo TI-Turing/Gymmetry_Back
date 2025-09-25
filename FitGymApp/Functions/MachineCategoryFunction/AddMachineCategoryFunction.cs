@@ -25,7 +25,7 @@ public class AddMachineCategoryFunction
     }
 
     [Function("MachineCategory_AddMachineCategoryFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "machinecategory/add")] HttpRequest req)
+    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "machinecategory/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {

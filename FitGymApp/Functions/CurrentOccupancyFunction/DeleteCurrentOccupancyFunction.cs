@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.CurrentOccupancyFunction
 
         [Function("CurrentOccupancy_DeleteCurrentOccupancyFunction")]
         public async Task<HttpResponseData> RunAsync([
-            HttpTrigger(AuthorizationLevel.Function, "delete", Route = "currentoccupancy/{id:guid}")] HttpRequestData req,
+            HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "currentoccupancy/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

@@ -21,7 +21,7 @@ namespace Gymmetry.Functions.CommentFunction
 
         [Function("Comment_GetCommentByIdFunction")]
         public async Task<HttpResponseData> GetCommentByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "comment/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "comment/{id:guid}")] HttpRequestData req,
             Guid id)
         {
             var result = await _commentService.GetCommentByIdAsync(id);
@@ -32,7 +32,7 @@ namespace Gymmetry.Functions.CommentFunction
 
         [Function("Comment_GetCommentsByPostFunction")]
         public async Task<HttpResponseData> GetCommentsByPostAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "comment/post/{postId:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "comment/post/{postId:guid}")] HttpRequestData req,
             Guid postId)
         {
             var result = await _commentService.GetCommentsByPostAsync(postId);
@@ -43,7 +43,7 @@ namespace Gymmetry.Functions.CommentFunction
 
         [Function("Comment_GetCommentsByUserFunction")]
         public async Task<HttpResponseData> GetCommentsByUserAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "comment/user/{userId:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "comment/user/{userId:guid}")] HttpRequestData req,
             Guid userId)
         {
             var result = await _commentService.GetCommentsByUserAsync(userId);
@@ -54,7 +54,7 @@ namespace Gymmetry.Functions.CommentFunction
 
         [Function("Comment_GetAllCommentsFunction")]
         public async Task<HttpResponseData> GetAllCommentsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "comment")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "comment")] HttpRequestData req)
         {
             var result = await _commentService.GetAllCommentsAsync();
             var response = req.CreateResponse(result.Success ? System.Net.HttpStatusCode.OK : System.Net.HttpStatusCode.NotFound);

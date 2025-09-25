@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.EmployeeTypeFunction
         }
 
         [Function("EmployeeType_GetEmployeeTypeByIdFunction")]
-        public async Task<ApiResponse<EmployeeType>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "employeetype/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<ApiResponse<EmployeeType>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "employeetype/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -74,7 +74,7 @@ namespace Gymmetry.Functions.EmployeeTypeFunction
         }
 
         [Function("EmployeeType_GetAllEmployeeTypesFunction")]
-        public async Task<ApiResponse<IEnumerable<EmployeeType>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "employeetypes")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<EmployeeType>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "employeetypes")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -112,7 +112,7 @@ namespace Gymmetry.Functions.EmployeeTypeFunction
         }
 
         [Function("EmployeeType_FindEmployeeTypesByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<EmployeeType>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "employeetypes/find")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<EmployeeType>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "employeetypes/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

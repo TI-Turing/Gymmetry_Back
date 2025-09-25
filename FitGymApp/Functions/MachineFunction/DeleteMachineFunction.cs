@@ -22,7 +22,7 @@ namespace Gymmetry.Functions.MachineFunction
         }
 
         [Function("Machine_DeleteMachineFunction")]
-        public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "machine/{id:guid}")] HttpRequestData req, Guid id)
+        public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "machine/{id:guid}")] HttpRequestData req, Guid id)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

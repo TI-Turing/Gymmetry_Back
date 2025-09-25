@@ -31,7 +31,7 @@ public class AddSubModuleFunction
 
     [Function("SubModule_AddSubModuleFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "submodule/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "submodule/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("SubModule_AddSubModuleFunction");

@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.CommentFunction
 
         [Function("Comment_UpdateCommentFunction")]
         public async Task<HttpResponseData> UpdateCommentAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "comment/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "comment/{id:guid}")] HttpRequestData req,
             Guid id,
             FunctionContext executionContext)
         {

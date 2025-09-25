@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.RoutineDayFunction
 
         [Function("RoutineDay_GetRoutineDayFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routineday/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routineday/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -97,7 +97,7 @@ namespace Gymmetry.Functions.RoutineDayFunction
 
         [Function("RoutineDay_GetAllRoutineDaysFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "routinedays")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "routinedays")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineDay_GetAllRoutineDaysFunction");
@@ -151,7 +151,7 @@ namespace Gymmetry.Functions.RoutineDayFunction
 
         [Function("RoutineDay_FindRoutineDaysByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routinedays/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routinedays/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("RoutineDay_FindRoutineDaysByFieldsFunction");

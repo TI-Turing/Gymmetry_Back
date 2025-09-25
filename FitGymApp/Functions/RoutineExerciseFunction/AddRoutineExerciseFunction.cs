@@ -31,7 +31,7 @@ public class AddRoutineExerciseFunction
 
     [Function("RoutineExercise_AddRoutineExerciseFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "routineexercise/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "routineexercise/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineExercise_AddRoutineExerciseFunction");

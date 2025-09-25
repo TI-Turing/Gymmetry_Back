@@ -31,7 +31,7 @@ public class AddUserTypeFunction
 
     [Function("UserType_AddUserTypeFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "usertype/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "usertype/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("UserType_AddUserTypeFunction");

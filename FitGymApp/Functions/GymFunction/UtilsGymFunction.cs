@@ -29,7 +29,7 @@ public class UtilsGymFunction
 
     [Function("Gym_GenerateQrFunction")]
     public async Task<HttpResponseData> GenerateQrAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gym/generate-qr")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gym/generate-qr")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Gym_GenerateQrFunction");
@@ -86,7 +86,7 @@ public class UtilsGymFunction
 
     [Function("Gym_UploadLogoFunction")]
     public async Task<HttpResponseData> UploadLogoAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gym/upload-logo")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gym/upload-logo")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("Gym_UploadLogoFunction");

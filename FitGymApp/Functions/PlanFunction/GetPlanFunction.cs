@@ -31,7 +31,7 @@ namespace Gymmetry.Functions.PlanFunction
 
         [Function("Plan_GetPlanFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "plan/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "plan/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -91,7 +91,7 @@ namespace Gymmetry.Functions.PlanFunction
 
         [Function("Plan_GetAllPlansFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "plans")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "plans")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Plan_GetAllPlansFunction");
@@ -138,7 +138,7 @@ namespace Gymmetry.Functions.PlanFunction
 
         [Function("Plan_FindPlansByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "plans/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "plans/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Plan_FindPlansByFieldsFunction");

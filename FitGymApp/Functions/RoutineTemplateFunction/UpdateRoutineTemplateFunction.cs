@@ -32,7 +32,7 @@ public class UpdateRoutineTemplateFunction
 
     [Function("RoutineTemplate_UpdateRoutineTemplateFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "routinetemplate/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "routinetemplate/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineTemplate_UpdateRoutineTemplateFunction");

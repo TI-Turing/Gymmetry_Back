@@ -26,7 +26,7 @@ public class GetModuleFunction
     }
 
     [Function("Module_GetModuleByIdFunction")]
-    public async Task<ApiResponse<Module>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "module/{id:guid}")] HttpRequest req, Guid id)
+    public async Task<ApiResponse<Module>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "module/{id:guid}")] HttpRequest req, Guid id)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {
@@ -76,7 +76,7 @@ public class GetModuleFunction
     }
 
     [Function("Module_GetAllModulesFunction")]
-    public async Task<ApiResponse<IEnumerable<Module>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "modules")] HttpRequest req)
+    public async Task<ApiResponse<IEnumerable<Module>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "modules")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {
@@ -115,7 +115,7 @@ public class GetModuleFunction
     }
 
     [Function("Module_FindModulesByFieldsFunction")]
-    public async Task<ApiResponse<IEnumerable<Module>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "modules/find")] HttpRequest req)
+    public async Task<ApiResponse<IEnumerable<Module>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "modules/find")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {

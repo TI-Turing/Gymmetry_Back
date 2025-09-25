@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_GetContentModerationByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "contentmoderation/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contentmoderation/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -91,7 +91,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_GetPagedFunction")]
         public async Task<HttpResponseData> GetPagedAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "contentmoderation")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contentmoderation")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_GetPagedFunction");
@@ -146,7 +146,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_GetPendingFunction")]
         public async Task<HttpResponseData> GetPendingAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "contentmoderation/pending")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contentmoderation/pending")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ContentModeration_GetPendingFunction");
@@ -197,7 +197,7 @@ namespace Gymmetry.Functions.ContentModerationFunction
 
         [Function("ContentModeration_GetByContentFunction")]
         public async Task<HttpResponseData> GetByContentAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "contentmoderation/content/{contentId:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "contentmoderation/content/{contentId:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid contentId)
         {

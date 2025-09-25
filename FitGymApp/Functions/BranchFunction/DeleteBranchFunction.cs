@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.BranchFunction
         }
 
         [Function("Branch_DeleteBranchFunction")]
-        public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "branch/{id:guid}")] HttpRequestData req, Guid id)
+        public async Task<HttpResponseData> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "branch/{id:guid}")] HttpRequestData req, Guid id)
         {
             var response = req.CreateResponse();
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

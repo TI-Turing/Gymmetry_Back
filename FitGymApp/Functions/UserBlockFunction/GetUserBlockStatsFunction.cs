@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_GetStatsFunction")]
         public async Task<HttpResponseData> GetStatsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userblock/stats")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "userblock/stats")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UserBlock_GetStatsFunction");

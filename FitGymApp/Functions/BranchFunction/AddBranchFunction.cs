@@ -29,7 +29,7 @@ public class AddBranchFunction
     }
 
     [Function("Branch_AddBranchFunction")]
-    public async Task<HttpResponseData> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "branch/add")] HttpRequestData req)
+    public async Task<HttpResponseData> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "branch/add")] HttpRequestData req)
     {
         var response = req.CreateResponse();
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_GetBlockedUsersFunction")]
         public async Task<HttpResponseData> GetBlockedAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userblock/blocked")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "userblock/blocked")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UserBlock_GetBlockedUsersFunction");
@@ -93,7 +93,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_GetBlockersFunction")]
         public async Task<HttpResponseData> GetBlockersAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userblock/blockers")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "userblock/blockers")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UserBlock_GetBlockersFunction");
@@ -161,7 +161,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_CheckBlockStatusFunction")]
         public async Task<HttpResponseData> CheckAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userblock/check/{targetUserId:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "userblock/check/{targetUserId:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid targetUserId)
         {
@@ -226,7 +226,7 @@ namespace Gymmetry.Functions.UserBlockFunction
 
         [Function("UserBlock_GetMutualBlocksFunction")]
         public async Task<HttpResponseData> GetMutualAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "userblock/mutual")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "userblock/mutual")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("UserBlock_GetMutualBlocksFunction");

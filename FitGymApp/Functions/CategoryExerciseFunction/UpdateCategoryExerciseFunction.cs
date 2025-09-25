@@ -32,7 +32,7 @@ public class UpdateCategoryExerciseFunction
 
     [Function("CategoryExercise_UpdateCategoryExerciseFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "categoryexercise/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "categoryexercise/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("CategoryExercise_UpdateCategoryExerciseFunction");

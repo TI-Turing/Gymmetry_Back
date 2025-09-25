@@ -28,7 +28,7 @@ public class AddDailyExerciseHistoryFunction
     }
 
     [Function("DailyExerciseHistory_AddDailyExerciseHistoryFunction")]
-    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailyexercisehistory/add")] HttpRequest req)
+    public async Task<ApiResponse<Guid>> AddAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "dailyexercisehistory/add")] HttpRequest req)
     {
         if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
         {

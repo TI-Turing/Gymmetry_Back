@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.PostShareFunction
 
         [Function("PostShare_GetPostShareByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "postShare/getById")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "postShare/getById")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PostShare_GetPostShareByIdFunction");

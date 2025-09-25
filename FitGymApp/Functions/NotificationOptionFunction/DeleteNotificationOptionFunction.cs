@@ -22,7 +22,7 @@ namespace Gymmetry.Functions.NotificationOptionFunction
         }
 
         [Function("NotificationOption_DeleteNotificationOptionFunction")]
-        public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "notificationoption/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "notificationoption/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

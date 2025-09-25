@@ -24,7 +24,7 @@ namespace Gymmetry.Functions.DailyExerciseFunction
 
         [Function("DailyExercise_DeleteDailyExerciseFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "dailyexercise/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "dailyexercise/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

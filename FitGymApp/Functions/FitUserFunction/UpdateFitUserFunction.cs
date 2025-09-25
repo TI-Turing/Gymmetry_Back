@@ -31,7 +31,7 @@ public class UpdateFitUserFunction
 
     [Function("FitUser_UpdateFitUserFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "fituser/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "fituser/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("FitUser_UpdateFitUserFunction");

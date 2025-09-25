@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.BranchMediaFunction
 
         [Function("BranchMedia_GetBranchMediaByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "branchmedia/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "branchmedia/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.BranchMediaFunction
 
         [Function("BranchMedia_GetAllBranchMediasFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "branchmedias")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "branchmedias")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("BranchMedia_GetAllBranchMediasFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.BranchMediaFunction
 
         [Function("BranchMedia_FindBranchMediasByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "branchmedias/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "branchmedias/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("BranchMedia_FindBranchMediasByFieldsFunction");

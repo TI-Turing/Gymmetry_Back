@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_DeleteFeedFunction")]
         public async Task<HttpResponseData> DeleteFeedAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "feed/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "feed/{id:guid}")] HttpRequestData req,
             Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

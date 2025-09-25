@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.CommentFunction
 
         [Function("Comment_CreateCommentFunction")]
         public async Task<HttpResponseData> CreateCommentAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "comment")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "comment")] HttpRequestData req,
             FunctionContext executionContext)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))

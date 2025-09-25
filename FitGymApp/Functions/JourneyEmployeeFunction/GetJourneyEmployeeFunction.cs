@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.JourneyEmployeeFunction
 
         [Function("JourneyEmployee_GetJourneyEmployeeByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "journeyemployee/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "journeyemployee/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.JourneyEmployeeFunction
 
         [Function("JourneyEmployee_GetAllJourneyEmployeesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "journeyemployees")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "journeyemployees")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("JourneyEmployee_GetAllJourneyEmployeesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.JourneyEmployeeFunction
 
         [Function("JourneyEmployee_FindJourneyEmployeesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "journeyemployees/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "journeyemployees/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("JourneyEmployee_FindJourneyEmployeesByFieldsFunction");

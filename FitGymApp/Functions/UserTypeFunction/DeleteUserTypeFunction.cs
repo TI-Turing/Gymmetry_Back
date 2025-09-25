@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.UserTypeFunction
 
         [Function("UserType_DeleteUserTypeFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "usertype/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "usertype/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

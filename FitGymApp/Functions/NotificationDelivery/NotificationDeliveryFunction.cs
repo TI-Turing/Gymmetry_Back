@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.NotificationDelivery
 
         [Function("NotificationDelivery_SendPushFunction")]
         public async Task<HttpResponseData> SendPushAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/delivery/push")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/delivery/push")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationDelivery_SendPushFunction");
@@ -88,7 +88,7 @@ namespace Gymmetry.Functions.NotificationDelivery
 
         [Function("NotificationDelivery_SendEmailFunction")]
         public async Task<HttpResponseData> SendEmailAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/delivery/email")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/delivery/email")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationDelivery_SendEmailFunction");
@@ -150,7 +150,7 @@ namespace Gymmetry.Functions.NotificationDelivery
 
         [Function("NotificationDelivery_SendSmsFunction")]
         public async Task<HttpResponseData> SendSmsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/delivery/sms")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/delivery/sms")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationDelivery_SendSmsFunction");
@@ -212,7 +212,7 @@ namespace Gymmetry.Functions.NotificationDelivery
 
         [Function("NotificationDelivery_SendWhatsAppFunction")]
         public async Task<HttpResponseData> SendWhatsAppAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/delivery/whatsapp")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/delivery/whatsapp")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationDelivery_SendWhatsAppFunction");

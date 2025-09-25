@@ -27,7 +27,7 @@ public class AddGymTypeFunction
 
     [Function("GymType_AddGymTypeFunction")]
     public async Task<HttpResponseData> AddAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "post", Route = "gymtype/add")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "gymtype/add")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("GymType_AddGymTypeFunction");

@@ -11,7 +11,7 @@ namespace FitGymApp.Functions.SignalRFunction
         [Function("SendNotification")]
         [SignalROutput(HubName = "notifications")]
         public async Task<SignalRMessageAction[]> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "send-notification")] HttpRequestData req)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "send-notification")] HttpRequestData req)
         {
             string message = await req.ReadAsStringAsync();
             var response = req.CreateResponse(HttpStatusCode.OK);

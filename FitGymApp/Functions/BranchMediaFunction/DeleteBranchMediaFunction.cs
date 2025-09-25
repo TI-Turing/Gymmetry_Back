@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.BranchMediaFunction
 
         [Function("BranchMedia_DeleteBranchMediaFunction")]
         public async Task<HttpResponseData> RunAsync([
-            HttpTrigger(AuthorizationLevel.Function, "delete", Route = "branchmedia/{id:guid}")] HttpRequestData req,
+            HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "branchmedia/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.BillFunction
         }
 
         [Function("Bill_GetBillByIdFunction")]
-        public async Task<ApiResponse<Bill>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "bill/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<ApiResponse<Bill>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "bill/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -73,7 +73,7 @@ namespace Gymmetry.Functions.BillFunction
         }
 
         [Function("Bill_GetAllBillsFunction")]
-        public async Task<ApiResponse<IEnumerable<Bill>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "bills")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<Bill>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "bills")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -111,7 +111,7 @@ namespace Gymmetry.Functions.BillFunction
         }
 
         [Function("Bill_FindBillsByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<Bill>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "bills/find")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<Bill>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "bills/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

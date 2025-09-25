@@ -29,7 +29,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_GetGlobalPaged")] 
         public async Task<HttpResponseData> GetGlobalAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed/paged")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed/paged")] HttpRequestData req,
             FunctionContext ctx)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
@@ -47,7 +47,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_GetUserPaged")] 
         public async Task<HttpResponseData> GetUserAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed/user/{userId:guid}/paged")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed/user/{userId:guid}/paged")] HttpRequestData req,
             Guid userId,
             FunctionContext ctx)
         {
@@ -66,7 +66,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_GetTrending")] 
         public async Task<HttpResponseData> GetTrendingAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "feed/trending")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "feed/trending")] HttpRequestData req,
             FunctionContext ctx)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var viewer))

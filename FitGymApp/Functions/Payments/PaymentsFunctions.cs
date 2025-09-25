@@ -48,7 +48,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_CreateUserPlanPreference")]
-        public async Task<HttpResponseData> CreateUserPlanPreferenceAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "payments/plan/preference")] HttpRequestData req)
+        public async Task<HttpResponseData> CreateUserPlanPreferenceAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "payments/plan/preference")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -98,7 +98,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_CreateGymPlanPreference")]
-        public async Task<HttpResponseData> CreateGymPlanPreferenceAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "payments/gymplan/preference")] HttpRequestData req)
+        public async Task<HttpResponseData> CreateGymPlanPreferenceAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "payments/gymplan/preference")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -155,7 +155,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_GetStatus")]
-        public async Task<HttpResponseData> GetStatusAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "payments/status/{id}")] HttpRequestData req, string id)
+        public async Task<HttpResponseData> GetStatusAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "payments/status/{id}")] HttpRequestData req, string id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -253,7 +253,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_CreateUserPlanCard")] 
-        public async Task<HttpResponseData> CreateUserPlanCardAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "payments/plan/card")] HttpRequestData req)
+        public async Task<HttpResponseData> CreateUserPlanCardAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "payments/plan/card")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -286,7 +286,7 @@ namespace Gymmetry.Functions.Payments
         }
 
         [Function("Payments_CreateGymPlanCard")] 
-        public async Task<HttpResponseData> CreateGymPlanCardAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "payments/gymplan/card")] HttpRequestData req)
+        public async Task<HttpResponseData> CreateGymPlanCardAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "payments/gymplan/card")] HttpRequestData req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

@@ -22,7 +22,7 @@ namespace Gymmetry.Functions.FitUserFunction
         }
 
         [Function("FitUser_DeleteFitUserFunction")]
-        public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "fituser/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<ApiResponse<Guid>> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "fituser/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

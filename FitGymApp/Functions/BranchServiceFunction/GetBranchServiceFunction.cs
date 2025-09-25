@@ -30,7 +30,7 @@ namespace Gymmetry.Functions.BranchServiceFunction
 
         [Function("BranchService_GetBranchServiceByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "branchservice/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "branchservice/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -90,7 +90,7 @@ namespace Gymmetry.Functions.BranchServiceFunction
 
         [Function("BranchService_GetAllBranchServicesFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "branchservices")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "branchservices")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("BranchService_GetAllBranchServicesFunction");
@@ -137,7 +137,7 @@ namespace Gymmetry.Functions.BranchServiceFunction
 
         [Function("BranchService_FindBranchServicesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "branchservices/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "branchservices/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("BranchService_FindBranchServicesByFieldsFunction");

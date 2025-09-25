@@ -29,7 +29,7 @@ namespace Gymmetry.Functions.PostShareFunction
 
         [Function("PostShare_FindPostSharesByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "postShares/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "postShares/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("PostShare_FindPostSharesByFieldsFunction");

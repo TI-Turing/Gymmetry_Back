@@ -28,7 +28,7 @@ public class UpdateBranchMediaFunction
 
     [Function("BranchMedia_UpdateBranchMediaFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "branchmedia/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "branchmedia/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("BranchMedia_UpdateBranchMediaFunction");

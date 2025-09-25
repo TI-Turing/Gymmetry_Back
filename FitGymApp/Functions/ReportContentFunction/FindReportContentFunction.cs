@@ -33,7 +33,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_FindReportContentFunction")]
         public async Task<HttpResponseData> FindAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "reportcontent/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "reportcontent/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("ReportContent_FindReportContentFunction");

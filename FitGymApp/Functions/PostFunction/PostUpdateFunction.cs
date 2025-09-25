@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.PostFunction
 
         [Function("Post_UpdatePostFunction")]
         public async Task<HttpResponseData> UpdatePostAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "post/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "post/{id:guid}")] HttpRequestData req,
             Guid id,
             FunctionContext executionContext)
         {

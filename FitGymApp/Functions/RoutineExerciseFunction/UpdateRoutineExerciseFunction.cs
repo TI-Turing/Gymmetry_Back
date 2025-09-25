@@ -33,7 +33,7 @@ public class UpdateRoutineExerciseFunction
 
     [Function("RoutineExercise_UpdateRoutineExerciseFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "routineexercise/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "routineexercise/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("RoutineExercise_UpdateRoutineExerciseFunction");

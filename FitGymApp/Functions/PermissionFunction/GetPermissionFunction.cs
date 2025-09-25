@@ -27,7 +27,7 @@ namespace Gymmetry.Functions.PermissionFunction
 
         [Function("Permission_GetPermissionByIdFunction")]
         public async Task<HttpResponseData> GetByIdAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "permission/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "permission/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {
@@ -87,7 +87,7 @@ namespace Gymmetry.Functions.PermissionFunction
 
         [Function("Permission_GetAllPermissionsFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "permissions")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "permissions")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Permission_GetAllPermissionsFunction");
@@ -134,7 +134,7 @@ namespace Gymmetry.Functions.PermissionFunction
 
         [Function("Permission_FindPermissionsByFieldsFunction")]
         public async Task<HttpResponseData> FindByFieldsAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "permissions/find")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "permissions/find")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("Permission_FindPermissionsByFieldsFunction");

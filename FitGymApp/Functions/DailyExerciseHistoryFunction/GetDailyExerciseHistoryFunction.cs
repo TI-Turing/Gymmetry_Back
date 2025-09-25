@@ -26,7 +26,7 @@ namespace Gymmetry.Functions.DailyExerciseHistoryFunction
         }
 
         [Function("DailyExerciseHistory_GetDailyExerciseHistoryByIdFunction")]
-        public async Task<ApiResponse<DailyExerciseHistory>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailyexercisehistory/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<ApiResponse<DailyExerciseHistory>> GetByIdAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "dailyexercisehistory/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -74,7 +74,7 @@ namespace Gymmetry.Functions.DailyExerciseHistoryFunction
         }
 
         [Function("DailyExerciseHistory_GetAllDailyExerciseHistoriesFunction")]
-        public async Task<ApiResponse<IEnumerable<DailyExerciseHistory>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Function, "get", Route = "dailyexercisehistories")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<DailyExerciseHistory>>> GetAllAsync([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "dailyexercisehistories")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {
@@ -112,7 +112,7 @@ namespace Gymmetry.Functions.DailyExerciseHistoryFunction
         }
 
         [Function("DailyExerciseHistory_FindDailyExerciseHistoriesByFieldsFunction")]
-        public async Task<ApiResponse<IEnumerable<DailyExerciseHistory>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = "dailyexercisehistories/find")] HttpRequest req)
+        public async Task<ApiResponse<IEnumerable<DailyExerciseHistory>>> FindByFieldsAsync([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "dailyexercisehistories/find")] HttpRequest req)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

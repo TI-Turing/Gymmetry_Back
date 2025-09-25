@@ -28,7 +28,7 @@ namespace Gymmetry.Functions.NotificationTemplates
 
         [Function("NotificationTemplates_GetAllFunction")]
         public async Task<HttpResponseData> GetAllAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notifications/templates")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "notifications/templates")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationTemplates_GetAllFunction");
@@ -79,7 +79,7 @@ namespace Gymmetry.Functions.NotificationTemplates
 
         [Function("NotificationTemplates_CreateFunction")]
         public async Task<HttpResponseData> CreateAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/templates")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/templates")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationTemplates_CreateFunction");
@@ -141,7 +141,7 @@ namespace Gymmetry.Functions.NotificationTemplates
 
         [Function("NotificationTemplates_UpdateFunction")]
         public async Task<HttpResponseData> UpdateAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "notifications/templates/{templateId:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "notifications/templates/{templateId:int}")] HttpRequestData req,
             FunctionContext executionContext,
             int templateId)
         {
@@ -207,7 +207,7 @@ namespace Gymmetry.Functions.NotificationTemplates
 
         [Function("NotificationTemplates_DeleteFunction")]
         public async Task<HttpResponseData> DeleteAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "delete", Route = "notifications/templates/{templateId:int}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "notifications/templates/{templateId:int}")] HttpRequestData req,
             FunctionContext executionContext,
             int templateId)
         {
@@ -262,7 +262,7 @@ namespace Gymmetry.Functions.NotificationTemplates
 
         [Function("NotificationTemplates_GetByTypeFunction")]
         public async Task<HttpResponseData> GetByTypeAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = "notifications/templates/by-type/{notificationType}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "notifications/templates/by-type/{notificationType}")] HttpRequestData req,
             FunctionContext executionContext,
             string notificationType)
         {

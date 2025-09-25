@@ -23,7 +23,7 @@ namespace Gymmetry.Functions.FeedFunction
 
         [Function("Feed_AutoPostMilestone")] 
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "feed/milestone")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "feed/milestone")] HttpRequestData req,
             FunctionContext ctx)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var tokenUser))

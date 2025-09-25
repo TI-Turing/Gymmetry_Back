@@ -32,7 +32,7 @@ namespace Gymmetry.Functions.ReportContentFunction
 
         [Function("ReportContent_UpdateReportContentFunction")]
         public async Task<HttpResponseData> RunAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "put", Route = "reportcontent/{id:guid}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "reportcontent/{id:guid}")] HttpRequestData req,
             FunctionContext executionContext,
             Guid id)
         {

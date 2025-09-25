@@ -25,7 +25,7 @@ namespace Gymmetry.Functions.NotificationTest
 
         [Function("NotificationTest_SendTestNotificationFunction")]
         public async Task<HttpResponseData> SendTestNotificationAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/test/send")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/test/send")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationTest_SendTestNotificationFunction");
@@ -101,7 +101,7 @@ namespace Gymmetry.Functions.NotificationTest
 
         [Function("NotificationTest_CreateDefaultPreferencesFunction")]
         public async Task<HttpResponseData> CreateDefaultPreferencesAsync(
-            [HttpTrigger(AuthorizationLevel.Function, "post", Route = "notifications/test/preferences/default")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "notifications/test/preferences/default")] HttpRequestData req,
             FunctionContext executionContext)
         {
             var logger = executionContext.GetLogger("NotificationTest_CreateDefaultPreferencesFunction");

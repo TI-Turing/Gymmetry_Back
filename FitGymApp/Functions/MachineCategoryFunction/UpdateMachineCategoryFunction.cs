@@ -30,7 +30,7 @@ public class UpdateMachineCategoryFunction
 
     [Function("MachineCategory_UpdateMachineCategoryFunction")]
     public async Task<HttpResponseData> UpdateAsync(
-        [HttpTrigger(AuthorizationLevel.Function, "put", Route = "machinecategory/update")] HttpRequestData req,
+        [HttpTrigger(AuthorizationLevel.Anonymous, "put", Route = "machinecategory/update")] HttpRequestData req,
         FunctionContext executionContext)
     {
         var logger = executionContext.GetLogger("MachineCategory_UpdateMachineCategoryFunction");

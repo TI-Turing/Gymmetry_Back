@@ -22,7 +22,7 @@ namespace Gymmetry.Functions.GymPlanSelectedTypeFunction
         }
 
         [Function("GymPlanSelectedType_DeleteGymPlanSelectedTypeFunction")]
-        public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "gymplanselectedtype/{id:guid}")] HttpRequest req, Guid id)
+        public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "gymplanselectedtype/{id:guid}")] HttpRequest req, Guid id)
         {
             if (!JwtValidator.ValidateJwt(req, out var error, out var userId))
             {

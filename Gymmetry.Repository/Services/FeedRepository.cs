@@ -32,6 +32,67 @@ namespace Gymmetry.Repository.Services
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
+        // NEW: Multimedia feed creation with transactional support
+        public async Task<Feed> CreateFeedWithMediaAsync(Feed feed, List<FeedMedia> mediaFiles)
+        {
+            if (feed == null) throw new ArgumentNullException(nameof(feed));
+            
+            try
+            {
+                // Start a database transaction to ensure consistency
+                using var transaction = await _context.Database.BeginTransactionAsync();
+                
+                try
+                {
+                    // Ensure proper IDs and timestamps
+                    feed.Id = Guid.NewGuid();
+                    feed.CreatedAt = DateTime.UtcNow;
+                    feed.UpdatedAt = DateTime.UtcNow;
+                    feed.IsActive = true;
+                    feed.IsDeleted = false;
+
+                    // 1. Add the Feed entity
+                    _context.Feeds.Add(feed);
+                    await _context.SaveChangesAsync();
+
+                    // 2. Add the FeedMedia entities if any
+                    if (mediaFiles != null && mediaFiles.Any())
+                    {
+                        // Ensure all FeedMedia have the correct FeedId and proper IDs
+                        foreach (var mediaFile in mediaFiles)
+                        {
+                            mediaFile.Id = Guid.NewGuid();
+                            mediaFile.FeedId = feed.Id;
+                            mediaFile.CreatedAt = DateTime.UtcNow;
+                            mediaFile.IsActive = true;
+                        }
+
+                        _context.FeedMedia.AddRange(mediaFiles);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    // 3. Commit the transaction
+                    await transaction.CommitAsync();
+
+                    _logger.LogInformation("Successfully created feed {FeedId} with {MediaCount} media files", 
+                        feed.Id, mediaFiles?.Count ?? 0);
+
+                    return feed;
+                }
+                catch (Exception)
+                {
+                    // Rollback the transaction on error
+                    await transaction.RollbackAsync();
+                    throw;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error creating feed with media for FeedId: {FeedId}", feed.Id);
+                throw;
+            }
+        }
+
         public async Task<Feed> AddFeedAsync(Feed feed, byte[]? media = null, string? fileName = null, string? mediaType = null)
         {
             if (feed == null) throw new ArgumentNullException(nameof(feed));
