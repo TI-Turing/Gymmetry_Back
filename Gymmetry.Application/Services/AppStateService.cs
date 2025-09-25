@@ -72,20 +72,22 @@ namespace Gymmetry.Application.Services
                     LastUpdated = DateTime.UtcNow
                 };
 
-                // Ejecutar consultas en paralelo donde sea posible
-                var homeTask = BuildHomeStateAsync(userId);
-                var gymTask = BuildGymStateAsync(user);
-                var progressTask = BuildProgressStateAsync(userId);
-                var feedTask = BuildFeedStateAsync();
-                var profileTask = BuildProfileStateAsync(user);
+                // FIXED: Execute operations sequentially to avoid DbContext concurrency issues
+                // Instead of Task.WhenAll, we execute them one by one
+                _logger.LogDebug("[AppStateService] Building HomeState...");
+                overview.Home = await BuildHomeStateAsync(userId);
 
-                await Task.WhenAll(homeTask, gymTask, progressTask, feedTask, profileTask);
+                _logger.LogDebug("[AppStateService] Building GymState...");
+                overview.Gym = await BuildGymStateAsync(user);
 
-                overview.Home = await homeTask;
-                overview.Gym = await gymTask;
-                overview.Progress = await progressTask;
-                overview.Feed = await feedTask;
-                overview.Profile = await profileTask;
+                _logger.LogDebug("[AppStateService] Building ProgressState...");
+                overview.Progress = await BuildProgressStateAsync(userId);
+
+                _logger.LogDebug("[AppStateService] Building FeedState...");
+                overview.Feed = await BuildFeedStateAsync();
+
+                _logger.LogDebug("[AppStateService] Building ProfileState...");
+                overview.Profile = await BuildProfileStateAsync(user);
 
                 _logger.LogInformation($"[AppStateService] AppState construido exitosamente para usuario {userId}");
                 
@@ -242,14 +244,16 @@ namespace Gymmetry.Application.Services
                     UserProfile = user
                 };
 
-                // Obtener última valoración física
+                // FIXED: Remove IsActive filter from query to avoid boolean comparison issues
                 var assessments = await _physicalAssessmentRepository.FindPhysicalAssessmentsByFieldsAsync(new Dictionary<string, object>
                 {
-                    { "UserId", user.Id },
-                    { "IsActive", true }
+                    { "UserId", user.Id }
+                    // Note: Not adding IsActive filter here to avoid the boolean comparison issue
                 });
 
+                // Filter in memory to avoid EF Core boolean comparison issues
                 profileState.LatestAssessment = assessments
+                    .Where(a => a.IsActive == true) // This works fine in LINQ to Objects
                     .OrderByDescending(a => a.CreatedAt)
                     .FirstOrDefault();
 
@@ -503,14 +507,15 @@ namespace Gymmetry.Application.Services
         {
             try
             {
-                // Obtener todos los dailies del usuario para estadísticas generales
+                // FIXED: Remove IsActive filter from query to avoid boolean comparison issues
                 var allUserDailies = await _dailyRepository.FindDailiesByFieldsAsync(new Dictionary<string, object>
                 {
-                    { "UserId", userId },
-                    { "IsActive", true }
+                    { "UserId", userId }
+                    // Note: Not adding IsActive filter here to avoid the boolean comparison issue
                 });
 
-                var workoutDailies = allUserDailies.Where(d => d.Percentage > 0).ToList();
+                // Filter in memory to avoid EF Core boolean comparison issues
+                var workoutDailies = allUserDailies.Where(d => d.Percentage > 0 && d.IsActive == true).ToList();
                 var user = await _userRepository.GetUserByIdAsync(userId);
 
                 // Calcular racha actual
